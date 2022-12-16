@@ -1,0 +1,45 @@
+<?php
+
+namespace {{ namespace }};
+
+use BumpCore\EditorPhp\Contracts\Block;
+use Illuminate\Support\Collection;
+
+class {{ class }} implements Block
+{
+    /**
+     * Type of the block.
+     *
+     * @return string
+     */
+    public function type(): string
+    {
+        return '{{ dd() }}';
+    }
+
+    /**
+     * Rules to validate data of the block.
+     *
+     * @return array
+     */
+    public function rules(): array
+    {
+        return [
+			// ...
+		];
+    }
+
+    /**
+     * Renderer for the block.
+     *
+     * @param Collection $data
+     *
+     * @return string
+     */
+    public function render(Collection $data): string
+    {
+        return view('block')
+            ->with($data)
+            ->render();
+    }
+}

@@ -1,0 +1,42 @@
+{
+	"name": "bumpcore/editor.php",
+	"description": "PHP integration for Editor.js",
+	"type": "library",
+	"license": "MIT",
+	"autoload": {
+		"psr-4": {
+			"BumpCore\\EditorPhp\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"BumpCore\\EditorPhp\\Tests\\": "tests/"
+		}
+	},
+	"authors": [
+		{
+			"name": "Abdulkadir Cemiloğlu",
+			"email": "kadir.cemiloglu1@gmail.com",
+			"role": "Developer"
+		}
+	],
+	"require": {
+		"php": "^8.1",
+		"illuminate/support": "^9.0",
+		"illuminate/validation": "^9.0"
+	},
+	"extra": {
+		"laravel": {
+			"providers": [
+				"BumpCore\\EditorPhp\\EditorPhpServiceProvider"
+			]
+		}
+	},
+	"scripts": {
+		"test": "vendor/bin/phpunit"
+	},
+	"require-dev": {
+		"orchestra/testbench": "^7.15",
+		"phpunit/phpunit": "^9.5"
+	}
+}
