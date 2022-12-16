@@ -6,6 +6,6 @@ Not completed yet, but base features works as expected. It may unstable for a wh
 
 ### Roadmap
 ---
-- [] Tests
-- [] Documentation
-- [] Native PHP support
+- [ ] Tests
+- [ ] Documentation
+- [ ] Native PHP support
