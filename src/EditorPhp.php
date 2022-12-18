@@ -56,7 +56,7 @@ class EditorPhp implements Arrayable, Jsonable
             /** @var BlockContract */
             $provider =  new ($provider);
 
-            $this->providers[$provider->type()] = $provider;
+            $this->providers[strtolower($provider->type())] = $provider;
         }
     }
 
@@ -99,9 +99,11 @@ class EditorPhp implements Arrayable, Jsonable
 
         foreach ($blocks as $block)
         {
-            if ($this->providerExists($block['type']))
+			$blockType = strtolower($block['type']);
+
+            if ($this->providerExists($blockType))
             {
-                $parsed[] = new Block($this->providers[$block['type']], $block['data']);
+                $parsed[] = new Block($this->providers[$blockType], $block['data']);
             }
         }
 
