@@ -5,7 +5,7 @@ namespace BumpCore\EditorPhp\Blocks;
 use BumpCore\EditorPhp\Block\BlockData;
 use BumpCore\EditorPhp\Contracts\Block;
 
-class Image implements Block
+class Attaches implements Block
 {
     /**
      * Type of the block.
@@ -14,7 +14,7 @@ class Image implements Block
      */
     public function type(): string
     {
-        return 'image';
+        return 'attaches';
     }
 
     /**
@@ -25,11 +25,11 @@ class Image implements Block
     public function rules(): array
     {
         return [
+            'title' => 'string',
             'file.url' => 'url',
-            'caption' => 'string',
-            'withBorder' => 'boolean',
-            'stretched' => 'boolean',
-            'withBackground' => 'boolean',
+            'file.size' => 'numeric',
+            'file.name' => 'string',
+            'file.extension' => 'string',
         ];
     }
 
@@ -42,7 +42,7 @@ class Image implements Block
      */
     public function render(BlockData $data): string
     {
-        return view('editor.php::image')
+        return view('editor.php::attaches')
             ->with(compact('data'))
             ->render();
     }

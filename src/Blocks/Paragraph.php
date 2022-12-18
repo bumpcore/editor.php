@@ -25,7 +25,7 @@ class Paragraph implements Block
     public function rules(): array
     {
         return [
-            'text' => 'required|string',
+            'text' => 'string',
         ];
     }
 

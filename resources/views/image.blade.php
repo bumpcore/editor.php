@@ -1,1 +1,5 @@
-<img src="{{ $data('file.url') }}" alt="{{ $data('caption') }}">
+<img
+    alt="{{ $data('caption') }}"
+    src="{{ $data('file.url') }}"
+    style="display: block;"
+>

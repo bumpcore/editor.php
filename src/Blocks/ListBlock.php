@@ -26,9 +26,9 @@ class ListBlock implements Block
     public function rules(): array
     {
         return [
-            'style' => ['required', 'string', Rule::in(['ordered', 'unordered'])],
-            'items' => 'required|array',
-            'items.*' => 'required|string',
+            'style' => ['string', Rule::in(['ordered', 'unordered'])],
+            'items' => 'array',
+            'items.*' => 'string',
         ];
     }
 
