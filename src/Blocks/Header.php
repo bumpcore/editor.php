@@ -25,8 +25,8 @@ class Header implements Block
     public function rules(): array
     {
         return [
-            'text' => 'required|string',
-            'level' => 'required|integer|min:1|max:6',
+            'text' => 'string',
+            'level' => 'integer|min:1|max:6',
         ];
     }
 

@@ -4,8 +4,9 @@ namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\BlockData;
 use BumpCore\EditorPhp\Contracts\Block;
+use Illuminate\Validation\Rule;
 
-class Image implements Block
+class Quote implements Block
 {
     /**
      * Type of the block.
@@ -14,7 +15,7 @@ class Image implements Block
      */
     public function type(): string
     {
-        return 'image';
+        return 'quote';
     }
 
     /**
@@ -25,12 +26,10 @@ class Image implements Block
     public function rules(): array
     {
         return [
-            'file.url' => 'url',
-            'caption' => 'string',
-            'withBorder' => 'boolean',
-            'stretched' => 'boolean',
-            'withBackground' => 'boolean',
-        ];
+			'text' => 'string',
+			'caption' => 'string',
+			'alignment' => ['string', Rule::in(['left', 'center'])]
+		];
     }
 
     /**
@@ -42,7 +41,7 @@ class Image implements Block
      */
     public function render(BlockData $data): string
     {
-        return view('editor.php::image')
+        return view('editor.php::quote')
             ->with(compact('data'))
             ->render();
     }
