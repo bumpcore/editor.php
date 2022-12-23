@@ -2,7 +2,7 @@
 
 namespace BumpCore\EditorPhp\Contracts;
 
-use BumpCore\EditorPhp\Block\BlockData;
+use BumpCore\EditorPhp\Block\Data;
 
 interface Block
 {
@@ -23,9 +23,9 @@ interface Block
     /**
      * Renderer for the block.
      *
-     * @param BlockData $data
+     * @param Data $data
      *
      * @return string
      */
-    public function render(BlockData $data): string;
+    public function render(Data $data): string;
 }
