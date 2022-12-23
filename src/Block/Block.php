@@ -26,9 +26,9 @@ class Block implements Arrayable, Jsonable
     /**
      * Data of the block.
      *
-     * @var BlockData
+     * @var Data
      */
-    public readonly BlockData $data;
+    public readonly Data $data;
 
     /**
      * Constructor.
@@ -42,7 +42,7 @@ class Block implements Arrayable, Jsonable
     {
         $this->provider = $provider;
         $this->type = $provider->type();
-        $this->data = new BlockData($this->validateData($data));
+        $this->data = new Data($this->validateData($data));
     }
 
     /**
