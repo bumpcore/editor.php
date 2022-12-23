@@ -16,13 +16,25 @@ class Data implements Arrayable, Jsonable
     protected array $data;
 
     /**
+     * Fluent method to create new block data.
+     *
+     * @param array $data
+     *
+     * @return Data
+     */
+    public static function make(array $data = []): self
+    {
+        return new static($data);
+    }
+
+    /**
      * Constructor.
      *
      * @param array $data
      *
      * @return void
      */
-    public function __construct(array $data)
+    public function __construct(array $data = [])
     {
         $this->data = $data;
     }
