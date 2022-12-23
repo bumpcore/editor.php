@@ -4,7 +4,7 @@ namespace BumpCore\EditorPhp\Contracts;
 
 use BumpCore\EditorPhp\Block\Data;
 
-interface Block
+interface Provider
 {
     /**
      * Type of the block.

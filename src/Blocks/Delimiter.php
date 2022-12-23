@@ -3,9 +3,9 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Data;
-use BumpCore\EditorPhp\Contracts\Block;
+use BumpCore\EditorPhp\Contracts\Provider;
 
-class Delimiter implements Block
+class Delimiter implements Provider
 {
     /**
      * Type of the block.

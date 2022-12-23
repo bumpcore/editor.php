@@ -2,7 +2,7 @@
 
 namespace BumpCore\EditorPhp\Block;
 
-use BumpCore\EditorPhp\Contracts\Block as Provider;
+use BumpCore\EditorPhp\Contracts\Provider;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Support\Facades\Validator;
