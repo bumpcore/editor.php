@@ -2,7 +2,7 @@
 
 namespace {{ namespace }};
 
-use BumpCore\EditorPhp\Contracts\Block;
+use BumpCore\EditorPhp\Contracts\Provider;
 use Illuminate\Support\Collection;
 
 class {{ class }} implements Block

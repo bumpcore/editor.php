@@ -3,9 +3,9 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\BlockData;
-use BumpCore\EditorPhp\Contracts\Block;
+use BumpCore\EditorPhp\Contracts\Provider;
 
-class LinkTool implements Block
+class LinkTool implements Provider
 {
     /**
      * Type of the block.

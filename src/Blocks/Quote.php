@@ -3,10 +3,10 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\BlockData;
-use BumpCore\EditorPhp\Contracts\Block;
+use BumpCore\EditorPhp\Contracts\Provider;
 use Illuminate\Validation\Rule;
 
-class Quote implements Block
+class Quote implements Provider
 {
     /**
      * Type of the block.

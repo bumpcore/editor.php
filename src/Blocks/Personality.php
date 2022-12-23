@@ -3,9 +3,9 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\BlockData;
-use BumpCore\EditorPhp\Contracts\Block;
+use BumpCore\EditorPhp\Contracts\Provider;
 
-class Personality implements Block
+class Personality implements Provider
 {
     /**
      * Type of the block.

@@ -4,7 +4,7 @@ namespace BumpCore\EditorPhp;
 
 use BumpCore\EditorPhp\Block\Block;
 use BumpCore\EditorPhp\Block\BlockCollection;
-use BumpCore\EditorPhp\Contracts\Block as BlockContract;
+use BumpCore\EditorPhp\Contracts\Provider;
 use Exception;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
@@ -48,12 +48,12 @@ class EditorPhp implements Arrayable, Jsonable
     {
         foreach ($providers as $provider)
         {
-            if (!in_array(BlockContract::class, class_implements($provider)))
+            if (!in_array(Provider::class, class_implements($provider)))
             {
-                throw new Exception($provider . ' must implement ' . BlockContract::class);
+                throw new Exception($provider . ' must implement ' . Provider::class);
             }
 
-            /** @var BlockContract */
+            /** @var Provider */
             $provider =  new ($provider);
 
             $this->providers[strtolower($provider->type())] = $provider;
