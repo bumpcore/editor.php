@@ -6,7 +6,7 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Support\Arr;
 
-class BlockData implements Arrayable, Jsonable
+class Data implements Arrayable, Jsonable
 {
     /**
      * Data to work with.
@@ -28,23 +28,42 @@ class BlockData implements Arrayable, Jsonable
     }
 
     /**
-     * Gets or if provided sets the data.
+     * Gets data by given key.
+     *
+     * @param string $key
+     * @param mixed $default
+     *
+     * @return mixed
+     */
+    public function __invoke(string $key, mixed $default = null): mixed
+    {
+        return $this->get($key, $default);
+    }
+
+    /**
+     * Gets data by given key.
+     *
+     * @param string $key
+     * @param mixed $default
+     *
+     * @return mixed
+     */
+    public function get(string $key, mixed $default = null): mixed
+    {
+        return Arr::get($this->data, $key, $default);
+    }
+
+    /**
+     * Sets a data by given key.
      *
      * @param string $key
      * @param mixed $value
      *
-     * @return mixed
+     * @return void
      */
-    public function __invoke(string $key, mixed $value = null): mixed
+    public function set(string $key, mixed $value): void
     {
-        if (empty($value))
-        {
-            return Arr::get($this->data, $key);
-        }
-
         Arr::set($this->data, $key, $value);
-
-        return $this($key);
     }
 
     /**

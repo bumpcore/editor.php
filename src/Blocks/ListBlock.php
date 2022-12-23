@@ -2,7 +2,7 @@
 
 namespace BumpCore\EditorPhp\Blocks;
 
-use BumpCore\EditorPhp\Block\BlockData;
+use BumpCore\EditorPhp\Block\Data;
 use BumpCore\EditorPhp\Contracts\Block;
 use Illuminate\Validation\Rule;
 
@@ -35,11 +35,11 @@ class ListBlock implements Block
     /**
      * Renderer for the block.
      *
-     * @param BlockData $data
+     * @param Data $data
      *
      * @return string
      */
-    public function render(BlockData $data): string
+    public function render(Data $data): string
     {
         return view('editor.php::list')
             ->with(compact('data'))
