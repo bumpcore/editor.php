@@ -8,16 +8,6 @@ use BumpCore\EditorPhp\Contracts\Provider;
 class Personality implements Provider
 {
     /**
-     * Type of the block.
-     *
-     * @return string
-     */
-    public function type(): string
-    {
-        return 'personality';
-    }
-
-    /**
      * Rules to validate data of the block.
      *
      * @return array
@@ -25,11 +15,11 @@ class Personality implements Provider
     public function rules(): array
     {
         return [
-			'name' => 'string',
-			'description' => 'string',
-			'link' => 'url',
-			'photo' => 'url',
-		];
+            'name' => 'string',
+            'description' => 'string',
+            'link' => 'url',
+            'photo' => 'url',
+        ];
     }
 
     /**

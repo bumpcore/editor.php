@@ -8,16 +8,6 @@ use BumpCore\EditorPhp\Contracts\Provider;
 class Image implements Provider
 {
     /**
-     * Type of the block.
-     *
-     * @return string
-     */
-    public function type(): string
-    {
-        return 'image';
-    }
-
-    /**
      * Rules to validate data of the block.
      *
      * @return array

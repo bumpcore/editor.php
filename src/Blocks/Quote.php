@@ -9,16 +9,6 @@ use Illuminate\Validation\Rule;
 class Quote implements Provider
 {
     /**
-     * Type of the block.
-     *
-     * @return string
-     */
-    public function type(): string
-    {
-        return 'quote';
-    }
-
-    /**
      * Rules to validate data of the block.
      *
      * @return array
@@ -26,10 +16,10 @@ class Quote implements Provider
     public function rules(): array
     {
         return [
-			'text' => 'string',
-			'caption' => 'string',
-			'alignment' => ['string', Rule::in(['left', 'center'])]
-		];
+            'text' => 'string',
+            'caption' => 'string',
+            'alignment' => ['string', Rule::in(['left', 'center'])],
+        ];
     }
 
     /**

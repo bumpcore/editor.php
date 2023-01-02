@@ -8,16 +8,6 @@ use BumpCore\EditorPhp\Contracts\Provider;
 class Attaches implements Provider
 {
     /**
-     * Type of the block.
-     *
-     * @return string
-     */
-    public function type(): string
-    {
-        return 'attaches';
-    }
-
-    /**
      * Rules to validate data of the block.
      *
      * @return array
