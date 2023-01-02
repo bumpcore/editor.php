@@ -8,16 +8,6 @@ use BumpCore\EditorPhp\Contracts\Provider;
 class LinkTool implements Provider
 {
     /**
-     * Type of the block.
-     *
-     * @return string
-     */
-    public function type(): string
-    {
-        return 'linktool';
-    }
-
-    /**
      * Rules to validate data of the block.
      *
      * @return array
@@ -26,10 +16,10 @@ class LinkTool implements Provider
     {
         return [
             'link' => 'url',
-			'meta.title' => 'string',
-			'meta.site_name' => 'string',
-			'meta.description' => 'string',
-			'meta.image.url' => 'url'
+            'meta.title' => 'string',
+            'meta.site_name' => 'string',
+            'meta.description' => 'string',
+            'meta.image.url' => 'url',
         ];
     }
 

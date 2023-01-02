@@ -8,16 +8,6 @@ use BumpCore\EditorPhp\Contracts\Provider;
 class Checklist implements Provider
 {
     /**
-     * Type of the block.
-     *
-     * @return string
-     */
-    public function type(): string
-    {
-        return 'embed';
-    }
-
-    /**
      * Rules to validate data of the block.
      *
      * @return array

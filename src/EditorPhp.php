@@ -8,6 +8,7 @@ use BumpCore\EditorPhp\Contracts\Provider;
 use Exception;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Support\Str;
 
 class EditorPhp implements Arrayable, Jsonable
 {
@@ -54,9 +55,9 @@ class EditorPhp implements Arrayable, Jsonable
             }
 
             /** @var Provider */
-            $provider =  new ($provider);
+            $provider = new ($provider);
 
-            $this->providers[strtolower($provider->type())] = $provider;
+            $this->providers[$this->resolveType($provider)] = $provider;
         }
     }
 
@@ -99,7 +100,7 @@ class EditorPhp implements Arrayable, Jsonable
 
         foreach ($blocks as $block)
         {
-			$blockType = strtolower($block['type']);
+            $blockType = $this->resolveType($block['type']);
 
             if ($this->providerExists($blockType))
             {
@@ -120,6 +121,28 @@ class EditorPhp implements Arrayable, Jsonable
     protected function providerExists(string $type): bool
     {
         return key_exists($type, $this->providers);
+    }
+
+    /**
+     * Resolves type from given provider or string.
+     *
+     * @param Provider|string $provider
+     *
+     * @return string
+     */
+    protected function resolveType(Provider|string $provider): string
+    {
+        if ($provider instanceof Provider && property_exists($provider, 'type'))
+        {
+            return strtolower($provider->type);
+        }
+
+        if ($provider instanceof Provider)
+        {
+            $provider = $provider::class;
+        }
+
+        return Str::of($provider)->classBasename()->remove('Block')->snake()->lower()->toString();
     }
 
     /**

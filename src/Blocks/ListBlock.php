@@ -9,16 +9,6 @@ use Illuminate\Validation\Rule;
 class ListBlock implements Provider
 {
     /**
-     * Type of the block.
-     *
-     * @return string
-     */
-    public function type(): string
-    {
-        return 'list';
-    }
-
-    /**
      * Rules to validate data of the block.
      *
      * @return array

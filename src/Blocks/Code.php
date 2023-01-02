@@ -8,16 +8,6 @@ use BumpCore\EditorPhp\Contracts\Provider;
 class Code implements Provider
 {
     /**
-     * Type of the block.
-     *
-     * @return string
-     */
-    public function type(): string
-    {
-        return 'code';
-    }
-
-    /**
      * Rules to validate data of the block.
      *
      * @return array

@@ -8,16 +8,6 @@ use BumpCore\EditorPhp\Contracts\Provider;
 class Table implements Provider
 {
     /**
-     * Type of the block.
-     *
-     * @return string
-     */
-    public function type(): string
-    {
-        return 'table';
-    }
-
-    /**
      * Rules to validate data of the block.
      *
      * @return array
@@ -27,7 +17,7 @@ class Table implements Provider
         return [
             'withHeadings' => 'boolean',
             'content' => 'array',
-			'content.*' => 'array',
+            'content.*' => 'array',
             'content.*.*' => 'string',
         ];
     }
@@ -41,7 +31,6 @@ class Table implements Provider
      */
     public function render(Data $data): string
     {
-		
         return view('editor.php::table')
             ->with(compact('data'))
             ->render();
