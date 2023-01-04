@@ -3,40 +3,45 @@
 namespace BumpCore\EditorPhp\Block;
 
 use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Validator;
 
-class Data implements Arrayable, Jsonable
+class Data implements Arrayable
 {
     /**
-     * Data to work with.
+     * Raw data to  handle.
      *
      * @var array
      */
     protected array $data;
 
     /**
-     * Fluent method to create new block data.
+     * Validated data to work with.
      *
-     * @param array $data
-     *
-     * @return Data
+     * @var array
      */
-    public static function make(array $data = []): self
-    {
-        return new static($data);
-    }
+    protected array $validatedData;
+
+    /**
+     * Rules to validate raw data.
+     *
+     * @var array
+     */
+    protected array $rules;
 
     /**
      * Constructor.
      *
      * @param array $data
+     * @param array $rules
      *
      * @return void
      */
-    public function __construct(array $data = [])
+    public function __construct(array $data = [], array $rules = [])
     {
         $this->data = $data;
+        $this->rules = $rules;
+        $this->validatedData = $this->validate();
     }
 
     /**
@@ -62,7 +67,7 @@ class Data implements Arrayable, Jsonable
      */
     public function get(string $key, mixed $default = null): mixed
     {
-        return Arr::get($this->data, $key, $default);
+        return Arr::get($this->validatedData, $key, $default);
     }
 
     /**
@@ -75,28 +80,43 @@ class Data implements Arrayable, Jsonable
      */
     public function set(string $key, mixed $value): void
     {
-        Arr::set($this->data, $key, $value);
+        Arr::set($this->validatedData, $key, $value);
     }
 
     /**
-     * Get the instance as an array.
+     * Converts the `Data` as an array.
      *
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
-        return $this->data;
+        return $this->validatedData;
     }
 
     /**
-     * Convert the object to its JSON representation.
+     * Checks whether data passes the rules or not.
      *
-     * @param int $options
-     *
-     * @return string
+     * @return bool
      */
-    public function toJson($options = 0)
+    public function isValid(): bool
     {
-        return json_encode($this->toArray(), $options);
+        return !Validator::make($this->data, $this->rules)->fails();
+    }
+
+    /**
+     * Validates raw data.
+     *
+     * @return array
+     */
+    protected function validate(): array
+    {
+        $validator = Validator::make($this->data, $this->rules);
+
+        if ($validator->fails())
+        {
+            return [];
+        }
+
+        return $validator->validated();
     }
 }

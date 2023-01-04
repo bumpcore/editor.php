@@ -4,10 +4,8 @@ namespace BumpCore\EditorPhp\Block;
 
 use BumpCore\EditorPhp\Contracts\Provider;
 use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Contracts\Support\Jsonable;
-use Illuminate\Support\Facades\Validator;
 
-class Block implements Arrayable, Jsonable
+class Block implements Arrayable
 {
     /**
      * Provider of the block.
@@ -38,36 +36,17 @@ class Block implements Arrayable, Jsonable
      *
      * @return void
      */
-    public function __construct(Provider $provider, array $data)
+    public function __construct(string $type, Provider $provider, array $data)
     {
         $this->provider = $provider;
-        $this->type = $provider->type();
-        $this->data = new Data($this->validateData($data));
+        $this->type = $type;
+        $this->data = new Data($data, $provider->rules());
     }
 
     /**
-     * Validates block data.
+     * Converts the `Block` as an array.
      *
-     * @param array $data
-     *
-     * @return array
-     */
-    protected function validateData(array $data): array
-    {
-        $validator = Validator::make($data, $this->provider->rules());
-
-        if ($validator->fails())
-        {
-            return [];
-        }
-
-        return $validator->validated();
-    }
-
-    /**
-     * Converts block into array.
-     *
-     * @return array
+     * @return array<string, array|string>
      */
     public function toArray(): array
     {
@@ -78,19 +57,7 @@ class Block implements Arrayable, Jsonable
     }
 
     /**
-     * Convert the object to its JSON representation.
-     *
-     * @param int $options
-     *
-     * @return string
-     */
-    public function toJson($options = 0)
-    {
-        return json_encode($this->toArray(), $options);
-    }
-
-    /**
-     * Renders block.
+     * Renders block into HTML.
      *
      * @return string
      */
@@ -100,7 +67,7 @@ class Block implements Arrayable, Jsonable
     }
 
     /**
-     * Renders block.
+     * Renders block into HTML.
      *
      * @return string
      */
