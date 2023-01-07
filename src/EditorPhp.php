@@ -10,6 +10,9 @@ use Illuminate\Support\Collection;
 
 class EditorPhp implements Arrayable, Jsonable, Responsable
 {
+    /**
+     * @var Parser
+     */
     protected Parser $parser;
 
     /**
@@ -18,13 +21,26 @@ class EditorPhp implements Arrayable, Jsonable, Responsable
     public Collection $blocks;
 
     /**
+     * Fluent method to create new `EditorPhp` instance.
+     *
+     * @param string $input
+     *
+     * @return EditorPhp
+     */
+    public static function make(string $input): self
+    {
+        return new static($input);
+    }
+
+    /**
      * Constructor.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(string $input)
     {
-        $this->blocks = new Collection();
+        $this->parser = new Parser($input);
+        $this->blocks = $this->parser->blocks();
     }
 
     /**
@@ -37,21 +53,6 @@ class EditorPhp implements Arrayable, Jsonable, Responsable
     public function register(array $providers): void
     {
         Parser::register($providers);
-    }
-
-    /**
-     * Parses the given output.
-     *
-     * @param string $output Json output of the Editor.js
-     *
-     * @return EditorPhp
-     */
-    public function load(string $output): self
-    {
-        $this->parser = new Parser($output);
-        $this->blocks = $this->parser->blocks();
-
-        return $this;
     }
 
     /**
