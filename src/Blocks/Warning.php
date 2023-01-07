@@ -3,6 +3,7 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Data;
+use BumpCore\EditorPhp\Block\Field;
 use BumpCore\EditorPhp\Contracts\Provider;
 
 class Warning implements Provider
@@ -15,8 +16,8 @@ class Warning implements Provider
     public function rules(): array
     {
         return [
-            'title' => 'string',
-            'message' => 'string',
+            Field::make('title', 'string'),
+            Field::make('message', 'string'),
         ];
     }
 

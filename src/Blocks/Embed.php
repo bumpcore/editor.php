@@ -3,9 +3,10 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Data;
+use BumpCore\EditorPhp\Block\Field;
 use BumpCore\EditorPhp\Contracts\Provider;
 
-class Checklist implements Provider
+class Embed implements Provider
 {
     /**
      * Rules to validate data of the block.
@@ -15,12 +16,12 @@ class Checklist implements Provider
     public function rules(): array
     {
         return [
-            'service' => 'string',
-            'source' => 'url',
-            'embed' => 'url',
-            'width' => 'numeric',
-            'height' => 'numeric',
-            'caption' => 'string',
+            Field::make('service', 'string'),
+            Field::make('source', 'url'),
+            Field::make('embed', 'url'),
+            Field::make('width', 'numeric'),
+            Field::make('height', 'numeric'),
+            Field::make('caption', 'string'),
         ];
     }
 

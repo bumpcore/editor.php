@@ -3,6 +3,7 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Data;
+use BumpCore\EditorPhp\Block\Field;
 use BumpCore\EditorPhp\Contracts\Provider;
 
 class Personality implements Provider
@@ -15,10 +16,10 @@ class Personality implements Provider
     public function rules(): array
     {
         return [
-            'name' => 'string',
-            'description' => 'string',
-            'link' => 'url',
-            'photo' => 'url',
+            Field::make('name', 'string'),
+            Field::make('description', 'string'),
+            Field::make('link', 'url'),
+            Field::make('photo', 'url'),
         ];
     }
 

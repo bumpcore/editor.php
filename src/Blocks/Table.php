@@ -3,6 +3,7 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Data;
+use BumpCore\EditorPhp\Block\Field;
 use BumpCore\EditorPhp\Contracts\Provider;
 
 class Table implements Provider
@@ -15,10 +16,10 @@ class Table implements Provider
     public function rules(): array
     {
         return [
-            'withHeadings' => 'boolean',
-            'content' => 'array',
-            'content.*' => 'array',
-            'content.*.*' => 'string',
+            Field::make('withHeadings', 'boolean'),
+            Field::make('content', 'array'),
+            Field::make('content.*', 'array'),
+            Field::make('content.*.*', 'string'),
         ];
     }
 

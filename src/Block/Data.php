@@ -2,6 +2,7 @@
 
 namespace BumpCore\EditorPhp\Block;
 
+use BumpCore\EditorPhp\Purifier;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
@@ -11,21 +12,21 @@ class Data implements Arrayable
     /**
      * Raw data to  handle.
      *
-     * @var array
+     * @var array<int|string, mixed>
      */
     protected array $data;
 
     /**
      * Validated data to work with.
      *
-     * @var array
+     * @var array<int|string, mixed>
      */
     protected array $validatedData;
 
     /**
      * Rules to validate raw data.
      *
-     * @var array
+     * @var array<int, Field>
      */
     protected array $rules;
 
@@ -41,7 +42,7 @@ class Data implements Arrayable
     {
         $this->data = $data;
         $this->rules = $rules;
-        $this->validatedData = $this->validate();
+        $this->validatedData = $this->purify($this->validate());
     }
 
     /**
@@ -84,16 +85,6 @@ class Data implements Arrayable
     }
 
     /**
-     * Converts the `Data` as an array.
-     *
-     * @return array
-     */
-    public function toArray(): array
-    {
-        return $this->validatedData;
-    }
-
-    /**
      * Checks whether data passes the rules or not.
      *
      * @return bool
@@ -106,11 +97,11 @@ class Data implements Arrayable
     /**
      * Validates raw data.
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
     protected function validate(): array
     {
-        $validator = Validator::make($this->data, $this->rules);
+        $validator = Validator::make($this->data, $this->mapRules());
 
         if ($validator->fails())
         {
@@ -118,5 +109,83 @@ class Data implements Arrayable
         }
 
         return $validator->validated();
+    }
+
+    /**
+     * Purifies validated data.
+     *
+     * @param array $validatedData
+     *
+     * @return array<int|string, mixed>
+     */
+    protected function purify(array $validatedData)
+    {
+        $allows = $this->mapAllows();
+        $data = Arr::dot($validatedData);
+
+        foreach ($validatedData as $name => $data)
+        {
+            if (key_exists($name, $allows))
+            {
+                $tags = array_keys($allows[$name]);
+                $data = Purifier::stripTags($data, $tags);
+
+                foreach ($tags as $tag)
+                {
+                    $data = Purifier::stripAttributes($data, $tag, $allows[$name][$tag]);
+                }
+            }
+
+            Arr::set($validatedData, $name, $data);
+        }
+
+        return $validatedData;
+    }
+
+    /**
+     * Maps `Field` array to key value array for rules.
+     *
+     * @return array<string, array|string>
+     */
+    protected function mapRules()
+    {
+        $mapped = [];
+
+        foreach ($this->rules as $rule)
+        {
+            $mapped[$rule->getName()] = $rule->getRules();
+        }
+
+        return $mapped;
+    }
+
+    /**
+     * Maps `Field` array to key value array for tags.
+     *
+     * @return array<string, array>
+     */
+    protected function mapAllows()
+    {
+        $mapped = [];
+
+        foreach ($this->rules as $rule)
+        {
+            if (!empty($allow = $rule->getAllow()))
+            {
+                $mapped[$rule->getName()] = $allow;
+            }
+        }
+
+        return $mapped;
+    }
+
+    /**
+     * Converts the `Data` as an array.
+     *
+     * @return array<int|string, mixed>
+     */
+    public function toArray(): array
+    {
+        return $this->validatedData;
     }
 }

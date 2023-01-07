@@ -3,6 +3,7 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Data;
+use BumpCore\EditorPhp\Block\Field;
 use BumpCore\EditorPhp\Contracts\Provider;
 
 class Attaches implements Provider
@@ -15,11 +16,11 @@ class Attaches implements Provider
     public function rules(): array
     {
         return [
-            'title' => 'string',
-            'file.url' => 'url',
-            'file.size' => 'numeric',
-            'file.name' => 'string',
-            'file.extension' => 'string',
+            Field::make('title', 'string'),
+            Field::make('file.url', 'url'),
+            Field::make('file.size', 'numeric'),
+            Field::make('file.name', 'string'),
+            Field::make('file.extension', 'string'),
         ];
     }
 

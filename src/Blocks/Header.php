@@ -3,6 +3,7 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Data;
+use BumpCore\EditorPhp\Block\Field;
 use BumpCore\EditorPhp\Contracts\Provider;
 
 class Header implements Provider
@@ -15,8 +16,8 @@ class Header implements Provider
     public function rules(): array
     {
         return [
-            'text' => 'string',
-            'level' => 'integer|min:1|max:6',
+            Field::make('text', 'string'),
+            Field::make('level', 'integer|min:1|max:6'),
         ];
     }
 

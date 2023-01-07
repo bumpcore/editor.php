@@ -3,6 +3,7 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Data;
+use BumpCore\EditorPhp\Block\Field;
 use BumpCore\EditorPhp\Contracts\Provider;
 use Illuminate\Validation\Rule;
 
@@ -16,9 +17,9 @@ class ListBlock implements Provider
     public function rules(): array
     {
         return [
-            'style' => ['string', Rule::in(['ordered', 'unordered'])],
-            'items' => 'array',
-            'items.*' => 'string',
+            Field::make('style', ['string', Rule::in(['ordered', 'unordered'])]),
+            Field::make('items', 'array'),
+            Field::make('item.*', 'string'),
         ];
     }
 
