@@ -17,7 +17,7 @@ class EditorPhp implements CastsAttributes
      */
     public function get($model, string $key, $value, array $attributes)
     {
-        return \BumpCore\EditorPhp\Facades\EditorPhp::load($value);
+        return \BumpCore\EditorPhp\EditorPhp::make($value);
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Data;
+use BumpCore\EditorPhp\Block\Field;
 use BumpCore\EditorPhp\Contracts\Provider;
 
 class Image implements Provider
@@ -15,11 +16,11 @@ class Image implements Provider
     public function rules(): array
     {
         return [
-            'file.url' => 'url',
-            'caption' => 'string',
-            'withBorder' => 'boolean',
-            'stretched' => 'boolean',
-            'withBackground' => 'boolean',
+            Field::make('file.url', 'url'),
+            Field::make('caption', 'string'),
+            Field::make('withBorder', 'boolean'),
+            Field::make('stretched', 'boolean'),
+            Field::make('withBackground', 'boolean'),
         ];
     }
 

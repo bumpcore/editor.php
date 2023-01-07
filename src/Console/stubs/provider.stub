@@ -2,21 +2,11 @@
 
 namespace {{ namespace }};
 
+use BumpCore\EditorPhp\Block\Data;
 use BumpCore\EditorPhp\Contracts\Provider;
-use Illuminate\Support\Collection;
 
-class {{ class }} implements Block
+class {{ class }} implements Provider
 {
-    /**
-     * Type of the block.
-     *
-     * @return string
-     */
-    public function type(): string
-    {
-        return '{{ dd() }}';
-    }
-
     /**
      * Rules to validate data of the block.
      *
@@ -32,11 +22,11 @@ class {{ class }} implements Block
     /**
      * Renderer for the block.
      *
-     * @param Collection $data
+     * @param Data $data
      *
      * @return string
      */
-    public function render(Collection $data): string
+    public function render(Data $data): string
     {
         return view('block')
             ->with($data)

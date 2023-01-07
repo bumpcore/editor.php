@@ -3,39 +3,44 @@
 namespace BumpCore\EditorPhp;
 
 use BumpCore\EditorPhp\Block\Block;
-use BumpCore\EditorPhp\Block\BlockCollection;
-use BumpCore\EditorPhp\Contracts\Provider;
-use Exception;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
-use Illuminate\Support\Str;
+use Illuminate\Contracts\Support\Responsable;
+use Illuminate\Support\Collection;
 
-class EditorPhp implements Arrayable, Jsonable
+class EditorPhp implements Arrayable, Jsonable, Responsable
 {
     /**
-     * @var array
+     * @var Parser
      */
-    protected array $providers;
+    protected Parser $parser;
 
     /**
-     * @var string
+     * @var Collection<int, Block>
      */
-    protected string $version;
+    public Collection $blocks;
 
     /**
-     * @var BlockCollection<int, Block>
+     * Fluent method to create new `EditorPhp` instance.
+     *
+     * @param string $input
+     *
+     * @return EditorPhp
      */
-    public readonly BlockCollection $blocks;
+    public static function make(string $input): self
+    {
+        return new static($input);
+    }
 
     /**
      * Constructor.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(string $input)
     {
-        $this->providers = [];
-        $this->blocks = new BlockCollection();
+        $this->parser = new Parser($input);
+        $this->blocks = $this->parser->blocks();
     }
 
     /**
@@ -47,120 +52,27 @@ class EditorPhp implements Arrayable, Jsonable
      */
     public function register(array $providers): void
     {
-        foreach ($providers as $provider)
-        {
-            if (!in_array(Provider::class, class_implements($provider)))
-            {
-                throw new Exception($provider . ' must implement ' . Provider::class);
-            }
-
-            /** @var Provider */
-            $provider = new ($provider);
-
-            $this->providers[$this->resolveType($provider)] = $provider;
-        }
+        Parser::register($providers);
     }
 
     /**
-     * Parses the given output.
+     * Converts the `Editor.php` as an array.
      *
-     * @param string $output Json output of the Editor.js
-     *
-     * @return $this
-     */
-    public function load(string $output): self
-    {
-        $output = json_decode($output, true);
-
-        if (!empty($blocks = $output['blocks']))
-        {
-            $this->blocks
-                ->clear()
-                ->push(...$this->parseBlocks($blocks));
-        }
-
-        if (!empty($version = $output['version']))
-        {
-            $this->version = $version;
-        }
-
-        return $this;
-    }
-
-    /**
-     * Parses blocks from given array.
-     *
-     * @param array $blocks
-     *
-     * @return array
-     */
-    protected function parseBlocks(array $blocks): array
-    {
-        $parsed = [];
-
-        foreach ($blocks as $block)
-        {
-            $blockType = $this->resolveType($block['type']);
-
-            if ($this->providerExists($blockType))
-            {
-                $parsed[] = new Block($this->providers[$blockType], $block['data']);
-            }
-        }
-
-        return $parsed;
-    }
-
-    /**
-     * Checks if block provider exists.
-     *
-     * @param string $type
-     *
-     * @return bool
-     */
-    protected function providerExists(string $type): bool
-    {
-        return key_exists($type, $this->providers);
-    }
-
-    /**
-     * Resolves type from given provider or string.
-     *
-     * @param Provider|string $provider
-     *
-     * @return string
-     */
-    protected function resolveType(Provider|string $provider): string
-    {
-        if ($provider instanceof Provider && property_exists($provider, 'type'))
-        {
-            return strtolower($provider->type);
-        }
-
-        if ($provider instanceof Provider)
-        {
-            $provider = $provider::class;
-        }
-
-        return Str::of($provider)->classBasename()->remove('Block')->snake()->lower()->toString();
-    }
-
-    /**
-     * Converts EditorPhp into array.
-     *
-     * @return array
+     * @return array<string, array|int|string>
      */
     public function toArray(): array
     {
         return [
-            'time' => floor(microtime(true) * 1000),
+            'time' => $this->parser->time(),
             'blocks' => $this->blocks->toArray(),
-            'version' => $this->version,
+            'version' => $this->parser->version(),
         ];
     }
 
     /**
-     * Encodes EditorPhp into Editor.js readable format.
+     * Converts the `Editor.php` to its JSON representation.
+     *
+     * @param int $options
      *
      * @return string
      */
@@ -170,7 +82,7 @@ class EditorPhp implements Arrayable, Jsonable
     }
 
     /**
-     * Renders all blocks.
+     * Renders blocks into HTML.
      *
      * @return string
      */
@@ -180,7 +92,19 @@ class EditorPhp implements Arrayable, Jsonable
     }
 
     /**
-     * Renders all blocks.
+     * Creates an HTTP response that represents the `Editor.php`.
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function toResponse($request)
+    {
+        return $request->expectsJson() ? response($this->toArray()) : response($this->render());
+    }
+
+    /**
+     * Renders blocks into HTML.
      *
      * @return string
      */

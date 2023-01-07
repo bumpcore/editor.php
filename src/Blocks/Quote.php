@@ -3,6 +3,7 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Data;
+use BumpCore\EditorPhp\Block\Field;
 use BumpCore\EditorPhp\Contracts\Provider;
 use Illuminate\Validation\Rule;
 
@@ -16,9 +17,9 @@ class Quote implements Provider
     public function rules(): array
     {
         return [
-            'text' => 'string',
-            'caption' => 'string',
-            'alignment' => ['string', Rule::in(['left', 'center'])],
+            Field::make('text', 'string'),
+            Field::make('caption', 'string'),
+            Field::make('alignment', ['string', Rule::in(['left', 'center'])]),
         ];
     }
 

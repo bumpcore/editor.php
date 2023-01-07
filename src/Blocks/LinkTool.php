@@ -3,6 +3,7 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Data;
+use BumpCore\EditorPhp\Block\Field;
 use BumpCore\EditorPhp\Contracts\Provider;
 
 class LinkTool implements Provider
@@ -15,11 +16,11 @@ class LinkTool implements Provider
     public function rules(): array
     {
         return [
-            'link' => 'url',
-            'meta.title' => 'string',
-            'meta.site_name' => 'string',
-            'meta.description' => 'string',
-            'meta.image.url' => 'url',
+            Field::make('link', 'url'),
+            Field::make('meta.title', 'string'),
+            Field::make('meta.site_name', 'string'),
+            Field::make('meta.description', 'string'),
+            Field::make('meta.image.url', 'url'),
         ];
     }
 

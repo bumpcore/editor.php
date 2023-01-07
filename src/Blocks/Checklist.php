@@ -3,6 +3,7 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Data;
+use BumpCore\EditorPhp\Block\Field;
 use BumpCore\EditorPhp\Contracts\Provider;
 
 class Checklist implements Provider
@@ -15,10 +16,10 @@ class Checklist implements Provider
     public function rules(): array
     {
         return [
-            'items' => 'array',
-            'items.*' => 'array',
-            'items.*.text' => 'string',
-            'items.*.checked' => 'boolean',
+            Field::make('items', 'array'),
+            Field::make('items.*', 'array'),
+            Field::make('items.*.text', 'string'),
+            Field::make('items.*.checked', 'boolean'),
         ];
     }
 

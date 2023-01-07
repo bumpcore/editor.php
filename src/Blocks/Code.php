@@ -3,6 +3,7 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Data;
+use BumpCore\EditorPhp\Block\Field;
 use BumpCore\EditorPhp\Contracts\Provider;
 
 class Code implements Provider
@@ -15,7 +16,7 @@ class Code implements Provider
     public function rules(): array
     {
         return [
-            'code' => 'string',
+            Field::make('code', 'string'),
         ];
     }
 

@@ -3,6 +3,7 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Data;
+use BumpCore\EditorPhp\Block\Field;
 use BumpCore\EditorPhp\Contracts\Provider;
 
 class Paragraph implements Provider
@@ -15,7 +16,12 @@ class Paragraph implements Provider
     public function rules(): array
     {
         return [
-            'text' => 'string',
+            Field::make('text', 'string')
+				->allow('mark')
+				->allow('b')
+				->allow('strong')
+				->allow('code')
+				->allow('a', 'href'),
         ];
     }
 
