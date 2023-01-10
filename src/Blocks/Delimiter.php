@@ -4,6 +4,8 @@ namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Data;
 use BumpCore\EditorPhp\Contracts\Provider;
+use BumpCore\EditorPhp\Helpers;
+use Illuminate\Support\Facades\View;
 
 class Delimiter implements Provider
 {
@@ -26,8 +28,13 @@ class Delimiter implements Provider
      */
     public function render(Data $data): string
     {
-        return view('editor.php::delimiter')
-            ->with(compact('data'))
-            ->render();
+        if (View::getFacadeRoot())
+        {
+            return view('editor.php::delimiter')
+                ->with(compact('data'))
+                ->render();
+        }
+
+        return Helpers::renderNative(__DIR__ . '/../../resources/views/php/delimiter.php', compact('data'));
     }
 }

@@ -3,7 +3,7 @@
         <thead>
             <tr>
                 @foreach ($headings as $heading)
-                    <th>{{ $heading }}</th>
+                    <th>{!! $heading !!}</th>
                 @endforeach
             </tr>
         </thead>
@@ -17,7 +17,7 @@
 
             <tr>
                 @foreach ($row as $cell)
-                    <td>{{ $cell }}</td>
+                    <td>{!! $cell !!}</td>
                 @endforeach
             </tr>
         @endforeach

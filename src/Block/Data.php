@@ -2,6 +2,7 @@
 
 namespace BumpCore\EditorPhp\Block;
 
+use BumpCore\EditorPhp\Helpers;
 use BumpCore\EditorPhp\Purifier;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
@@ -91,7 +92,7 @@ class Data implements Arrayable
      */
     public function isValid(): bool
     {
-        return !Validator::make($this->data, $this->rules)->fails();
+        return !Helpers::makeValidator($this->data, $this->rules)->fails();
     }
 
     /**
@@ -101,7 +102,7 @@ class Data implements Arrayable
      */
     protected function validate(): array
     {
-        $validator = Validator::make($this->data, $this->mapRules());
+        $validator = Helpers::makeValidator($this->data, $this->mapRules());
 
         if ($validator->fails())
         {
