@@ -184,7 +184,7 @@ class Parser
      */
     public function validateSchema(array $input): bool
     {
-        $validator = Validator::make($input, [
+        $validator = Helpers::makeValidator($input, [
             'time' => 'required|numeric',
             'blocks' => 'present|array',
             'blocks.*' => 'present|array',

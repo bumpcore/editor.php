@@ -50,7 +50,7 @@ class EditorPhp implements Arrayable, Jsonable, Responsable
      *
      * @return void
      */
-    public function register(array $providers): void
+    public static function register(array $providers): void
     {
         Parser::register($providers);
     }

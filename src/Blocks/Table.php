@@ -5,6 +5,8 @@ namespace BumpCore\EditorPhp\Blocks;
 use BumpCore\EditorPhp\Block\Data;
 use BumpCore\EditorPhp\Block\Field;
 use BumpCore\EditorPhp\Contracts\Provider;
+use BumpCore\EditorPhp\Helpers;
+use Illuminate\Support\Facades\View;
 
 class Table implements Provider
 {
@@ -32,8 +34,13 @@ class Table implements Provider
      */
     public function render(Data $data): string
     {
-        return view('editor.php::table')
-            ->with(compact('data'))
-            ->render();
+        if (View::getFacadeRoot())
+        {
+            return view('editor.php::table')
+                ->with(compact('data'))
+                ->render();
+        }
+
+        return Helpers::renderNative(__DIR__ . '/../../resources/views/php/table.php', compact('data'));
     }
 }

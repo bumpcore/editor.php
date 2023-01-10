@@ -1,1 +1,1 @@
-<pre>{{ $data('code') }}</pre>
+<pre>{!! $data('code') !!}</pre>

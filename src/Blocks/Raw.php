@@ -29,8 +29,6 @@ class Raw implements Provider
      */
     public function render(Data $data): string
     {
-        return view('editor.php::raw')
-            ->with(compact('data'))
-            ->render();
+        return $data('html');
     }
 }

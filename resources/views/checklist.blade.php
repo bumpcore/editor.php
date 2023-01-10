@@ -6,7 +6,7 @@
                 disabled
                 type="checkbox"
             />
-            <span>{{ $item['text'] }}</span>
+            <span>{!! $item['text'] !!}</span>
         </label>
     @endforeach
 </div>
