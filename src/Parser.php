@@ -17,7 +17,7 @@ class Parser
      *
      * @var array<string, Provider>
      */
-    protected static array $providers;
+    public static array $providers;
 
     /**
      * Converted input JSON.

@@ -1,7 +1,6 @@
 <?php
 
 use BumpCore\EditorPhp\EditorPhp;
-use BumpCore\EditorPhp\Tests\LaravelTestCase;
 
 /*
 |--------------------------------------------------------------------------
@@ -67,5 +66,3 @@ uses()
             \BumpCore\EditorPhp\Blocks\Warning::class,
         ]);
     })->in('.');
-
-uses(LaravelTestCase::class)->in('Laravel');
