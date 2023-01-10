@@ -39,6 +39,6 @@ class Warning implements Provider
                 ->render();
         }
 
-        return Helpers::renderNative(__DIR__ . '/../../resources/views/php/warning.php', compact('data'));
+        return Helpers::renderNative(__DIR__ . '/../../resources/php/warning.php', compact('data'));
     }
 }

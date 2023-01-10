@@ -41,6 +41,6 @@ class Quote implements Provider
                 ->render();
         }
 
-        return Helpers::renderNative(__DIR__ . '/../../resources/views/php/quote.php', compact('data'));
+        return Helpers::renderNative(__DIR__ . '/../../resources/php/quote.php', compact('data'));
     }
 }

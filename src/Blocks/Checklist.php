@@ -41,6 +41,6 @@ class Checklist implements Provider
                 ->render();
         }
 
-        return Helpers::renderNative(__DIR__ . '/../../resources/views/php/checklist.php', compact('data'));
+        return Helpers::renderNative(__DIR__ . '/../../resources/php/checklist.php', compact('data'));
     }
 }

@@ -43,6 +43,6 @@ class Paragraph implements Provider
                 ->render();
         }
 
-        return Helpers::renderNative(__DIR__ . '/../../resources/views/php/paragraph.php', compact('data'));
+        return Helpers::renderNative(__DIR__ . '/../../resources/php/paragraph.php', compact('data'));
     }
 }

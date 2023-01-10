@@ -42,6 +42,6 @@ class LinkTool implements Provider
                 ->render();
         }
 
-        return Helpers::renderNative(__DIR__ . '/../../resources/views/php/linktool.php', compact('data'));
+        return Helpers::renderNative(__DIR__ . '/../../resources/php/linktool.php', compact('data'));
     }
 }

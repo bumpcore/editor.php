@@ -38,6 +38,6 @@ class Code implements Provider
                 ->render();
         }
 
-        return Helpers::renderNative(__DIR__ . '/../../resources/views/php/code.php', compact('data'));
+        return Helpers::renderNative(__DIR__ . '/../../resources/php/code.php', compact('data'));
     }
 }

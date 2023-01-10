@@ -41,6 +41,6 @@ class Personality implements Provider
                 ->render();
         }
 
-        return Helpers::renderNative(__DIR__ . '/../../resources/views/php/personality.php', compact('data'));
+        return Helpers::renderNative(__DIR__ . '/../../resources/php/personality.php', compact('data'));
     }
 }

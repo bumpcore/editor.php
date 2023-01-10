@@ -42,6 +42,6 @@ class Attaches implements Provider
                 ->render();
         }
 
-        return Helpers::renderNative(__DIR__ . '/../../resources/views/php/attaches.php', compact('data'));
+        return Helpers::renderNative(__DIR__ . '/../../resources/php/attaches.php', compact('data'));
     }
 }
