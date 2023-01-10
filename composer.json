@@ -32,11 +32,13 @@
 			]
 		}
 	},
-	"scripts": {
-		"test": "vendor/bin/phpunit"
-	},
 	"require-dev": {
-		"orchestra/testbench": "^7.15",
-		"phpunit/phpunit": "^9.5"
+		"pestphp/pest": "^1.22",
+		"orchestra/testbench": "^7.19"
+	},
+	"config": {
+		"allow-plugins": {
+			"pestphp/pest-plugin": true
+		}
 	}
 }

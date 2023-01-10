@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="" tests="1" assertions="0" errors="1" warnings="0" failures="0" skipped="0" time="0.003042">
+    <testsuite name="Test Suite" tests="1" assertions="0" errors="1" warnings="0" failures="0" skipped="0" time="0.003042">
+      <testsuite name="BumpCore\EditorPhp\Tests\EditorPhpTest" file="/home/abdulkadir/projects/editor.php/tests/EditorPhpTest.php" tests="1" assertions="0" errors="1" warnings="0" failures="0" skipped="0" time="0.003042">
+        <testcase name="testCanCreateInstance" class="BumpCore\EditorPhp\Tests\EditorPhpTest" classname="BumpCore.EditorPhp.Tests.EditorPhpTest" file="/home/abdulkadir/projects/editor.php/tests/EditorPhpTest.php" line="10" assertions="0" time="0.003042">
+          <error type="Exception">BumpCore\EditorPhp\Tests\EditorPhpTest::testCanCreateInstance
+Exception: Given Editor.js output is not a valid JSON.
+
+/home/abdulkadir/projects/editor.php/src/Parser.php:165
+/home/abdulkadir/projects/editor.php/src/Parser.php:45
+/home/abdulkadir/projects/editor.php/src/EditorPhp.php:42
+/home/abdulkadir/projects/editor.php/src/EditorPhp.php:32
+/home/abdulkadir/projects/editor.php/tests/EditorPhpTest.php:12</error>
+        </testcase>
+      </testsuite>
+    </testsuite>
+  </testsuite>
+</testsuites>
