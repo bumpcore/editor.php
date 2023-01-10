@@ -28,3 +28,5 @@ test('Can be rendered', function($sample) {
 test('Can be rendered by casting to string', function($sample) {
     expect((string) EditorPhp::make($sample)->render())->toBeString();
 })->with('sample');
+
+test('Test', fn() => expect(false)->toBeTrue());
