@@ -4,7 +4,7 @@ namespace BumpCore\EditorPhp;
 
 use BumpCore\EditorPhp\Block\Block;
 use BumpCore\EditorPhp\Contracts\Provider;
-use Exception;
+use BumpCore\EditorPhp\Exceptions\EditorPhpException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
@@ -58,7 +58,7 @@ class Parser
         {
             if (!in_array(Provider::class, class_implements($provider)))
             {
-                throw new Exception($provider . ' must implement ' . Provider::class);
+                throw new EditorPhpException($provider . ' must implement ' . Provider::class);
             }
 
             /** @var Provider */
@@ -120,7 +120,7 @@ class Parser
 
             if (!$this->providerExists($type))
             {
-                throw new Exception('Unknown block type: ' . $type);
+                throw new EditorPhpException('Unknown block type: ' . $type);
             }
 
             $this->blocks->push(new Block($type, Arr::get(static::$providers, $type), Arr::get($block, 'data')));
@@ -162,14 +162,14 @@ class Parser
     {
         if (!Str::isJson($input))
         {
-            throw new Exception('Given Editor.js output is not a valid JSON.');
+            throw new EditorPhpException('Given Editor.js output is not a valid JSON.');
         }
 
         $input = json_decode($input, true);
 
         if (!$this->validateSchema($input))
         {
-            throw new Exception('Given Editor.js output is not matching schema.');
+            throw new EditorPhpException('Given Editor.js output is not matching schema.');
         }
 
         return $input;

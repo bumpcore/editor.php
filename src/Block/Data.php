@@ -86,16 +86,6 @@ class Data implements Arrayable
     }
 
     /**
-     * Checks whether data passes the rules or not.
-     *
-     * @return bool
-     */
-    public function isValid(): bool
-    {
-        return !Helpers::makeValidator($this->data, $this->rules)->fails();
-    }
-
-    /**
      * Validates raw data.
      *
      * @return array<int|string, mixed>

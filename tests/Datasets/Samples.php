@@ -1,18 +1,17 @@
 <?php
 
-dataset('sample', [
-    'sample' => file_get_contents(__DIR__ . '/sample.json'),
+dataset('valid', [
+    'valid' => file_get_contents(__DIR__ . '/samples/valid.json'),
 ]);
 
-dataset('sampleBroken', [
-    'sample' => file_get_contents(__DIR__ . '/sample-broken.json'),
+dataset('broken', [
+    'broken' => file_get_contents(__DIR__ . '/samples/broken.json'),
 ]);
 
-dataset('sampleUnknownProvider', [
-    'sample' => file_get_contents(__DIR__ . '/sample-unknown-provider.json'),
+dataset('unknownProvider', [
+    'sample' => file_get_contents(__DIR__ . '/samples/unknownProvider.json'),
 ]);
 
-dataset('sampleUnmatchingSchema', [
-    'sample' => file_get_contents(__DIR__ . '/sample-unmatching-schema.json'),
+dataset('unmatchingSchema', [
+    'unmatchingSchema' => file_get_contents(__DIR__ . '/samples/unmatchingSchema.json'),
 ]);
-
