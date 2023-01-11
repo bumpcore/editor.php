@@ -1,0 +1,12 @@
+We have to make this JSON broken, isn't it? I wonder how...
+
+{
+	"time": 1672852569662,
+	"blocks": [
+		{
+			"type": "delimiter",
+			"data": {}
+		}
+	],
+	"version": "2.26.4"
+}

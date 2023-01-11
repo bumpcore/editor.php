@@ -5,7 +5,7 @@ namespace BumpCore\EditorPhp\Casts;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 
-class EditorPhp implements CastsAttributes
+class EditorPhpCast implements CastsAttributes
 {
     /**
      * @param Model $model

@@ -1,5 +1,5 @@
 <table>
-    @if ($data('withHeadings') && ($headings = array_shift($data('content'))))
+    @if ($data('withHeadings') && ($headings = $data('content')[array_key_first($data('content'))]))
         <thead>
             <tr>
                 @foreach ($headings as $heading)

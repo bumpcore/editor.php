@@ -1,10 +1,10 @@
 <table>
-    <?php if ($data('withHeadings') && ($headings = array_shift($data('content')))): ?>
+    <?php if ($data('withHeadings') && ($headings = $data('content')[array_key_first($data('content'))])): ?>
         <thead>
             <tr>
-                @foreach ($headings as $heading)
+                <?php foreach ($headings as $heading): ?>
                     <th><?= $heading; ?></th>
-                @endforeach
+                <?php endforeach; ?>
             </tr>
         </thead>
     <?php endif; ?>
