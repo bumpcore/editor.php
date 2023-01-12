@@ -19,11 +19,11 @@ class Paragraph implements Provider
     {
         return [
             Field::make('text', 'string')
-				->allow('mark')
-				->allow('b')
-				->allow('strong')
-				->allow('code')
-				->allow('a', 'href'),
+                ->allow('mark')
+                ->allow('b')
+                ->allow('strong')
+                ->allow('code')
+                ->allow('a', 'href'),
         ];
     }
 

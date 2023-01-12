@@ -7,7 +7,6 @@ use BumpCore\EditorPhp\Contracts\Provider;
 use BumpCore\EditorPhp\Exceptions\EditorPhpException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 class Parser

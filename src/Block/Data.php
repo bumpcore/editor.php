@@ -6,7 +6,6 @@ use BumpCore\EditorPhp\Helpers;
 use BumpCore\EditorPhp\Purifier;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Validator;
 
 class Data implements Arrayable
 {
