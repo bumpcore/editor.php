@@ -53,7 +53,7 @@ abstract class Block implements Arrayable
      */
     public function __construct(array $data = [], ?EditorPhp &$root = null)
     {
-        $this->type = Parser::resolveType(self::class);
+        $this->type = array_flip(Parser::$blocks)[static::class];
         $this->root = $root;
         $this->data = new Data($data, $this->rules());
     }

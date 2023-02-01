@@ -1,6 +1,9 @@
 <?php
 
+use BumpCore\EditorPhp\Blocks\Paragraph;
 use BumpCore\EditorPhp\EditorPhp;
+use BumpCore\EditorPhp\Parser;
+use Illuminate\Database\Eloquent\Model;
 
 test(
     'Can be initiated with make method',
@@ -21,6 +24,21 @@ test(
     'Can be initiated without input',
     fn () => expect(new EditorPhp())->toBeInstanceOf(EditorPhp::class)
 );
+
+test(
+    'Can register block',
+    function() {
+        EditorPhp::register(['p' => Paragraph::class]);
+
+        expect(Parser::$blocks)->toHaveKey('p');
+        expect(Parser::$blocks['p'])->toEqual(Paragraph::class);
+    }
+);
+
+test(
+    'Model can be set',
+    fn ($model) => expect(EditorPhp::make()->setModel($model)->model)->toBeInstanceOf(Model::class)->not()->toBeEmpty()
+)->with('models');
 
 test(
     'Can be converted to array',

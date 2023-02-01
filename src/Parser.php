@@ -16,7 +16,23 @@ class Parser
      *
      * @var array<string, Block>
      */
-    public static array $blocks;
+    public static array $blocks = [
+        'attaches' => \BumpCore\EditorPhp\Blocks\Attaches::class,
+        'checklist' => \BumpCore\EditorPhp\Blocks\Checklist::class,
+        'code' => \BumpCore\EditorPhp\Blocks\Code::class,
+        'delimiter' => \BumpCore\EditorPhp\Blocks\Delimiter::class,
+        'embed' => \BumpCore\EditorPhp\Blocks\Embed::class,
+        'header' => \BumpCore\EditorPhp\Blocks\Header::class,
+        'image' => \BumpCore\EditorPhp\Blocks\Image::class,
+        'linkTool' => \BumpCore\EditorPhp\Blocks\LinkTool::class,
+        'list' => \BumpCore\EditorPhp\Blocks\ListBlock::class,
+        'paragraph' => \BumpCore\EditorPhp\Blocks\Paragraph::class,
+        'personality' => \BumpCore\EditorPhp\Blocks\Personality::class,
+        'quote' => \BumpCore\EditorPhp\Blocks\Quote::class,
+        'raw' => \BumpCore\EditorPhp\Blocks\Raw::class,
+        'table' => \BumpCore\EditorPhp\Blocks\Table::class,
+        'warning' => \BumpCore\EditorPhp\Blocks\Warning::class,
+    ];
 
     /**
      * Converted input JSON.
@@ -40,38 +56,27 @@ class Parser
     /**
      * Registers new block.
      *
-     * @param array<int, string> $blocks
+     * @param array<string, string> $blocks
+     * @param bool $override
      *
      * @return void
      */
-    public static function register(array $blocks): void
+    public static function register(array $blocks, bool $override = false): void
     {
-        foreach ($blocks as $block)
+        if ($override)
+        {
+            static::$blocks = [];
+        }
+
+        foreach ($blocks as $type => $block)
         {
             if (!in_array(Block::class, class_parents($block)))
             {
                 throw new EditorPhpException($block . ' must extend ' . Block::class);
             }
 
-            static::$blocks[static::resolveType($block)] = $block;
+            static::$blocks[$type] = $block;
         }
-    }
-
-    /**
-     * Resolves type from given block or string.
-     *
-     * @param Block|string $block
-     *
-     * @return string
-     */
-    public static function resolveType(Block|string $block): string
-    {
-        if ($block instanceof Block)
-        {
-            $block = $block::class;
-        }
-
-        return Str::of($block)->classBasename()->remove('Block')->snake()->lower()->toString();
     }
 
     /**
@@ -97,7 +102,7 @@ class Parser
 
         foreach (Arr::get($this->input, 'blocks') as $block)
         {
-            $type = static::resolveType(Arr::get($block, 'type'));
+            $type = Arr::get($block, 'type');
 
             if (!key_exists($type, static::$blocks))
             {

@@ -74,12 +74,13 @@ class EditorPhp implements Arrayable, Jsonable, Responsable
      * Registers new block.
      *
      * @param array<int, string> $blocks
+     * @param bool $override
      *
      * @return void
      */
-    public static function register(array $blocks): void
+    public static function register(array $blocks, bool $override = false): void
     {
-        Parser::register($blocks);
+        Parser::register($blocks, $override);
     }
 
     /**
@@ -107,7 +108,7 @@ class EditorPhp implements Arrayable, Jsonable, Responsable
     public function toArray(): array
     {
         return [
-            'time' => (int)$this->time->getPreciseTimestamp(3),
+            'time' => (int) $this->time->getPreciseTimestamp(3),
             'blocks' => $this->blocks->toArray(),
             'version' => $this->version,
         ];
