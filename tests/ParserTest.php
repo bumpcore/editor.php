@@ -14,9 +14,21 @@ test(
 test(
     'Can register block',
     function() {
-        Parser::register([Paragraph::class]);
+        Parser::register(['p' => Paragraph::class]);
 
-        expect(Parser::$blocks)->toHaveKey(Parser::resolveType(Paragraph::class));
+        expect(Parser::$blocks)->toHaveKey('p');
+        expect(Parser::$blocks['p'])->toEqual(Paragraph::class);
+    }
+);
+
+test(
+    'Can override registered blocks',
+    function() {
+        Parser::register(['p' => Paragraph::class]);
+        expect(Parser::$blocks)->toHaveKey('p');
+
+        Parser::register([], true);
+        expect(Parser::$blocks)->not()->toHaveKey('p');
     }
 );
 
@@ -26,16 +38,6 @@ test(
     {
     })::class])
 )->throws(EditorPhpException::class);
-
-test(
-    'Can resolves type from given class name',
-    fn () => expect(Parser::resolveType('App\Blocks\ParagraphBlock'))->toEqual('paragraph'),
-);
-
-test(
-    'Can resolves type from given block',
-    fn () => expect(Parser::resolveType(new Paragraph()))->toEqual('paragraph'),
-);
 
 test(
     'Can access time',
