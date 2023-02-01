@@ -13,6 +13,16 @@ test(
 )->with('valid');
 
 test(
+    'Can be initiated with make method without input',
+    fn () => expect(EditorPhp::make())->toBeInstanceOf(EditorPhp::class)
+);
+
+test(
+    'Can be initiated without input',
+    fn () => expect(new EditorPhp())->toBeInstanceOf(EditorPhp::class)
+);
+
+test(
     'Can be converted to array',
     fn ($sample) => expect(EditorPhp::make($sample)->toArray())->toBeArray()->toHaveKeys(['time', 'blocks', 'version'])
 )->with('valid');

@@ -3,6 +3,7 @@
 namespace BumpCore\EditorPhp;
 
 use BumpCore\EditorPhp\Block\Block;
+use Carbon\Carbon;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Responsable;
@@ -12,14 +13,19 @@ use Illuminate\Support\Collection;
 class EditorPhp implements Arrayable, Jsonable, Responsable
 {
     /**
-     * @var Parser
+     * @var Carbon
      */
-    protected Parser $parser;
+    public readonly Carbon $time;
 
     /**
      * @var Collection<int, Block>
      */
     public Collection $blocks;
+
+    /**
+     * @var string
+     */
+    public readonly ?string $version;
 
     /**
      * Belonging model, if casted.
@@ -31,11 +37,11 @@ class EditorPhp implements Arrayable, Jsonable, Responsable
     /**
      * Fluent method to create new `EditorPhp` instance.
      *
-     * @param string $input
+     * @param string|null $input
      *
      * @return EditorPhp
      */
-    public static function make(string $input): self
+    public static function make(?string $input = null): self
     {
         return new static($input);
     }
@@ -43,12 +49,25 @@ class EditorPhp implements Arrayable, Jsonable, Responsable
     /**
      * Constructor.
      *
+     * @param string|null $input
+     *
      * @return void
      */
-    public function __construct(string $input)
+    public function __construct(?string $input = null)
     {
-        $this->parser = new Parser($input);
-        $this->blocks = $this->parser->blocks($this);
+        if (empty($input))
+        {
+            $this->time = Carbon::now();
+            $this->blocks = new Collection();
+            $this->version = null;
+        }
+        else
+        {
+            $parser = new Parser($input);
+            $this->time = $parser->time();
+            $this->blocks = $parser->blocks($this);
+            $this->version = $parser->version();
+        }
     }
 
     /**
@@ -88,9 +107,9 @@ class EditorPhp implements Arrayable, Jsonable, Responsable
     public function toArray(): array
     {
         return [
-            'time' => $this->parser->time(),
+            'time' => (int)$this->time->getPreciseTimestamp(3),
             'blocks' => $this->blocks->toArray(),
-            'version' => $this->parser->version(),
+            'version' => $this->version,
         ];
     }
 
