@@ -9,5 +9,8 @@ test(
 
 test(
     'Can modify model from instance',
-    fn ($model) => expect($model->content->model->setAttribute('title', 'Strange...')->title)->toEqual('Strange...'),
+    function ($model) {
+		$model->content->model->setAttribute('title', 'Strange...');
+		expect($model->content->model->title)->toEqual('Strange...');
+	},
 )->with('models');

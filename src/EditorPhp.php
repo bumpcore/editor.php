@@ -52,7 +52,9 @@ class EditorPhp implements Arrayable, Jsonable, Responsable
     }
 
     /**
-     * @param array $blocks
+     * Registers new block.
+     *
+     * @param array<int, string> $blocks
      *
      * @return void
      */
