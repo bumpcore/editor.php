@@ -4,6 +4,7 @@ namespace BumpCore\EditorPhp;
 
 use BumpCore\EditorPhp\Block\Block;
 use BumpCore\EditorPhp\Exceptions\EditorPhpException;
+use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -76,11 +77,11 @@ class Parser
     /**
      * Returns the time of given `Editor.js` output.
      *
-     * @return int
+     * @return Carbon
      */
-    public function time(): int
+    public function time(): Carbon
     {
-        return Arr::get($this->input, 'time');
+        return Carbon::parse(Arr::get($this->input, 'time') / 1000);
     }
 
     /**

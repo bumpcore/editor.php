@@ -3,6 +3,7 @@
 use BumpCore\EditorPhp\Blocks\Paragraph;
 use BumpCore\EditorPhp\Exceptions\EditorPhpException;
 use BumpCore\EditorPhp\Parser;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
 test(
@@ -38,7 +39,7 @@ test(
 
 test(
     'Can access time',
-    fn ($sample) => expect((new Parser($sample))->time())->toBeNumeric()
+    fn ($sample) => expect((new Parser($sample))->time())->toBeInstanceOf(Carbon::class)
 )->with('valid');
 
 test(
