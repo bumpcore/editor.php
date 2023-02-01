@@ -2,6 +2,7 @@
 
 namespace BumpCore\EditorPhp\Block;
 
+use BumpCore\EditorPhp\EditorPhp;
 use BumpCore\EditorPhp\Parser;
 use Illuminate\Contracts\Support\Arrayable;
 
@@ -22,6 +23,13 @@ abstract class Block implements Arrayable
     public readonly Data $data;
 
     /**
+     * Belonging EditorPhp instance.
+     *
+     * @var EditorPhp|null
+     */
+    protected ?EditorPhp $root;
+
+    /**
      * Rules to validate data of the block.
      *
      * @return array<int, Field>
@@ -39,12 +47,14 @@ abstract class Block implements Arrayable
      * Constructor.
      *
      * @param array $data
+     * @param EditorPhp|null $root
      *
      * @return void
      */
-    public function __construct(array $data = [])
+    public function __construct(array $data = [], ?EditorPhp &$root = null)
     {
         $this->type = Parser::resolveType(self::class);
+        $this->root = $root;
         $this->data = new Data($data, $this->rules());
     }
 

@@ -86,9 +86,11 @@ class Parser
     /**
      * Returns parsed blocks of given `Editor.js` output.
      *
+     * @param EditorPhp|null $root
+     *
      * @return Collection
      */
-    public function blocks(): Collection
+    public function blocks(?EditorPhp &$root = null): Collection
     {
         $blocks = new Collection();
 
@@ -101,7 +103,7 @@ class Parser
                 throw new EditorPhpException('Unknown block type: ' . $type);
             }
 
-            $blocks->push(new (static::$blocks[$type])(Arr::get($block, 'data')));
+            $blocks->push(new (static::$blocks[$type])(Arr::get($block, 'data'), $root));
         }
 
         return $blocks;

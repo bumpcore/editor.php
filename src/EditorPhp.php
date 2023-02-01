@@ -6,6 +6,7 @@ use BumpCore\EditorPhp\Block\Block;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Responsable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
 class EditorPhp implements Arrayable, Jsonable, Responsable
@@ -19,6 +20,13 @@ class EditorPhp implements Arrayable, Jsonable, Responsable
      * @var Collection<int, Block>
      */
     public Collection $blocks;
+
+    /**
+     * Belonging model, if casted.
+     *
+     * @var Model
+     */
+    public readonly Model $model;
 
     /**
      * Fluent method to create new `EditorPhp` instance.
@@ -40,7 +48,7 @@ class EditorPhp implements Arrayable, Jsonable, Responsable
     public function __construct(string $input)
     {
         $this->parser = new Parser($input);
-        $this->blocks = $this->parser->blocks();
+        $this->blocks = $this->parser->blocks($this);
     }
 
     /**
@@ -51,6 +59,23 @@ class EditorPhp implements Arrayable, Jsonable, Responsable
     public static function register(array $blocks): void
     {
         Parser::register($blocks);
+    }
+
+    /**
+     * Sets model to be used with casting.
+     *
+     * @param Model $model
+     *
+     * @return EditorPhp
+     */
+    public function setModel(Model &$model): self
+    {
+        if (!isset($this->model))
+        {
+            $this->model = $model;
+        }
+
+        return $this;
     }
 
     /**
