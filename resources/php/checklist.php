@@ -1,5 +1,5 @@
 <div>
-    <?php foreach ($data('items') as $item): ?>
+    <?php foreach ($data('items', []) as $item): ?>
         <label style="display: block;">
             <input
 				<?= $item['checked'] ? 'checked' : ''; ?>

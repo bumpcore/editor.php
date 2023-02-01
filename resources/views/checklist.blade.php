@@ -1,5 +1,5 @@
 <div>
-    @foreach ($data('items') as $item)
+    @foreach ($data('items', []) as $item)
         <label style="display: block;">
             <input
                 @checked($item['checked'])

@@ -4,11 +4,11 @@ namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Data;
 use BumpCore\EditorPhp\Block\Field;
-use BumpCore\EditorPhp\Contracts\Provider;
+use BumpCore\EditorPhp\Block\Block;
 use BumpCore\EditorPhp\Helpers;
 use Illuminate\Support\Facades\View;
 
-class Embed implements Provider
+class Embed extends Block
 {
     /**
      * Rules to validate data of the block.
@@ -30,19 +30,17 @@ class Embed implements Provider
     /**
      * Renderer for the block.
      *
-     * @param Data $data
-     *
      * @return string
      */
-    public function render(Data $data): string
+    public function render(): string
     {
         if (View::getFacadeRoot())
         {
             return view('editor.php::embed')
-                ->with(compact('data'))
+                ->with(['data' => $this->data])
                 ->render();
         }
 
-        return Helpers::renderNative(__DIR__ . '/../../resources/php/embed.php', compact('data'));
+        return Helpers::renderNative(__DIR__ . '/../../resources/php/embed.php', ['data' => $this->data]);
     }
 }

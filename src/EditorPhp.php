@@ -44,15 +44,13 @@ class EditorPhp implements Arrayable, Jsonable, Responsable
     }
 
     /**
-     * Registers new providers for the blocks.
-     *
-     * @param array $providers
+     * @param array $blocks
      *
      * @return void
      */
-    public static function register(array $providers): void
+    public static function register(array $blocks): void
     {
-        Parser::register($providers);
+        Parser::register($blocks);
     }
 
     /**

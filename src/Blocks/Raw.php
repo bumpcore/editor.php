@@ -4,9 +4,9 @@ namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Data;
 use BumpCore\EditorPhp\Block\Field;
-use BumpCore\EditorPhp\Contracts\Provider;
+use BumpCore\EditorPhp\Block\Block;
 
-class Raw implements Provider
+class Raw extends Block
 {
     /**
      * Rules to validate data of the block.
@@ -23,12 +23,10 @@ class Raw implements Provider
     /**
      * Renderer for the block.
      *
-     * @param Data $data
-     *
      * @return string
      */
-    public function render(Data $data): string
+    public function render(): string
     {
-        return $data('html');
+        return $this->data->get('html', '');
     }
 }

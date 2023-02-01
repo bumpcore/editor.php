@@ -2,24 +2,17 @@
 
 namespace BumpCore\EditorPhp\Block;
 
-use BumpCore\EditorPhp\Contracts\Provider;
+use BumpCore\EditorPhp\Parser;
 use Illuminate\Contracts\Support\Arrayable;
 
-class Block implements Arrayable
+abstract class Block implements Arrayable
 {
-    /**
-     * Provider of the block.
-     *
-     * @var Provider
-     */
-    protected readonly Provider $provider;
-
     /**
      * Type of the block.
      *
      * @var string
      */
-    public readonly string $type;
+    public string $type;
 
     /**
      * Data of the block.
@@ -29,18 +22,30 @@ class Block implements Arrayable
     public readonly Data $data;
 
     /**
+     * Rules to validate data of the block.
+     *
+     * @return array<int, Field>
+     */
+    public abstract function rules(): array;
+
+    /**
+     * Render's the block.
+     *
+     * @return string
+     */
+    public abstract function render(): string;
+
+    /**
      * Constructor.
      *
-     * @param Provider $provider
      * @param array $data
      *
      * @return void
      */
-    public function __construct(string $type, Provider $provider, array $data)
+    public function __construct(array $data = [])
     {
-        $this->provider = $provider;
-        $this->type = $type;
-        $this->data = new Data($data, $provider->rules());
+        $this->type = Parser::resolveType(self::class);
+        $this->data = new Data($data, $this->rules());
     }
 
     /**
@@ -64,15 +69,5 @@ class Block implements Arrayable
     public function __toString(): string
     {
         return $this->render();
-    }
-
-    /**
-     * Renders block into HTML.
-     *
-     * @return string
-     */
-    public function render(): string
-    {
-        return $this->provider->render($this->data);
     }
 }

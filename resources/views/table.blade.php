@@ -10,7 +10,7 @@
     @endif
 
     <tbody>
-        @foreach ($data('content') as $row)
+        @foreach ($data('content', []) as $row)
             @if ($data('withHeadings') && $loop->first)
                 @continue
             @endif
