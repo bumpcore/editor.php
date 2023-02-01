@@ -17,7 +17,7 @@ class EditorPhpCast implements CastsAttributes
      */
     public function get($model, string $key, $value, array $attributes)
     {
-        return \BumpCore\EditorPhp\EditorPhp::make($value);
+        return \BumpCore\EditorPhp\EditorPhp::make($value)->setModel($model);
     }
 
     /**
@@ -32,7 +32,7 @@ class EditorPhpCast implements CastsAttributes
     {
         if ($value instanceof \BumpCore\EditorPhp\EditorPhp)
         {
-            return $value->toJson();
+            return $value->setModel($model)->toJson();
         }
 
         return $value;

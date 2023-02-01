@@ -3,7 +3,6 @@
 namespace BumpCore\EditorPhp;
 
 use BumpCore\EditorPhp\Block\Block;
-use BumpCore\EditorPhp\Contracts\Provider;
 use BumpCore\EditorPhp\Exceptions\EditorPhpException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -12,11 +11,11 @@ use Illuminate\Support\Str;
 class Parser
 {
     /**
-     * Registered providers.
+     * Registered blocks.
      *
-     * @var array<string, Provider>
+     * @var array<string, Block>
      */
-    public static array $providers;
+    public static array $blocks;
 
     /**
      * Converted input JSON.
@@ -24,13 +23,6 @@ class Parser
      * @var array
      */
     protected array $input;
-
-    /**
-     * Blocks.
-     *
-     * @var Collection
-     */
-    protected Collection $blocks;
 
     /**
      * Constructor.
@@ -45,48 +37,40 @@ class Parser
     }
 
     /**
-     * Registers new block provider.
+     * Registers new block.
      *
-     * @param array<int, string> $providers
+     * @param array<int, string> $blocks
      *
      * @return void
      */
-    public static function register(array $providers): void
+    public static function register(array $blocks): void
     {
-        foreach ($providers as $provider)
+        foreach ($blocks as $block)
         {
-            if (!in_array(Provider::class, class_implements($provider)))
+            if (!in_array(Block::class, class_parents($block)))
             {
-                throw new EditorPhpException($provider . ' must implement ' . Provider::class);
+                throw new EditorPhpException($block . ' must extend ' . Block::class);
             }
 
-            /** @var Provider */
-            $provider = new ($provider);
-
-            static::$providers[static::resolveType($provider)] = $provider;
+            static::$blocks[static::resolveType($block)] = $block;
         }
     }
 
     /**
-     * Resolves type from given provider or string.
+     * Resolves type from given block or string.
      *
-     * @param Provider|string $provider
+     * @param Block|string $block
      *
      * @return string
      */
-    public static function resolveType(Provider|string $provider): string
+    public static function resolveType(Block|string $block): string
     {
-        if ($provider instanceof Provider && property_exists($provider, 'type'))
+        if ($block instanceof Block)
         {
-            return strtolower($provider->type);
+            $block = $block::class;
         }
 
-        if ($provider instanceof Provider)
-        {
-            $provider = $provider::class;
-        }
-
-        return Str::of($provider)->classBasename()->remove('Block')->snake()->lower()->toString();
+        return Str::of($block)->classBasename()->remove('Block')->snake()->lower()->toString();
     }
 
     /**
@@ -102,30 +86,27 @@ class Parser
     /**
      * Returns parsed blocks of given `Editor.js` output.
      *
+     * @param EditorPhp|null $root
+     *
      * @return Collection
      */
-    public function blocks(): Collection
+    public function blocks(?EditorPhp &$root = null): Collection
     {
-        if (isset($this->blocks))
-        {
-            return $this->blocks;
-        }
-
-        $this->blocks = new Collection();
+        $blocks = new Collection();
 
         foreach (Arr::get($this->input, 'blocks') as $block)
         {
             $type = static::resolveType(Arr::get($block, 'type'));
 
-            if (!$this->providerExists($type))
+            if (!key_exists($type, static::$blocks))
             {
                 throw new EditorPhpException('Unknown block type: ' . $type);
             }
 
-            $this->blocks->push(new Block($type, Arr::get(static::$providers, $type), Arr::get($block, 'data')));
+            $blocks->push(new (static::$blocks[$type])(Arr::get($block, 'data'), $root));
         }
 
-        return $this->blocks();
+        return $blocks;
     }
 
     /**
@@ -136,18 +117,6 @@ class Parser
     public function version(): string
     {
         return Arr::get($this->input, 'version');
-    }
-
-    /**
-     * Checks whether provider registered or not.
-     *
-     * @param string $type
-     *
-     * @return bool
-     */
-    protected function providerExists(string $type): bool
-    {
-        return key_exists($type, static::$providers);
     }
 
     /**

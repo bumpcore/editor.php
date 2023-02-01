@@ -18,7 +18,7 @@ class BlockMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $description = 'Create a new Editor.php provider class';
+    protected $description = 'Create a new Editor.php block class';
 
     /**
      * Get the stub file for the generator.
@@ -27,7 +27,7 @@ class BlockMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        return __DIR__ . '/stubs/provider.stub';
+        return __DIR__ . '/stubs/block.stub';
     }
 
     /**

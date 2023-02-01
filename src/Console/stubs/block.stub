@@ -2,10 +2,9 @@
 
 namespace {{ namespace }};
 
-use BumpCore\EditorPhp\Block\Data;
-use BumpCore\EditorPhp\Contracts\Provider;
+use BumpCore\EditorPhp\Block\Block;
 
-class {{ class }} implements Provider
+class {{ class }} extends Block
 {
     /**
      * Rules to validate data of the block.
@@ -22,14 +21,12 @@ class {{ class }} implements Provider
     /**
      * Renderer for the block.
      *
-     * @param Data $data
-     *
      * @return string
      */
-    public function render(Data $data): string
+    public function render(): string
     {
         return view('block')
-            ->with($data)
+            ->with(['data' => $this->data])
             ->render();
     }
 }

@@ -7,7 +7,7 @@ use Illuminate\Support\ServiceProvider;
 
 class EditorPhpServiceProvider extends ServiceProvider
 {
-    public static array $providers = [
+    public static array $blocks = [
         \BumpCore\EditorPhp\Blocks\Attaches::class,
         \BumpCore\EditorPhp\Blocks\Checklist::class,
         \BumpCore\EditorPhp\Blocks\Code::class,
@@ -46,6 +46,6 @@ class EditorPhpServiceProvider extends ServiceProvider
             __DIR__ . '/../resources/views' => resource_path('views/vendor/editor.php'),
         ], 'editor.php');
 
-        Parser::register(static::$providers);
+        Parser::register(static::$blocks);
     }
 }

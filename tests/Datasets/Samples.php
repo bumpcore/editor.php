@@ -8,8 +8,8 @@ dataset('broken', [
     'broken' => file_get_contents(__DIR__ . '/samples/broken.json'),
 ]);
 
-dataset('unknownProvider', [
-    'sample' => file_get_contents(__DIR__ . '/samples/unknownProvider.json'),
+dataset('unknownType', [
+    'sample' => file_get_contents(__DIR__ . '/samples/unknownType.json'),
 ]);
 
 dataset('unmatchingSchema', [
