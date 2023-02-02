@@ -10,7 +10,10 @@ on:
 
     pull_request:
         paths:
-          - '**.php'
+            - "**.php"
+
+permissions:
+    contents: write
 jobs:
     php-cs-fixer:
         runs-on: ubuntu-latest
