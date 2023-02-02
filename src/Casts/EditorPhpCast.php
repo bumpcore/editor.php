@@ -17,11 +17,11 @@ class EditorPhpCast implements CastsAttributes
      */
     public function get($model, string $key, $value, array $attributes)
     {
-		if(empty($value))
-		{
-			return $value;
-		}
-		
+        if (empty($value))
+        {
+            return $value;
+        }
+
         return \BumpCore\EditorPhp\EditorPhp::make($value)->setModel($model);
     }
 
