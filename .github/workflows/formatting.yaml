@@ -7,6 +7,10 @@ on:
             - "*.x"
         paths:
             - "**.php"
+
+    pull_request:
+        paths:
+          - '**.php'
 jobs:
     php-cs-fixer:
         runs-on: ubuntu-latest
