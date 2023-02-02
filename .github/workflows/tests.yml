@@ -14,10 +14,11 @@ jobs:
               with:
                   php-version: ${{ matrix.php-versions }}
 
-            - uses: actions/checkout@v3
+            - name: Checkout code
+              uses: actions/checkout@v3
 
             - name: Install dependencies
               run: composer install --prefer-dist --no-progress --no-interaction
 
             - name: Execute tests
-              run: vendor/bin/phpunit
+              run: ./vendor/bin/phpunit
