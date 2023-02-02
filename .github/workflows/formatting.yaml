@@ -1,0 +1,25 @@
+name: Fix syling
+
+on:
+    push:
+        branches:
+            - master
+            - "*.x"
+        paths:
+            - "**.php"
+jobs:
+    php-cs-fixer:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
+
+            - name: Install dependencies
+              run: composer install
+
+            - name: Execute php-cs-fixer
+              run: ./vendor/bin/php-cs-fixer fix
+
+            - uses: stefanzweifel/git-auto-commit-action@v4
+              with:
+                  commit_message: Fix styling
