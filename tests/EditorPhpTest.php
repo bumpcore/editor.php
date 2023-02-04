@@ -51,11 +51,16 @@ test(
 )->with('valid');
 
 test(
-    'Can be rendered by casting to string',
+    'Can be rendered',
+    fn ($sample) => expect(EditorPhp::make($sample)->render())->toBeString(),
+)->with('valid');
+
+test(
+    'Can be rendered via casting to string',
     fn ($sample) => expect((string) EditorPhp::make($sample))->toBeString(),
 )->with('valid');
 
 test(
-    'Can be rendered',
-    fn ($sample) => expect(EditorPhp::make($sample)->render())->toBeString(),
+    'Can be rendered via toHtml',
+    fn ($sample) => expect(EditorPhp::make($sample)->toHtml())->toBeString(),
 )->with('valid');
