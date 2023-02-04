@@ -41,4 +41,24 @@ class LinkTool extends Block
 
         return Helpers::renderNative(__DIR__ . '/../../resources/php/linktool.php', ['data' => $this->data]);
     }
+
+    /**
+     * Generates fake data for the block.
+     *
+     * @param Generator $faker
+     *
+     * @return array
+     */
+    public static function fake(\Faker\Generator $faker): array
+    {
+        return [
+            'link' => $faker->url(),
+            'meta' => [
+                'title' => $faker->text(32),
+                'site_name' => $faker->text(32),
+                'description' => $faker->text(96),
+                'image' => ['url' => $faker->imageUrl()],
+            ],
+        ];
+    }
 }

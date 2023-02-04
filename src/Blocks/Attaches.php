@@ -41,4 +41,24 @@ class Attaches extends Block
 
         return Helpers::renderNative(__DIR__ . '/../../resources/php/attaches.php', ['data' => $this->data]);
     }
+
+    /**
+     * Generates fake data for the block.
+     *
+     * @param Generator $faker
+     *
+     * @return array
+     */
+    public static function fake(\Faker\Generator $faker): array
+    {
+        return [
+            'title' => $faker->text(64),
+            'file' => [
+                'url' => $faker->url(),
+                'size' => $faker->numberBetween(250000, 10000000),
+                'name' => $faker->text(64),
+                'extension' => $faker->fileExtension(),
+            ],
+        ];
+    }
 }

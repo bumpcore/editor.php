@@ -64,3 +64,13 @@ test(
     'Can be rendered via toHtml',
     fn ($sample) => expect(EditorPhp::make($sample)->toHtml())->toBeString(),
 )->with('valid');
+
+test(
+    'Can be generate fake data as instance',
+    fn () => expect(EditorPhp::fake(true))->toBeInstanceOf(EditorPhp::class)
+);
+
+test(
+    'Can be generate fake data as json',
+    fn () => expect(EditorPhp::fake(false))->toBeJson()
+);

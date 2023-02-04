@@ -40,4 +40,26 @@ class Checklist extends Block
 
         return Helpers::renderNative(__DIR__ . '/../../resources/php/checklist.php', ['data' => $this->data]);
     }
+
+    /**
+     * Generates fake data for the block.
+     *
+     * @param Generator $faker
+     *
+     * @return array
+     */
+    public static function fake(\Faker\Generator $faker): array
+    {
+        $items = [];
+
+        foreach (range(0, $faker->numberBetween(1, 10)) as $index)
+        {
+            $items[] = [
+                'text' => $faker->text(48),
+                'checked' => $faker->boolean(),
+            ];
+        }
+
+        return ['items' => $items];
+    }
 }
