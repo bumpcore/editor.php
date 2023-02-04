@@ -5,8 +5,10 @@ namespace BumpCore\EditorPhp\Block;
 use BumpCore\EditorPhp\EditorPhp;
 use BumpCore\EditorPhp\Parser;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Contracts\Support\Renderable;
 
-abstract class Block implements Arrayable
+abstract class Block implements Arrayable, Htmlable, Renderable
 {
     /**
      * Type of the block.
@@ -44,6 +46,19 @@ abstract class Block implements Arrayable
     public abstract function render(): string;
 
     /**
+     * Fluent method to create new `Block` instance.
+     *
+     * @param array $data
+     * @param EditorPhp|null $root
+     *
+     * @return self
+     */
+    public static function make(array $data = [], ?EditorPhp &$root = null): self
+    {
+        return new static($data, $root);
+    }
+
+    /**
      * Constructor.
      *
      * @param array $data
@@ -59,6 +74,34 @@ abstract class Block implements Arrayable
     }
 
     /**
+     * Gets block data by given key.
+     *
+     * @param string $key
+     * @param mixed $default
+     *
+     * @return mixed
+     */
+    public function get(string $key, mixed $default = null): mixed
+    {
+        return $this->data->get($key, $default);
+    }
+
+    /**
+     * Sets block data by given key.
+     *
+     * @param string $key
+     * @param mixed $value
+     *
+     * @return $this
+     */
+    public function set(string $key, mixed $value): self
+    {
+        $this->data->set($key, $value);
+
+        return $this;
+    }
+
+    /**
      * Converts the `Block` as an array.
      *
      * @return array<string, array|string>
@@ -69,6 +112,16 @@ abstract class Block implements Arrayable
             'type' => $this->type,
             'data' => $this->data->toArray(),
         ];
+    }
+
+    /**
+     * Renders block into HTML.
+     *
+     * @return string
+     */
+    public function toHtml()
+    {
+        return $this->render();
     }
 
     /**

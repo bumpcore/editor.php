@@ -14,7 +14,7 @@ class Parser
     /**
      * Registered blocks.
      *
-     * @var array<string, Block>
+     * @var array<string, string>
      */
     public static array $blocks = [
         'attaches' => \BumpCore\EditorPhp\Blocks\Attaches::class,

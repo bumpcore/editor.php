@@ -3,7 +3,6 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Block;
-use BumpCore\EditorPhp\Block\Data;
 use BumpCore\EditorPhp\Block\Field;
 use BumpCore\EditorPhp\Helpers;
 use Illuminate\Support\Facades\View;

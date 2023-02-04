@@ -32,6 +32,6 @@ class EditorPhpServiceProvider extends ServiceProvider
             __DIR__ . '/../config/editor.php' => config_path('editor.php'),
         ]);
 
-        Parser::register(config('editor.blocks') ?? [], true);
+        Parser::register(config('editor.blocks') ?? [], !empty(config('editor.blocks')));
     }
 }

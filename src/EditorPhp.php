@@ -5,12 +5,14 @@ namespace BumpCore\EditorPhp;
 use BumpCore\EditorPhp\Block\Block;
 use Carbon\Carbon;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
-class EditorPhp implements Arrayable, Jsonable, Responsable
+class EditorPhp implements Arrayable, Jsonable, Responsable, Renderable, Htmlable
 {
     /**
      * @var Carbon
@@ -127,16 +129,6 @@ class EditorPhp implements Arrayable, Jsonable, Responsable
     }
 
     /**
-     * Renders blocks into HTML.
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->render();
-    }
-
-    /**
      * Creates an HTTP response that represents the `Editor.php`.
      *
      * @param \Illuminate\Http\Request $request
@@ -158,5 +150,25 @@ class EditorPhp implements Arrayable, Jsonable, Responsable
         return $this->blocks
             ->map(fn (Block $block) => $block->render())
             ->implode('');
+    }
+
+    /**
+     * Renders blocks into HTML.
+     *
+     * @return string
+     */
+    public function toHtml()
+    {
+        return $this->render();
+    }
+
+    /**
+     * Renders blocks into HTML.
+     *
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->render();
     }
 }
