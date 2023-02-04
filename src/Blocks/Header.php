@@ -38,4 +38,19 @@ class Header extends Block
 
         return Helpers::renderNative(__DIR__ . '/../../resources/php/header.php', ['data' => $this->data]);
     }
+
+    /**
+     * Generates fake data for the block.
+     *
+     * @param Generator $faker
+     *
+     * @return array
+     */
+    public static function fake(\Faker\Generator $faker): array
+    {
+        return [
+            'text' => $faker->text(64),
+            'level' => $faker->numberBetween(1, 6),
+        ];
+    }
 }

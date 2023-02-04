@@ -37,4 +37,16 @@ class Code extends Block
 
         return Helpers::renderNative(__DIR__ . '/../../resources/php/code.php', ['data' => $this->data]);
     }
+
+    /**
+     * Generates fake data for the block.
+     *
+     * @param Generator $faker
+     *
+     * @return array
+     */
+    public static function fake(\Faker\Generator $faker): array
+    {
+        return ['code' => $faker->text()];
+    }
 }

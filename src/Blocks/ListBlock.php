@@ -40,4 +40,26 @@ class ListBlock extends Block
 
         return Helpers::renderNative(__DIR__ . '/../../resources/php/list.php', ['data' => $this->data]);
     }
+
+    /**
+     * Generates fake data for the block.
+     *
+     * @param Generator $faker
+     *
+     * @return array
+     */
+    public static function fake(\Faker\Generator $faker): array
+    {
+        $items = [];
+
+        foreach (range(0, $faker->numberBetween(1, 10)) as $index)
+        {
+            $items[] = $faker->text(64);
+        }
+
+        return [
+            'style' => $faker->randomElement(['ordered', 'unordered']),
+            'items' => $items,
+        ];
+    }
 }

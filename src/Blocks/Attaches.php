@@ -5,6 +5,7 @@ namespace BumpCore\EditorPhp\Blocks;
 use BumpCore\EditorPhp\Block\Block;
 use BumpCore\EditorPhp\Block\Field;
 use BumpCore\EditorPhp\Helpers;
+use Faker\Generator;
 use Illuminate\Support\Facades\View;
 
 class Attaches extends Block
@@ -40,5 +41,25 @@ class Attaches extends Block
         }
 
         return Helpers::renderNative(__DIR__ . '/../../resources/php/attaches.php', ['data' => $this->data]);
+    }
+
+    /**
+     * Generates fake data for the block.
+     *
+     * @param Generator $faker
+     *
+     * @return array
+     */
+    public static function fake(Generator $faker): array
+    {
+        return [
+            'title' => $faker->text(64),
+            'file' => [
+                'url' => $faker->url(),
+                'size' => $faker->numberBetween(250000, 10000000),
+                'name' => $faker->text(64),
+                'extension' => $faker->fileExtension(),
+            ],
+        ];
     }
 }

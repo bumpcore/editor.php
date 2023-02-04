@@ -41,4 +41,22 @@ class Image extends Block
 
         return Helpers::renderNative(__DIR__ . '/../../resources/php/image.php', ['data' => $this->data]);
     }
+
+    /**
+     * Generates fake data for the block.
+     *
+     * @param Generator $faker
+     *
+     * @return array
+     */
+    public static function fake(\Faker\Generator $faker): array
+    {
+        return [
+            'file' => ['url' => $faker->imageUrl()],
+            'caption' => $faker->text(),
+            'withBorder' => $faker->boolean(),
+            'stretched' => $faker->boolean(),
+            'withBackground' => $faker->boolean(),
+        ];
+    }
 }

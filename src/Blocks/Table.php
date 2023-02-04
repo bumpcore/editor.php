@@ -40,4 +40,34 @@ class Table extends Block
 
         return Helpers::renderNative(__DIR__ . '/../../resources/php/table.php', ['data' => $this->data]);
     }
+
+    /**
+     * Generates fake data for the block.
+     *
+     * @param Generator $faker
+     *
+     * @return array
+     */
+    public static function fake(\Faker\Generator $faker): array
+    {
+        $content = [];
+        $width = $faker->numberBetween(2, 8);
+
+        foreach (range(0, $faker->numberBetween(1, 10)) as $index)
+        {
+            $row = [];
+
+            foreach (range(0, $width) as $index)
+            {
+                $row[] = $faker->text(64);
+            }
+
+            $content[] = $row;
+        }
+
+        return [
+            'withHeadings' => $faker->boolean(),
+            'content' => $content,
+        ];
+    }
 }

@@ -42,4 +42,18 @@ class Paragraph extends Block
 
         return Helpers::renderNative(__DIR__ . '/../../resources/php/paragraph.php', ['data' => $this->data]);
     }
+
+    /**
+     * Generates fake data for the block.
+     *
+     * @param Generator $faker
+     *
+     * @return array
+     */
+    public static function fake(\Faker\Generator $faker): array
+    {
+        return [
+            'text' => $faker->text(256),
+        ];
+    }
 }

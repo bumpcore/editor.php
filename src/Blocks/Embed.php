@@ -42,4 +42,23 @@ class Embed extends Block
 
         return Helpers::renderNative(__DIR__ . '/../../resources/php/embed.php', ['data' => $this->data]);
     }
+
+    /**
+     * Generates fake data for the block.
+     *
+     * @param Generator $faker
+     *
+     * @return array
+     */
+    public static function fake(\Faker\Generator $faker): array
+    {
+        return [
+            'service' => $faker->text(32),
+            'source' => $faker->url(),
+            'embed' => $faker->url(),
+            'width' => $faker->numberBetween(64, 1024),
+            'height' => $faker->numberBetween(64, 1024),
+            'caption' => $faker->text(32),
+        ];
+    }
 }
