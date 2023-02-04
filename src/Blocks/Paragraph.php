@@ -52,8 +52,6 @@ class Paragraph extends Block
      */
     public static function fake(\Faker\Generator $faker): array
     {
-        return [
-            'text' => $faker->text(256),
-        ];
+        return ['text' => $faker->text(256)];
     }
 }

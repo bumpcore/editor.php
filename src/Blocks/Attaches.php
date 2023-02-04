@@ -5,7 +5,6 @@ namespace BumpCore\EditorPhp\Blocks;
 use BumpCore\EditorPhp\Block\Block;
 use BumpCore\EditorPhp\Block\Field;
 use BumpCore\EditorPhp\Helpers;
-use Faker\Generator;
 use Illuminate\Support\Facades\View;
 
 class Attaches extends Block
@@ -50,7 +49,7 @@ class Attaches extends Block
      *
      * @return array
      */
-    public static function fake(Generator $faker): array
+    public static function fake(\Faker\Generator $faker): array
     {
         return [
             'title' => $faker->text(64),
