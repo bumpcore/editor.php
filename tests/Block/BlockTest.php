@@ -26,8 +26,8 @@ test(
 );
 
 test(
-	'Can be check data exists via has method',
-	fn() => expect(Paragraph::make(['text' => 'foo'])->has('text'))->toBeTrue()
+    'Can be check data exists via has method',
+    fn () => expect(Paragraph::make(['text' => 'foo'])->has('text'))->toBeTrue()
 );
 
 test(
