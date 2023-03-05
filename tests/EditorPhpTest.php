@@ -29,8 +29,7 @@ test(
 
 test(
     'Can register block',
-    function()
-    {
+    function() {
         EditorPhp::register(['p' => Paragraph::class]);
 
         expect(Parser::$blocks)->toHaveKey('p');
@@ -80,8 +79,7 @@ test(
 
 test(
     'Can add and use macro',
-    function($sample)
-    {
+    function($sample) {
         EditorPhp::macro(
             'getParagraphs',
             fn () => $this->blocks->filter(fn (Block $block) => $block instanceof Paragraph)
