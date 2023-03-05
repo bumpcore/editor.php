@@ -102,6 +102,18 @@ abstract class Block implements Arrayable, Htmlable, Renderable
     }
 
     /**
+     * Check if an item or items exist in the data.
+     *
+     * @param array|string $key
+     *
+     * @return bool
+     */
+    public function has(string|array $key): bool
+    {
+        return $this->data->has($key);
+    }
+
+    /**
      * Converts the `Block` as an array.
      *
      * @return array<string, array|string>

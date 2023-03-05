@@ -50,6 +50,11 @@ test(
 );
 
 test(
+    'Can be check data exists via has method',
+    fn () => expect((new Data(['foo' => 'bar'], [Field::make('foo', 'string')]))->has('bar'))->toBeFalse()
+);
+
+test(
     'Can be converted to array',
     fn () => expect((new Data(['foo' => 'bar'], [Field::make('foo', 'string')]))->toArray())->toBeArray(),
 );

@@ -26,6 +26,11 @@ test(
 );
 
 test(
+    'Can be check data exists via has method',
+    fn () => expect(Paragraph::make(['text' => 'foo'])->has('text'))->toBeTrue()
+);
+
+test(
     'Can be rendered',
     fn () => expect((new Paragraph(['text' => 'foo']))->render())->toBeString(),
 );
