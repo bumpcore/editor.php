@@ -41,12 +41,18 @@ test(
 
 test(
     'Can be set data by get method',
-    function() {
+    function()
+    {
         $data = new Data(['foo' => 'bar'], [Field::make('foo', 'string')]);
         $data->set('foo', 'baz');
 
         expect($data->get('foo'))->toEqual('baz');
     },
+);
+
+test(
+    'Can be check data exists via has method',
+    fn () => expect((new Data(['foo' => 'bar'], [Field::make('foo', 'string')]))->has('bar'))->toBeFalse()
 );
 
 test(

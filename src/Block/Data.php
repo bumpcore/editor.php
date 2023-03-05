@@ -85,6 +85,18 @@ class Data implements Arrayable
     }
 
     /**
+     * Check if an item or items exist in the data.
+     *
+     * @param array|string $key
+     *
+     * @return bool
+     */
+    public function has(string|array $key): bool
+    {
+        return Arr::has($this->validatedData, $key);
+    }
+
+    /**
      * Validates raw data.
      *
      * @return array<int|string, mixed>
