@@ -11,9 +11,12 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Traits\Macroable;
 
 class EditorPhp implements Arrayable, Jsonable, Responsable, Renderable, Htmlable
 {
+    use Macroable;
+
     /**
      * @var Carbon
      */

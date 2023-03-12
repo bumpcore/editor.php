@@ -1,9 +1,11 @@
 <?php
 
+use BumpCore\EditorPhp\Block\Block;
 use BumpCore\EditorPhp\Blocks\Paragraph;
 use BumpCore\EditorPhp\EditorPhp;
 use BumpCore\EditorPhp\Parser;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 test(
     'Can be initiated with make method',
@@ -74,3 +76,15 @@ test(
     'Can be generate fake data as json',
     fn () => expect(EditorPhp::fake(false))->toBeJson()
 );
+
+test(
+    'Can add and use macro',
+    function($sample) {
+        EditorPhp::macro(
+            'getParagraphs',
+            fn () => $this->blocks->filter(fn (Block $block) => $block instanceof Paragraph)
+        );
+
+        expect(EditorPhp::make($sample)->getParagraphs())->toBeInstanceOf(Collection::class);
+    }
+)->with('valid');
