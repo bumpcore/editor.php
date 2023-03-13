@@ -175,8 +175,7 @@ class Data implements Arrayable
      */
     protected function parseAllows(array $allows): array
     {
-        return Arr::map($allows, function(array|string $tags)
-        {
+        return Arr::map($allows, function(array|string $tags) {
             if ($tags === '*')
             {
                 return $tags;
