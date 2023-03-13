@@ -40,8 +40,7 @@ test(
 
 test(
     'Can be set data by get method',
-    function()
-    {
+    function() {
         $data = new Data(['foo' => 'bar'], '*', ['foo' => 'string']);
         $data->set('foo', 'baz');
 
@@ -61,8 +60,7 @@ test(
 
 test(
     'Can allow all tags',
-    function()
-    {
+    function() {
         $data = new Data(
             ['foo' => '<script>console.log("Hello!");</script> <div>This should be allowed!</div>'],
             '*',
@@ -76,8 +74,7 @@ test(
 
 test(
     'Can allow only anchor with href attribute',
-    function()
-    {
+    function() {
         $data = new Data(
             ['foo' => '<script>console.log("Hello!");</script> <div>This should be not allowed!</div> <a href="http//example.com" class="wowi">This should be allowed</a>'],
             ['foo' => ['a:href']],
@@ -93,8 +90,7 @@ test(
 
 test(
     'Can allow every tag for single field',
-    function()
-    {
+    function() {
         $data = new Data(
             ['foo' => '<script>console.log("Hello!");</script> <div>This should be not allowed!</div> <a href="http//example.com" class="wowi">This should be allowed</a>'],
             ['foo' => '*'],
@@ -109,8 +105,7 @@ test(
 
 test(
     'Can allow all attributes for tag',
-    function()
-    {
+    function() {
         $data = new Data(
             ['foo' => '<a href="http//example.com" class="wowi">This should be allowed</a>'],
             ['foo' => 'a:*'],

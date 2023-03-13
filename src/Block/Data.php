@@ -140,7 +140,7 @@ class Data implements Arrayable
                 }
 
                 $tags = array_keys($allow);
-				
+
                 $purified = Purifier::stripTags($value, $tags);
 
                 foreach ($tags as $tag)
@@ -172,8 +172,7 @@ class Data implements Arrayable
      */
     protected function parseAllows(array $allows): array
     {
-        return Arr::map($allows, function(array|string $tags)
-        {
+        return Arr::map($allows, function(array|string $tags) {
             if ($tags === '*')
             {
                 return $tags;
