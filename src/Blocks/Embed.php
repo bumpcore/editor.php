@@ -3,12 +3,26 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Block;
-use BumpCore\EditorPhp\Block\Field;
 use BumpCore\EditorPhp\Helpers;
 use Illuminate\Support\Facades\View;
 
 class Embed extends Block
 {
+    /**
+     * Tag allow list for purifying data.
+     *
+     * @return array|string
+     */
+    public function allows(): array|string
+    {
+        return [
+            'service' => [],
+            'source' => [],
+            'embed' => [],
+            'caption' => [],
+        ];
+    }
+
     /**
      * Rules to validate data of the block.
      *
@@ -17,12 +31,12 @@ class Embed extends Block
     public function rules(): array
     {
         return [
-            Field::make('service', 'string'),
-            Field::make('source', 'url'),
-            Field::make('embed', 'url'),
-            Field::make('width', 'numeric'),
-            Field::make('height', 'numeric'),
-            Field::make('caption', 'string'),
+            'service' => 'string',
+            'source' => 'url',
+            'embed' => 'url',
+            'width' => 'numeric',
+            'height' => 'numeric',
+            'caption' => 'string',
         ];
     }
 

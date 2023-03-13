@@ -3,12 +3,26 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Block;
-use BumpCore\EditorPhp\Block\Field;
 use BumpCore\EditorPhp\Helpers;
 use Illuminate\Support\Facades\View;
 
 class Attaches extends Block
 {
+    /**
+     * Tag allow list for purifying data.
+     *
+     * @return array|string
+     */
+    public function allows(): array|string
+    {
+        return [
+            'title' => [],
+            'file.url' => [],
+            'file.name' => [],
+            'file.extension' => [],
+        ];
+    }
+
     /**
      * Rules to validate data of the block.
      *
@@ -17,11 +31,11 @@ class Attaches extends Block
     public function rules(): array
     {
         return [
-            Field::make('title', 'string'),
-            Field::make('file.url', 'url'),
-            Field::make('file.size', 'numeric'),
-            Field::make('file.name', 'string'),
-            Field::make('file.extension', 'string'),
+            'title' => 'string',
+            'file.url' => 'url',
+            'file.size' => 'numeric',
+            'file.name' => 'string',
+            'file.extension' => 'string',
         ];
     }
 

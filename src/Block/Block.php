@@ -32,13 +32,6 @@ abstract class Block implements Arrayable, Htmlable, Renderable
     protected ?EditorPhp $root;
 
     /**
-     * Rules to validate data of the block.
-     *
-     * @return array<int, Field>
-     */
-    public abstract function rules(): array;
-
-    /**
      * Render's the block.
      *
      * @return string
@@ -70,7 +63,27 @@ abstract class Block implements Arrayable, Htmlable, Renderable
     {
         $this->type = array_flip(Parser::$blocks)[static::class];
         $this->root = $root;
-        $this->data = new Data($data, $this->rules());
+        $this->data = new Data($data, $this->allows(), $this->rules());
+    }
+
+    /**
+     * Tag allow list for purifying data.
+     *
+     * @return array|string
+     */
+    public function allows(): array|string
+    {
+        return '*';
+    }
+
+    /**
+     * Rules to validate data of the block.
+     *
+     * @return array<string, mixed>
+     */
+    public function rules(): array
+    {
+        return [];
     }
 
     /**

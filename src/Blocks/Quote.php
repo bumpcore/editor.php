@@ -3,13 +3,26 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Block;
-use BumpCore\EditorPhp\Block\Field;
 use BumpCore\EditorPhp\Helpers;
 use Illuminate\Support\Facades\View;
 use Illuminate\Validation\Rule;
 
 class Quote extends Block
 {
+    /**
+     * Tag allow list for purifying data.
+     *
+     * @return array|string
+     */
+    public function allows(): array
+    {
+        return [
+            'text' => [],
+            'caption' => [],
+            'alignment' => [],
+        ];
+    }
+
     /**
      * Rules to validate data of the block.
      *
@@ -18,9 +31,9 @@ class Quote extends Block
     public function rules(): array
     {
         return [
-            Field::make('text', 'string'),
-            Field::make('caption', 'string'),
-            Field::make('alignment', ['string', Rule::in(['left', 'center'])]),
+            'text' => 'string',
+            'caption' => 'string',
+            'alignment' => ['string', Rule::in(['left', 'center'])],
         ];
     }
 

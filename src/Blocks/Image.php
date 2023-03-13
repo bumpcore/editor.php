@@ -3,12 +3,24 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Block;
-use BumpCore\EditorPhp\Block\Field;
 use BumpCore\EditorPhp\Helpers;
 use Illuminate\Support\Facades\View;
 
 class Image extends Block
 {
+    /**
+     * Tag allow list for purifying data.
+     *
+     * @return array|string
+     */
+    public function allows(): array
+    {
+        return [
+            'file.url' => [],
+            'caption' => [],
+        ];
+    }
+
     /**
      * Rules to validate data of the block.
      *
@@ -17,11 +29,11 @@ class Image extends Block
     public function rules(): array
     {
         return [
-            Field::make('file.url', 'url'),
-            Field::make('caption', 'string'),
-            Field::make('withBorder', 'boolean'),
-            Field::make('stretched', 'boolean'),
-            Field::make('withBackground', 'boolean'),
+            'file.url' => 'url',
+            'caption' => 'string',
+            'withBorder' => 'boolean',
+            'stretched' => 'boolean',
+            'withBackground' => 'boolean',
         ];
     }
 

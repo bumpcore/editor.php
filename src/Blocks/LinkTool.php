@@ -3,12 +3,27 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Block;
-use BumpCore\EditorPhp\Block\Field;
 use BumpCore\EditorPhp\Helpers;
 use Illuminate\Support\Facades\View;
 
 class LinkTool extends Block
 {
+    /**
+     * Tag allow list for purifying data.
+     *
+     * @return array|string
+     */
+    public function allows(): array
+    {
+        return [
+            'link' => [],
+            'meta.title' => [],
+            'meta.site_name' => [],
+            'meta.description' => [],
+            'meta.image.url' => [],
+        ];
+    }
+
     /**
      * Rules to validate data of the block.
      *
@@ -17,11 +32,11 @@ class LinkTool extends Block
     public function rules(): array
     {
         return [
-            Field::make('link', 'url'),
-            Field::make('meta.title', 'string'),
-            Field::make('meta.site_name', 'string'),
-            Field::make('meta.description', 'string'),
-            Field::make('meta.image.url', 'url'),
+            'link' => 'url',
+            'meta.title' => 'string',
+            'meta.site_name' => 'string',
+            'meta.description' => 'string',
+            'meta.image.url' => 'url',
         ];
     }
 

@@ -3,13 +3,25 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Block;
-use BumpCore\EditorPhp\Block\Field;
 use BumpCore\EditorPhp\Helpers;
 use Illuminate\Support\Facades\View;
 use Illuminate\Validation\Rule;
 
 class ListBlock extends Block
 {
+    /**
+     * Tag allow list for purifying data.
+     *
+     * @return array|string
+     */
+    public function allows(): array
+    {
+        return [
+            'style' => [],
+            'item.*' => [],
+        ];
+    }
+
     /**
      * Rules to validate data of the block.
      *
@@ -18,9 +30,9 @@ class ListBlock extends Block
     public function rules(): array
     {
         return [
-            Field::make('style', ['string', Rule::in(['ordered', 'unordered'])]),
-            Field::make('items', 'array'),
-            Field::make('item.*', 'string'),
+            'style' => ['string', Rule::in(['ordered', 'unordered'])],
+            'items' => 'array',
+            'item.*' => 'string',
         ];
     }
 
