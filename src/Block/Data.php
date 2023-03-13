@@ -20,6 +20,7 @@ class Data implements Arrayable
      * Constructor.
      *
      * @param array $data
+     * @param array|string $allows
      * @param array $rules
      *
      * @return void
@@ -104,6 +105,7 @@ class Data implements Arrayable
      * Purifies validated data.
      *
      * @param array $data
+     * @param array|string $allows
      *
      * @return array<int|string, mixed>
      */
@@ -125,6 +127,7 @@ class Data implements Arrayable
                 continue;
             }
 
+            // Find matching key E.g. `content*.*.text` = `content.1.5.text`
             $allow = Arr::first(Arr::where(
                 $allows,
                 // Below regex taken from `https://github.com/laravel/framework/blob/46ac3ec77ed4b07e3c6e47f97979822696bb7f1d/src/Illuminate/Validation/ValidationData.php#L57`
@@ -172,7 +175,8 @@ class Data implements Arrayable
      */
     protected function parseAllows(array $allows): array
     {
-        return Arr::map($allows, function(array|string $tags) {
+        return Arr::map($allows, function(array|string $tags)
+        {
             if ($tags === '*')
             {
                 return $tags;

@@ -9,7 +9,7 @@ class Raw extends Block
     /**
      * Tag allow list for purifying data.
      *
-     * @return array<array<string, string>|string>|string
+     * @return array|string
      */
     public function allows(): array
     {
