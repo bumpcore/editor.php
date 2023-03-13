@@ -3,12 +3,45 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Block;
-use BumpCore\EditorPhp\Block\Field;
 use BumpCore\EditorPhp\Helpers;
 use Illuminate\Support\Facades\View;
 
 class Paragraph extends Block
 {
+    /**
+     * Tag allow list for purifying data.
+     *
+     * @return array<array<string, string>|string>|string
+     */
+    public function allows(): array
+    {
+        return [
+            'text' => [
+                'a:href,target,title',
+                'abbr:title',
+                'b',
+                'cite',
+                'code',
+                'em',
+                'i',
+                'kbd',
+                'q',
+                'samp',
+                'small',
+                'strong',
+                'sub',
+                'sup',
+                'time:datetime',
+                'var',
+                'u',
+                's',
+                'del',
+                'ins',
+                'strike',
+            ],
+        ];
+    }
+
     /**
      * Rules to validate data of the block.
      *
@@ -17,12 +50,7 @@ class Paragraph extends Block
     public function rules(): array
     {
         return [
-            Field::make('text', 'string')
-                ->allow('mark')
-                ->allow('b')
-                ->allow('strong')
-                ->allow('code')
-                ->allow('a', 'href'),
+            'text' => 'string',
         ];
     }
 

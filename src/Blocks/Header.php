@@ -3,12 +3,23 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Block;
-use BumpCore\EditorPhp\Block\Field;
 use BumpCore\EditorPhp\Helpers;
 use Illuminate\Support\Facades\View;
 
 class Header extends Block
 {
+    /**
+     * Tag allow list for purifying data.
+     *
+     * @return array<array<string, string>|string>|string
+     */
+    public function allows(): array
+    {
+        return [
+            'text' => [],
+        ];
+    }
+
     /**
      * Rules to validate data of the block.
      *
@@ -17,8 +28,8 @@ class Header extends Block
     public function rules(): array
     {
         return [
-            Field::make('text', 'string'),
-            Field::make('level', 'integer|min:1|max:6'),
+            'text' => 'string',
+            'level' => 'integer|min:1|max:6',
         ];
     }
 

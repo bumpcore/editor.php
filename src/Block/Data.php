@@ -10,25 +10,11 @@ use Illuminate\Support\Arr;
 class Data implements Arrayable
 {
     /**
-     * Raw data to  handle.
-     *
-     * @var array<int|string, mixed>
-     */
-    protected array $data;
-
-    /**
      * Validated data to work with.
      *
      * @var array<int|string, mixed>
      */
-    protected array $validatedData;
-
-    /**
-     * Rules to validate raw data.
-     *
-     * @var array<int, Field>
-     */
-    protected array $rules;
+    protected array $data;
 
     /**
      * Constructor.
@@ -38,11 +24,12 @@ class Data implements Arrayable
      *
      * @return void
      */
-    public function __construct(array $data = [], array $rules = [])
+    public function __construct(array $data = [], array|string $allows = '*', array $rules = [])
     {
-        $this->data = $data;
-        $this->rules = $rules;
-        $this->validatedData = $this->purify($this->validate());
+        $this->data = $this->purify(
+            $this->validate($data, $rules),
+            $allows,
+        );
     }
 
     /**
@@ -68,7 +55,7 @@ class Data implements Arrayable
      */
     public function get(string $key, mixed $default = null): mixed
     {
-        return Arr::get($this->validatedData, $key, $default);
+        return Arr::get($this->data, $key, $default);
     }
 
     /**
@@ -81,7 +68,7 @@ class Data implements Arrayable
      */
     public function set(string $key, mixed $value): void
     {
-        Arr::set($this->validatedData, $key, $value);
+        Arr::set($this->data, $key, $value);
     }
 
     /**
@@ -93,7 +80,7 @@ class Data implements Arrayable
      */
     public function has(string|array $key): bool
     {
-        return Arr::has($this->validatedData, $key);
+        return Arr::has($this->data, $key);
     }
 
     /**
@@ -101,9 +88,9 @@ class Data implements Arrayable
      *
      * @return array<int|string, mixed>
      */
-    protected function validate(): array
+    protected function validate(array $data, array $rules): array
     {
-        $validator = Helpers::makeValidator($this->data, $this->mapRules());
+        $validator = Helpers::makeValidator($data, $rules);
 
         if ($validator->fails())
         {
@@ -116,69 +103,104 @@ class Data implements Arrayable
     /**
      * Purifies validated data.
      *
-     * @param array $validatedData
+     * @param array $data
      *
      * @return array<int|string, mixed>
      */
-    protected function purify(array $validatedData)
+    protected function purify(array $data, array|string $allows)
     {
-        $allows = $this->mapAllows();
-        $data = Arr::dot($validatedData);
-
-        foreach ($validatedData as $name => $data)
+        // Allows all tags and attributes for all fields.
+        if ($allows === '*')
         {
-            if (key_exists($name, $allows))
+            return $data;
+        }
+
+        $allows = $this->parseAllows($allows);
+        $data = Arr::dot($data);
+
+        foreach ($data as $key => $value)
+        {
+            if (!is_string($value))
             {
-                $tags = array_keys($allows[$name]);
-                $data = Purifier::stripTags($data, $tags);
+                continue;
+            }
+
+            $allow = Arr::first(Arr::where(
+                $allows,
+                // Below regex taken from `https://github.com/laravel/framework/blob/46ac3ec77ed4b07e3c6e47f97979822696bb7f1d/src/Illuminate/Validation/ValidationData.php#L57`
+                fn ($tags, $attribute) => (bool) preg_match('/^' . str_replace('\*', '[^\.]+', preg_quote($attribute)) . '/', $key, $matches)
+            ));
+
+            if ($allow)
+            {
+                // Allows all tags and attributes for field.
+                if ($allow === '*')
+                {
+                    continue;
+                }
+
+                $tags = array_keys($allow);
+				
+                $purified = Purifier::stripTags($value, $tags);
 
                 foreach ($tags as $tag)
                 {
-                    $data = Purifier::stripAttributes($data, $tag, $allows[$name][$tag]);
+                    $attributes = $allow[$tag];
+
+                    // Allows all attributes.
+                    if (Arr::first($attributes) === '*')
+                    {
+                        continue;
+                    }
+
+                    $purified = Purifier::stripAttributes($purified, $tag, $attributes);
                 }
+
+                $data[$key] = $purified;
             }
-
-            Arr::set($validatedData, $name, $data);
         }
 
-        return $validatedData;
+        return Arr::undot($data);
     }
 
     /**
-     * Maps `Field` array to key value array for rules.
+     * Parses following syntax: `a:href,class,title`.
      *
-     * @return array<string, array|string>
-     */
-    protected function mapRules()
-    {
-        $mapped = [];
-
-        foreach ($this->rules as $rule)
-        {
-            $mapped[$rule->getName()] = $rule->getRules();
-        }
-
-        return $mapped;
-    }
-
-    /**
-     * Maps `Field` array to key value array for tags.
+     * @param array $allows
      *
-     * @return array<string, array>
+     * @return array
      */
-    protected function mapAllows()
+    protected function parseAllows(array $allows): array
     {
-        $mapped = [];
-
-        foreach ($this->rules as $rule)
+        return Arr::map($allows, function(array|string $tags)
         {
-            if (!empty($allow = $rule->getAllow()))
+            if ($tags === '*')
             {
-                $mapped[$rule->getName()] = $allow;
+                return $tags;
             }
-        }
 
-        return $mapped;
+            $tags = Arr::wrap($tags);
+
+            $parsed = [];
+
+            foreach ($tags as $allow)
+            {
+                $allow = explode(':', $allow);
+
+                // First key is tag.
+                $tag = Arr::first(array_slice($allow, 0, 1));
+
+                // Second key is attributes.
+                $attributes = array_filter(explode(
+                    ',',
+                    Arr::first(array_slice($allow, 1, 2), null, '')
+                ));
+
+                $parsed[$tag] = $attributes;
+            }
+
+            return $parsed;
+        });
     }
 
     /**
@@ -188,6 +210,6 @@ class Data implements Arrayable
      */
     public function toArray(): array
     {
-        return $this->validatedData;
+        return $this->data;
     }
 }

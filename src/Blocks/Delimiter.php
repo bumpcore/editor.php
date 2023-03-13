@@ -9,6 +9,16 @@ use Illuminate\Support\Facades\View;
 class Delimiter extends Block
 {
     /**
+     * Tag allow list for purifying data.
+     *
+     * @return array<array<string, string>|string>|string
+     */
+    public function allows(): array|string
+    {
+        return '*';
+    }
+
+    /**
      * Rules to validate data of the block.
      *
      * @return array

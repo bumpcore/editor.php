@@ -3,12 +3,26 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Block;
-use BumpCore\EditorPhp\Block\Field;
 use BumpCore\EditorPhp\Helpers;
 use Illuminate\Support\Facades\View;
 
 class Personality extends Block
 {
+    /**
+     * Tag allow list for purifying data.
+     *
+     * @return array<array<string, string>|string>|string
+     */
+    public function allows(): array
+    {
+        return [
+            'name' => [],
+            'description' => [],
+            'link' => [],
+            'photo' => [],
+        ];
+    }
+
     /**
      * Rules to validate data of the block.
      *
@@ -17,10 +31,10 @@ class Personality extends Block
     public function rules(): array
     {
         return [
-            Field::make('name', 'string'),
-            Field::make('description', 'string'),
-            Field::make('link', 'url'),
-            Field::make('photo', 'url'),
+            'name' => 'string',
+            'description' => 'string',
+            'link' => 'url',
+            'photo' => 'url',
         ];
     }
 
