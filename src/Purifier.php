@@ -10,11 +10,11 @@ class Purifier
      * Strips unwanted tags from given string.
      *
      * @param string $string
-     * @param array $allowedTags
+     * @param array<string> $allowedTags
      *
      * @return string
      */
-    public static function stripTags(string $string, array $allowedTags = [])
+    public static function stripTags(string $string, array $allowedTags = []): string
     {
         return strip_tags($string, $allowedTags);
     }
@@ -24,11 +24,11 @@ class Purifier
      *
      * @param string $string
      * @param string $tag
-     * @param array $allowedAttributes
+     * @param array<string> $allowedAttributes
      *
-     * @return array|false|string
+     * @return string
      */
-    public static function stripAttributes(string $string, string $tag, array $allowedAttributes = [])
+    public static function stripAttributes(string $string, string $tag, array $allowedAttributes = []): string
     {
         $domDocument = new DOMDocument();
         libxml_use_internal_errors(true);

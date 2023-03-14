@@ -13,7 +13,7 @@ class Image extends Block
      *
      * @return array|string
      */
-    public function allows(): array
+    public function allows(): array|string
     {
         return [
             'file.url' => [],
@@ -57,7 +57,7 @@ class Image extends Block
     /**
      * Generates fake data for the block.
      *
-     * @param Generator $faker
+     * @param \Faker\Generator $faker
      *
      * @return array
      */

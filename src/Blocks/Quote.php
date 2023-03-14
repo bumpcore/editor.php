@@ -14,7 +14,7 @@ class Quote extends Block
      *
      * @return array|string
      */
-    public function allows(): array
+    public function allows(): array|string
     {
         return [
             'text' => [],
@@ -57,7 +57,7 @@ class Quote extends Block
     /**
      * Generates fake data for the block.
      *
-     * @param Generator $faker
+     * @param \Faker\Generator $faker
      *
      * @return array
      */

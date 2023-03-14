@@ -48,7 +48,7 @@ class Delimiter extends Block
     /**
      * Generates fake data for the block.
      *
-     * @param Generator $faker
+     * @param \Faker\Generator $faker
      *
      * @return array
      */
