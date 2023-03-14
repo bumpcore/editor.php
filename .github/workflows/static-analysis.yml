@@ -9,9 +9,8 @@ on:
   pull_request:
 
 jobs:
-  types:
-    runs-on: ubuntu-22.04
-
+  run:
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: true
 
