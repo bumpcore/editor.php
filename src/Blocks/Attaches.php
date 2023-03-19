@@ -3,6 +3,7 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Block;
+use BumpCore\EditorPhp\EditorPhp;
 use BumpCore\EditorPhp\Helpers;
 use Illuminate\Support\Facades\View;
 
@@ -48,12 +49,12 @@ class Attaches extends Block
     {
         if (View::getFacadeRoot())
         {
-            return view('editor.php::attaches')
+            return view(sprintf('editor.php::%s.attaches', EditorPhp::usingTemplate()))
                 ->with(['data' => $this->data])
                 ->render();
         }
 
-        return Helpers::renderNative(__DIR__ . '/../../resources/php/attaches.php', ['data' => $this->data]);
+        return Helpers::renderNative(__DIR__ . sprintf('/../../resources/php/%s/attaches.php', EditorPhp::usingTemplate()), ['data' => $this->data]);
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Block;
+use BumpCore\EditorPhp\EditorPhp;
 use BumpCore\EditorPhp\Helpers;
 use Illuminate\Support\Facades\View;
 
@@ -41,12 +42,12 @@ class Code extends Block
     {
         if (View::getFacadeRoot())
         {
-            return view('editor.php::code')
+            return view(sprintf('editor.php::%s.code', EditorPhp::usingTemplate()))
                 ->with(['data' => $this->data])
                 ->render();
         }
 
-        return Helpers::renderNative(__DIR__ . '/../../resources/php/code.php', ['data' => $this->data]);
+        return Helpers::renderNative(__DIR__ . sprintf('/../../resources/php/%s/code.php', EditorPhp::usingTemplate()), ['data' => $this->data]);
     }
 
     /**

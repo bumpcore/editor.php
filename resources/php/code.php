@@ -1,1 +1,0 @@
-<pre><?= $data('code'); ?></pre>

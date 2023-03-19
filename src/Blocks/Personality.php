@@ -3,6 +3,7 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Block;
+use BumpCore\EditorPhp\EditorPhp;
 use BumpCore\EditorPhp\Helpers;
 use Illuminate\Support\Facades\View;
 
@@ -47,12 +48,12 @@ class Personality extends Block
     {
         if (View::getFacadeRoot())
         {
-            return view('editor.php::personality')
+            return view(sprintf('editor.php::%s.personality', EditorPhp::usingTemplate()))
                 ->with(['data' => $this->data])
                 ->render();
         }
 
-        return Helpers::renderNative(__DIR__ . '/../../resources/php/personality.php', ['data' => $this->data]);
+        return Helpers::renderNative(__DIR__ . sprintf('/../../resources/php/%s/personality.php', EditorPhp::usingTemplate()), ['data' => $this->data]);
     }
 
     /**

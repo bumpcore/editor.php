@@ -3,6 +3,7 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Block;
+use BumpCore\EditorPhp\EditorPhp;
 use BumpCore\EditorPhp\Helpers;
 use Illuminate\Support\Facades\View;
 use Illuminate\Validation\Rule;
@@ -46,12 +47,12 @@ class Quote extends Block
     {
         if (View::getFacadeRoot())
         {
-            return view('editor.php::quote')
+            return view(sprintf('editor.php::%s.quote', EditorPhp::usingTemplate()))
                 ->with(['data' => $this->data])
                 ->render();
         }
 
-        return Helpers::renderNative(__DIR__ . '/../../resources/php/quote.php', ['data' => $this->data]);
+        return Helpers::renderNative(__DIR__ . sprintf('/../../resources/php/%s/quote.php', EditorPhp::usingTemplate()), ['data' => $this->data]);
     }
 
     /**

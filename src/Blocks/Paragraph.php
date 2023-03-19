@@ -3,6 +3,7 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Block;
+use BumpCore\EditorPhp\EditorPhp;
 use BumpCore\EditorPhp\Helpers;
 use Illuminate\Support\Facades\View;
 
@@ -38,6 +39,7 @@ class Paragraph extends Block
                 'del',
                 'ins',
                 'strike',
+                'mark',
             ],
         ];
     }
@@ -63,12 +65,12 @@ class Paragraph extends Block
     {
         if (View::getFacadeRoot())
         {
-            return view('editor.php::paragraph')
+            return view(sprintf('editor.php::%s.paragraph', EditorPhp::usingTemplate()))
                 ->with(['data' => $this->data])
                 ->render();
         }
 
-        return Helpers::renderNative(__DIR__ . '/../../resources/php/paragraph.php', ['data' => $this->data]);
+        return Helpers::renderNative(__DIR__ . sprintf('/../../resources/php/%s/paragraph.php', EditorPhp::usingTemplate()), ['data' => $this->data]);
     }
 
     /**
