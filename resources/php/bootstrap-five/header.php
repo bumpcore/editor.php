@@ -22,4 +22,3 @@ case 6: ?>
         <h6 class="fw-semibold mb-1"><?= $data('text'); ?></h6>
 	<?php break; ?>
 <?php endswitch; ?>
-
