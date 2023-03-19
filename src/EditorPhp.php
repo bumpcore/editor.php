@@ -17,6 +17,8 @@ class EditorPhp implements Arrayable, Jsonable, Responsable, Renderable, Htmlabl
 {
     use Macroable;
 
+    protected static string $template = 'tailwind';
+
     /**
      * @var Carbon
      */
@@ -103,6 +105,21 @@ class EditorPhp implements Arrayable, Jsonable, Responsable, Renderable, Htmlabl
         }
 
         return $this;
+    }
+
+    public static function useBootstrapFive(): void
+    {
+        static::$template = 'bootstrap-5';
+    }
+
+    public static function useTailwind(): void
+    {
+        static::$template = 'tailwind';
+    }
+
+    public static function uses(): string
+    {
+        return static::$template;
     }
 
     /**

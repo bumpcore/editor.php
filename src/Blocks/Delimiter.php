@@ -3,6 +3,7 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Block;
+use BumpCore\EditorPhp\EditorPhp;
 use BumpCore\EditorPhp\Helpers;
 use Illuminate\Support\Facades\View;
 
@@ -37,12 +38,12 @@ class Delimiter extends Block
     {
         if (View::getFacadeRoot())
         {
-            return view('editor.php::delimiter')
+            return view(sprintf('editor.php::%s.delimiter', EditorPhp::uses()))
                 ->with(['data' => $this->data])
                 ->render();
         }
 
-        return Helpers::renderNative(__DIR__ . '/../../resources/php/delimiter.php', ['data' => $this->data]);
+        return Helpers::renderNative(__DIR__ . sprintf('/../../resources/php/%s/delimiter.php', EditorPhp::uses()), ['data' => $this->data]);
     }
 
     /**

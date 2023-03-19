@@ -4,6 +4,7 @@ namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Block;
 use BumpCore\EditorPhp\Block\Data;
+use BumpCore\EditorPhp\EditorPhp;
 use BumpCore\EditorPhp\Helpers;
 use Illuminate\Support\Facades\View;
 
@@ -45,12 +46,12 @@ class Table extends Block
     {
         if (View::getFacadeRoot())
         {
-            return view('editor.php::table')
+            return view(sprintf('editor.php::%s.table', EditorPhp::uses()))
                 ->with(['data' => $this->data])
                 ->render();
         }
 
-        return Helpers::renderNative(__DIR__ . '/../../resources/php/table.php', ['data' => $this->data]);
+        return Helpers::renderNative(__DIR__ . sprintf('/../../resources/php/%s/table.php', EditorPhp::uses()), ['data' => $this->data]);
     }
 
     /**

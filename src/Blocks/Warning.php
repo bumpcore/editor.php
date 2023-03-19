@@ -3,6 +3,7 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Block;
+use BumpCore\EditorPhp\EditorPhp;
 use BumpCore\EditorPhp\Helpers;
 use Illuminate\Support\Facades\View;
 
@@ -43,12 +44,12 @@ class Warning extends Block
     {
         if (View::getFacadeRoot())
         {
-            return view('editor.php::warning')
+            return view(sprintf('editor.php::%s.warning', EditorPhp::uses()))
                 ->with(['data' => $this->data])
                 ->render();
         }
 
-        return Helpers::renderNative(__DIR__ . '/../../resources/php/warning.php', ['data' => $this->data]);
+        return Helpers::renderNative(__DIR__ . sprintf('/../../resources/php/%s/warning.php', EditorPhp::uses()), ['data' => $this->data]);
     }
 
     /**
