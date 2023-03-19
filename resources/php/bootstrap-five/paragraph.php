@@ -1,1 +1,1 @@
-<p class="mb-3"><?= $data('text') ?></p>
+<p class="mb-3"><?= $data('text'); ?></p>

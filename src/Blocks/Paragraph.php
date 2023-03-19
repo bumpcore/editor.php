@@ -39,7 +39,7 @@ class Paragraph extends Block
                 'del',
                 'ins',
                 'strike',
-				'mark'
+                'mark',
             ],
         ];
     }
