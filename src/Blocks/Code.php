@@ -42,12 +42,12 @@ class Code extends Block
     {
         if (View::getFacadeRoot())
         {
-            return view(sprintf('editor.php::%s.code', EditorPhp::uses()))
+            return view(sprintf('editor.php::%s.code', EditorPhp::usingTemplate()))
                 ->with(['data' => $this->data])
                 ->render();
         }
 
-        return Helpers::renderNative(__DIR__ . sprintf('/../../resources/php/%s/code.php', EditorPhp::uses()), ['data' => $this->data]);
+        return Helpers::renderNative(__DIR__ . sprintf('/../../resources/php/%s/code.php', EditorPhp::usingTemplate()), ['data' => $this->data]);
     }
 
     /**

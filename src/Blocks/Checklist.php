@@ -45,12 +45,12 @@ class Checklist extends Block
     {
         if (View::getFacadeRoot())
         {
-            return view(sprintf('editor.php::%s.checklist', EditorPhp::uses()))
+            return view(sprintf('editor.php::%s.checklist', EditorPhp::usingTemplate()))
                 ->with(['data' => $this->data])
                 ->render();
         }
 
-        return Helpers::renderNative(__DIR__ . sprintf('/../../resources/php/%s/checklist.php', EditorPhp::uses()), ['data' => $this->data]);
+        return Helpers::renderNative(__DIR__ . sprintf('/../../resources/php/%s/checklist.php', EditorPhp::usingTemplate()), ['data' => $this->data]);
     }
 
     /**

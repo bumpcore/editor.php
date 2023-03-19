@@ -47,12 +47,12 @@ class Image extends Block
     {
         if (View::getFacadeRoot())
         {
-            return view(sprintf('editor.php::%s.image', EditorPhp::uses()))
+            return view(sprintf('editor.php::%s.image', EditorPhp::usingTemplate()))
                 ->with(['data' => $this->data])
                 ->render();
         }
 
-        return Helpers::renderNative(__DIR__ . sprintf('/../../resources/php/%s/image.php', EditorPhp::uses()), ['data' => $this->data]);
+        return Helpers::renderNative(__DIR__ . sprintf('/../../resources/php/%s/image.php', EditorPhp::usingTemplate()), ['data' => $this->data]);
     }
 
     /**

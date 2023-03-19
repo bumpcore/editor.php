@@ -44,12 +44,12 @@ class Warning extends Block
     {
         if (View::getFacadeRoot())
         {
-            return view(sprintf('editor.php::%s.warning', EditorPhp::uses()))
+            return view(sprintf('editor.php::%s.warning', EditorPhp::usingTemplate()))
                 ->with(['data' => $this->data])
                 ->render();
         }
 
-        return Helpers::renderNative(__DIR__ . sprintf('/../../resources/php/%s/warning.php', EditorPhp::uses()), ['data' => $this->data]);
+        return Helpers::renderNative(__DIR__ . sprintf('/../../resources/php/%s/warning.php', EditorPhp::usingTemplate()), ['data' => $this->data]);
     }
 
     /**

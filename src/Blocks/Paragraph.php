@@ -39,6 +39,7 @@ class Paragraph extends Block
                 'del',
                 'ins',
                 'strike',
+				'mark'
             ],
         ];
     }
@@ -64,12 +65,12 @@ class Paragraph extends Block
     {
         if (View::getFacadeRoot())
         {
-            return view(sprintf('editor.php::%s.paragraph', EditorPhp::uses()))
+            return view(sprintf('editor.php::%s.paragraph', EditorPhp::usingTemplate()))
                 ->with(['data' => $this->data])
                 ->render();
         }
 
-        return Helpers::renderNative(__DIR__ . sprintf('/../../resources/php/%s/paragraph.php', EditorPhp::uses()), ['data' => $this->data]);
+        return Helpers::renderNative(__DIR__ . sprintf('/../../resources/php/%s/paragraph.php', EditorPhp::usingTemplate()), ['data' => $this->data]);
     }
 
     /**

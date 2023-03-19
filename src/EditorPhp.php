@@ -17,6 +17,11 @@ class EditorPhp implements Arrayable, Jsonable, Responsable, Renderable, Htmlabl
 {
     use Macroable;
 
+    /**
+     * Used template.
+     *
+     * @var string
+     */
     protected static string $template = 'tailwind';
 
     /**
@@ -107,17 +112,32 @@ class EditorPhp implements Arrayable, Jsonable, Responsable, Renderable, Htmlabl
         return $this;
     }
 
+    /**
+     * Renders with `Bootstrap 5` templates.
+     *
+     * @return void
+     */
     public static function useBootstrapFive(): void
     {
         static::$template = 'bootstrap-five';
     }
 
+    /**
+     * Renders with `tailwindcss` templates.
+     *
+     * @return void
+     */
     public static function useTailwind(): void
     {
         static::$template = 'tailwind';
     }
 
-    public static function uses(): string
+    /**
+     * Returns used template.
+     *
+     * @return string
+     */
+    public static function usingTemplate(): string
     {
         return static::$template;
     }
