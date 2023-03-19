@@ -109,7 +109,7 @@ class EditorPhp implements Arrayable, Jsonable, Responsable, Renderable, Htmlabl
 
     public static function useBootstrapFive(): void
     {
-        static::$template = 'bootstrap-5';
+        static::$template = 'bootstrap-five';
     }
 
     public static function useTailwind(): void

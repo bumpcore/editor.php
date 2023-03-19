@@ -1,13 +1,13 @@
 @if ($data('style') === 'ordered')
-    <ol>
+    <ol class="mb-3">
         @foreach ($data('items', []) as $item)
-            <li>{!! $item !!}</li>
+            <li class="mb-1">{!! $item !!}</li>
         @endforeach
     </ol>
 @else
-    <ul>
+    <ul class="mb-3">
         @foreach ($data('items', []) as $item)
-            <li>{!! $item !!}</li>
+            <li class="mb-1">{!! $item !!}</li>
         @endforeach
     </ul>
 @endif

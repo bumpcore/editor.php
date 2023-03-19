@@ -1,5 +1,5 @@
 <img
     alt="{!! $data('caption') !!}"
     src="{!! $data('file.url') !!}"
-    style="display: block;"
+    class="d-block mb-3 w-100 rounded"
 >
