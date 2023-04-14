@@ -11,7 +11,7 @@
         @endif
 
         <tbody>
-            @foreach ($data('content', []) as $row)
+            @foreach ($data('content', []) as $index => $row)
                 @if ($data('withHeadings') && array_key_first($data('content')) === $index)
                     @continue
                 @endif
