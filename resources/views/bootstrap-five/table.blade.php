@@ -12,7 +12,7 @@
 
         <tbody>
             @foreach ($data('content', []) as $row)
-                @if ($data('withHeadings') && $loop->first)
+                @if ($data('withHeadings') && array_key_first($data('content')) === $index)
                     @continue
                 @endif
 
