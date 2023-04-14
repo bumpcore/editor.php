@@ -1,7 +1,7 @@
 <ul class="flex flex-col items-start pl-8 gap-1 mb-4">
     <?php foreach($data('items', []) as $item): ?>
         <li class="inline-flex justify-center items-center gap-2">
-            <span class="bg-gray-100 rounded-full <?php echo $item['checked'] ? 'text-gray-700' : 'text-gray-400'; ?>">
+            <span class="bg-gray-100 rounded-full <?= $item['checked'] ? 'text-gray-700' : 'text-gray-400'; ?>">
                 <svg
                     class="bi bi-check"
                     fill="currentColor"
@@ -17,9 +17,9 @@
             </span>
 
             <?php if($item['checked']): ?>
-                <del><?php echo $item['text']; ?></del>
+                <del><?= $item['text']; ?></del>
             <?php else: ?>
-                <span><?php echo $item['text']; ?></span>
+                <span><?= $item['text']; ?></span>
             <?php endif; ?>
         </li>
     <?php endforeach; ?>

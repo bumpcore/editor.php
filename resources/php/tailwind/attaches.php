@@ -1,13 +1,13 @@
 <div class="rounded-xl flex gap-4 mb-4">
-    <div class="bg-gray-100 uppercase font-black p-4 rounded-xl"><?php echo $data('file.extension'); ?></div>
+    <div class="bg-gray-100 uppercase font-black p-4 rounded-xl"><?= $data('file.extension'); ?></div>
     <div>
         <p class="text-lg font-bold">
             <a
                 class="hover:text-gray-600 gap-1 flex justify-center items-center"
-                href="<?php echo $data('file.url'); ?>"
+                href="<?= $data('file.url'); ?>"
                 target="_blank"
             >
-                <span><?php echo $data('title') ?? $data('file.name'); ?></span>
+                <span><?= $data('title') ?? $data('file.name'); ?></span>
                 <svg
                     class="inline"
                     fill="currentColor"
@@ -27,6 +27,6 @@
                 </svg>
             </a>
         </p>
-        <p class="text-xs font-semibold text-gray-600"><?php echo number_format($data('file.size') * 0.000001, 2); ?>MiB</p>
+        <p class="text-xs font-semibold text-gray-600"><?= number_format($data('file.size') * 0.000001, 2); ?>MiB</p>
     </div>
 </div>
