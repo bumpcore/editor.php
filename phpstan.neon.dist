@@ -13,4 +13,5 @@ parameters:
 		- "#Undefined variable: \\$this#"
 		- "#Call to an undefined method BumpCore\\\\EditorPhp\\\\EditorPhp::getParagraphs\\(\\).#"
 		- "#Variable \\$data might not be defined.#"
+		- "#Unreachable statement - code above always terminates.#"
 	reportUnmatchedIgnoredErrors: false
