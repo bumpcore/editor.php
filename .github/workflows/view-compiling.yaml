@@ -15,7 +15,7 @@ on:
 permissions:
   contents: write
 jobs:
-  php-cs-fixer:
+  run:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
