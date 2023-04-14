@@ -1,4 +1,4 @@
-name: Fix syling
+name: View Compiling
 
 on:
   push:
@@ -26,9 +26,9 @@ jobs:
     - name: Install dependencies
       run: composer install
 
-    - name: Execute php-cs-fixer
-      run: ./vendor/bin/php-cs-fixer fix
+    - name: Execute script
+      run: php ../scripts/compile-templates.php
 
     - uses: stefanzweifel/git-auto-commit-action@v4
       with:
-        commit_message: Fix styling
+        commit_message: Compiling Templates

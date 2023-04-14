@@ -1,13 +1,13 @@
-<?php if ($data('style') === 'ordered'): ?>
+<?php if($data('style') === 'ordered'): ?>
     <ol class="mb-3">
-		<?php foreach ($data('items', []) as $item): ?>
+        <?php foreach($data('items', []) as $item): ?>
             <li class="mb-1"><?= $item; ?></li>
-		<?php endforeach; ?>
+        <?php endforeach; ?>
     </ol>
 <?php else: ?>
     <ul class="mb-3">
-		<?php foreach ($data('items', []) as $item): ?>
+        <?php foreach($data('items', []) as $item): ?>
             <li class="mb-1"><?= $item; ?></li>
-		<?php endforeach; ?>
+        <?php endforeach; ?>
     </ul>
 <?php endif; ?>

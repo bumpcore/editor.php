@@ -2,7 +2,7 @@
     class="d-flex flex-column align-items-start pl-8 gap-1 mb-3"
     style="list-style: none"
 >
-<?php foreach ($data('items', []) as $item): ?>
+    <?php foreach($data('items', []) as $item): ?>
         <li class="inline-flex justify-center align-items-center gap-2">
             <span class="bg-light rounded-circle <?= $item['checked'] ? 'text-secondary' : 'text-black'; ?>">
                 <svg
@@ -24,5 +24,5 @@
                 <span><?= $item['text']; ?></span>
             <?php endif; ?>
         </li>
-	<?php endforeach; ?>
+    <?php endforeach; ?>
 </div>

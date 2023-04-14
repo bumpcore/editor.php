@@ -9,6 +9,7 @@
 
     <p class="bg-white p-4 rounded-xl mb-1">
         <?= $data('caption'); ?>
+
     </p>
 
     <p>
