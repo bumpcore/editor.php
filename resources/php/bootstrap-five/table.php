@@ -12,7 +12,7 @@
 
         <tbody>
             <?php foreach($data('content', []) as $row): ?>
-                <?php if($data('withHeadings') && $loop->first): ?>
+                <?php if($data('withHeadings') && array_key_first($data('content')) === $index): ?>
                     <?php continue; ?>
                 <?php endif; ?>
 
