@@ -4,7 +4,7 @@
 >
     @foreach ($data('items', []) as $item)
         <li class="inline-flex justify-center align-items-center gap-2">
-            <span class="bg-light rounded-circle {{ $item['checked'] ? 'text-secondary' : 'text-black' }}">
+            <span class="bg-light rounded-circle {!! $item['checked'] ? 'text-secondary' : 'text-black' !!}">
                 <svg
                     fill="currentColor"
                     height="24"
@@ -19,9 +19,9 @@
             </span>
 
             @if ($item['checked'])
-                <del>{{ $item['text'] }}</del>
+                <del>{!! $item['text'] !!}</del>
             @else
-                <span>{{ $item['text'] }}</span>
+                <span>{!! $item['text'] !!}</span>
             @endif
         </li>
     @endforeach

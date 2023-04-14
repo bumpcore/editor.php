@@ -1,8 +1,8 @@
 <div class="bg-light d-flex mb-3 rounded overflow-hidden flex-column flex-sm-row">
     <img
-        alt="{{ $data('meta.title') }}"
+        alt="{!! $data('meta.title') !!}"
         width="100%"
-        src="{{ $data('meta.image.url') }}"
+        src="{!! $data('meta.image.url') !!}"
 		style="object-fit: cover"
     >
     <div class="m-4 p-4 bg-white rounded flex-2">
@@ -11,9 +11,9 @@
             <small>
                 <a
                     class="link-dark fw-bold"
-                    href="{{ $data('link') }}"
+                    href="{!! $data('link') !!}"
                     target="_blank"
-                >{{ $data('link') }}</a>
+                >{!! $data('link') !!}</a>
             </small>
         </p>
         <p class="mb-0">{!! $data('meta.description') !!}</p>
