@@ -3,12 +3,27 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Block;
-use BumpCore\EditorPhp\Block\Field;
+use BumpCore\EditorPhp\EditorPhp;
 use BumpCore\EditorPhp\Helpers;
 use Illuminate\Support\Facades\View;
 
 class Attaches extends Block
 {
+    /**
+     * Tag allow list for purifying data.
+     *
+     * @return array|string
+     */
+    public function allows(): array|string
+    {
+        return [
+            'title' => [],
+            'file.url' => [],
+            'file.name' => [],
+            'file.extension' => [],
+        ];
+    }
+
     /**
      * Rules to validate data of the block.
      *
@@ -17,11 +32,11 @@ class Attaches extends Block
     public function rules(): array
     {
         return [
-            Field::make('title', 'string'),
-            Field::make('file.url', 'url'),
-            Field::make('file.size', 'numeric'),
-            Field::make('file.name', 'string'),
-            Field::make('file.extension', 'string'),
+            'title' => 'string',
+            'file.url' => 'url',
+            'file.size' => 'numeric',
+            'file.name' => 'string',
+            'file.extension' => 'string',
         ];
     }
 
@@ -34,18 +49,18 @@ class Attaches extends Block
     {
         if (View::getFacadeRoot())
         {
-            return view('editor.php::attaches')
+            return view(sprintf('editor.php::%s.attaches', EditorPhp::usingTemplate()))
                 ->with(['data' => $this->data])
                 ->render();
         }
 
-        return Helpers::renderNative(__DIR__ . '/../../resources/php/attaches.php', ['data' => $this->data]);
+        return Helpers::renderNative(__DIR__ . sprintf('/../../resources/php/%s/attaches.php', EditorPhp::usingTemplate()), ['data' => $this->data]);
     }
 
     /**
      * Generates fake data for the block.
      *
-     * @param Generator $faker
+     * @param \Faker\Generator $faker
      *
      * @return array
      */

@@ -1,0 +1,36 @@
+# Taken from `https://github.com/laravel/framework/blob/0b3fae2e8dd094433a760b09eb4366bb139fcf88/.github/workflows/static-analysis.yml
+name: static analysis
+
+on:
+  push:
+    branches:
+    - master
+    - '*.x'
+  pull_request:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: 8.1
+        tools: composer:v2
+        coverage: none
+
+    - name: Install dependencies
+      uses: nick-fields/retry@v2
+      with:
+        timeout_minutes: 5
+        max_attempts: 5
+        command: composer update --prefer-stable --prefer-dist --no-interaction --no-progress
+
+    - name: Execute PHPStan
+      run: vendor/bin/phpstan --configuration="phpstan.neon.dist"

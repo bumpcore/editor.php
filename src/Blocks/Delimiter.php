@@ -3,11 +3,22 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Block;
+use BumpCore\EditorPhp\EditorPhp;
 use BumpCore\EditorPhp\Helpers;
 use Illuminate\Support\Facades\View;
 
 class Delimiter extends Block
 {
+    /**
+     * Tag allow list for purifying data.
+     *
+     * @return array|string
+     */
+    public function allows(): array|string
+    {
+        return '*';
+    }
+
     /**
      * Rules to validate data of the block.
      *
@@ -27,18 +38,18 @@ class Delimiter extends Block
     {
         if (View::getFacadeRoot())
         {
-            return view('editor.php::delimiter')
+            return view(sprintf('editor.php::%s.delimiter', EditorPhp::usingTemplate()))
                 ->with(['data' => $this->data])
                 ->render();
         }
 
-        return Helpers::renderNative(__DIR__ . '/../../resources/php/delimiter.php', ['data' => $this->data]);
+        return Helpers::renderNative(__DIR__ . sprintf('/../../resources/php/%s/delimiter.php', EditorPhp::usingTemplate()), ['data' => $this->data]);
     }
 
     /**
      * Generates fake data for the block.
      *
-     * @param Generator $faker
+     * @param \Faker\Generator $faker
      *
      * @return array
      */

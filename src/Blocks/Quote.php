@@ -3,13 +3,27 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Block;
-use BumpCore\EditorPhp\Block\Field;
+use BumpCore\EditorPhp\EditorPhp;
 use BumpCore\EditorPhp\Helpers;
 use Illuminate\Support\Facades\View;
 use Illuminate\Validation\Rule;
 
 class Quote extends Block
 {
+    /**
+     * Tag allow list for purifying data.
+     *
+     * @return array|string
+     */
+    public function allows(): array|string
+    {
+        return [
+            'text' => [],
+            'caption' => [],
+            'alignment' => [],
+        ];
+    }
+
     /**
      * Rules to validate data of the block.
      *
@@ -18,9 +32,9 @@ class Quote extends Block
     public function rules(): array
     {
         return [
-            Field::make('text', 'string'),
-            Field::make('caption', 'string'),
-            Field::make('alignment', ['string', Rule::in(['left', 'center'])]),
+            'text' => 'string',
+            'caption' => 'string',
+            'alignment' => ['string', Rule::in(['left', 'center'])],
         ];
     }
 
@@ -33,18 +47,18 @@ class Quote extends Block
     {
         if (View::getFacadeRoot())
         {
-            return view('editor.php::quote')
+            return view(sprintf('editor.php::%s.quote', EditorPhp::usingTemplate()))
                 ->with(['data' => $this->data])
                 ->render();
         }
 
-        return Helpers::renderNative(__DIR__ . '/../../resources/php/quote.php', ['data' => $this->data]);
+        return Helpers::renderNative(__DIR__ . sprintf('/../../resources/php/%s/quote.php', EditorPhp::usingTemplate()), ['data' => $this->data]);
     }
 
     /**
      * Generates fake data for the block.
      *
-     * @param Generator $faker
+     * @param \Faker\Generator $faker
      *
      * @return array
      */

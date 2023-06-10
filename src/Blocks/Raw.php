@@ -3,10 +3,21 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Block;
-use BumpCore\EditorPhp\Block\Field;
 
 class Raw extends Block
 {
+    /**
+     * Tag allow list for purifying data.
+     *
+     * @return array|string
+     */
+    public function allows(): array|string
+    {
+        return [
+            'html' => '*',
+        ];
+    }
+
     /**
      * Rules to validate data of the block.
      *
@@ -15,7 +26,7 @@ class Raw extends Block
     public function rules(): array
     {
         return [
-            Field::make('html', 'string'),
+            'html' => 'string',
         ];
     }
 
@@ -32,7 +43,7 @@ class Raw extends Block
     /**
      * Generates fake data for the block.
      *
-     * @param Generator $faker
+     * @param \Faker\Generator $faker
      *
      * @return array
      */

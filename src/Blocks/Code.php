@@ -3,12 +3,24 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Block;
-use BumpCore\EditorPhp\Block\Field;
+use BumpCore\EditorPhp\EditorPhp;
 use BumpCore\EditorPhp\Helpers;
 use Illuminate\Support\Facades\View;
 
 class Code extends Block
 {
+    /**
+     * Tag allow list for purifying data.
+     *
+     * @return array|string
+     */
+    public function allows(): array|string
+    {
+        return [
+            'code' => '*',
+        ];
+    }
+
     /**
      * Rules to validate data of the block.
      *
@@ -17,7 +29,7 @@ class Code extends Block
     public function rules(): array
     {
         return [
-            Field::make('code', 'string'),
+            'code' => 'string',
         ];
     }
 
@@ -30,18 +42,18 @@ class Code extends Block
     {
         if (View::getFacadeRoot())
         {
-            return view('editor.php::code')
+            return view(sprintf('editor.php::%s.code', EditorPhp::usingTemplate()))
                 ->with(['data' => $this->data])
                 ->render();
         }
 
-        return Helpers::renderNative(__DIR__ . '/../../resources/php/code.php', ['data' => $this->data]);
+        return Helpers::renderNative(__DIR__ . sprintf('/../../resources/php/%s/code.php', EditorPhp::usingTemplate()), ['data' => $this->data]);
     }
 
     /**
      * Generates fake data for the block.
      *
-     * @param Generator $faker
+     * @param \Faker\Generator $faker
      *
      * @return array
      */

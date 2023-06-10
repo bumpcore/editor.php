@@ -3,13 +3,26 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Block;
-use BumpCore\EditorPhp\Block\Field;
+use BumpCore\EditorPhp\EditorPhp;
 use BumpCore\EditorPhp\Helpers;
 use Illuminate\Support\Facades\View;
 use Illuminate\Validation\Rule;
 
 class ListBlock extends Block
 {
+    /**
+     * Tag allow list for purifying data.
+     *
+     * @return array|string
+     */
+    public function allows(): array|string
+    {
+        return [
+            'style' => [],
+            'item.*' => [],
+        ];
+    }
+
     /**
      * Rules to validate data of the block.
      *
@@ -18,9 +31,9 @@ class ListBlock extends Block
     public function rules(): array
     {
         return [
-            Field::make('style', ['string', Rule::in(['ordered', 'unordered'])]),
-            Field::make('items', 'array'),
-            Field::make('item.*', 'string'),
+            'style' => ['string', Rule::in(['ordered', 'unordered'])],
+            'items' => 'array',
+            'item.*' => 'string',
         ];
     }
 
@@ -33,18 +46,18 @@ class ListBlock extends Block
     {
         if (View::getFacadeRoot())
         {
-            return view('editor.php::list')
+            return view(sprintf('editor.php::%s.list', EditorPhp::usingTemplate()))
                 ->with(['data' => $this->data])
                 ->render();
         }
 
-        return Helpers::renderNative(__DIR__ . '/../../resources/php/list.php', ['data' => $this->data]);
+        return Helpers::renderNative(__DIR__ . sprintf('/../../resources/php/%s/list.php', EditorPhp::usingTemplate()), ['data' => $this->data]);
     }
 
     /**
      * Generates fake data for the block.
      *
-     * @param Generator $faker
+     * @param \Faker\Generator $faker
      *
      * @return array
      */

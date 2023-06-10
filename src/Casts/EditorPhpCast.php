@@ -10,14 +10,14 @@ class EditorPhpCast implements CastsAttributes
     /**
      * @param Model $model
      * @param string $key
-     * @param mixed $value
+     * @param string|null $value
      * @param array $attributes
      *
-     * @return \BumpCore\EditorPhp\EditorPhp
+     * @return \BumpCore\EditorPhp\EditorPhp|null
      */
     public function get($model, string $key, $value, array $attributes)
     {
-        if (empty($value))
+        if (is_null($value))
         {
             return $value;
         }

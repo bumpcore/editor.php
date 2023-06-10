@@ -3,12 +3,25 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Block;
-use BumpCore\EditorPhp\Block\Field;
+use BumpCore\EditorPhp\EditorPhp;
 use BumpCore\EditorPhp\Helpers;
 use Illuminate\Support\Facades\View;
 
 class Image extends Block
 {
+    /**
+     * Tag allow list for purifying data.
+     *
+     * @return array|string
+     */
+    public function allows(): array|string
+    {
+        return [
+            'file.url' => [],
+            'caption' => [],
+        ];
+    }
+
     /**
      * Rules to validate data of the block.
      *
@@ -17,11 +30,11 @@ class Image extends Block
     public function rules(): array
     {
         return [
-            Field::make('file.url', 'url'),
-            Field::make('caption', 'string'),
-            Field::make('withBorder', 'boolean'),
-            Field::make('stretched', 'boolean'),
-            Field::make('withBackground', 'boolean'),
+            'file.url' => 'url',
+            'caption' => 'string',
+            'withBorder' => 'boolean',
+            'stretched' => 'boolean',
+            'withBackground' => 'boolean',
         ];
     }
 
@@ -34,18 +47,18 @@ class Image extends Block
     {
         if (View::getFacadeRoot())
         {
-            return view('editor.php::image')
+            return view(sprintf('editor.php::%s.image', EditorPhp::usingTemplate()))
                 ->with(['data' => $this->data])
                 ->render();
         }
 
-        return Helpers::renderNative(__DIR__ . '/../../resources/php/image.php', ['data' => $this->data]);
+        return Helpers::renderNative(__DIR__ . sprintf('/../../resources/php/%s/image.php', EditorPhp::usingTemplate()), ['data' => $this->data]);
     }
 
     /**
      * Generates fake data for the block.
      *
-     * @param Generator $faker
+     * @param \Faker\Generator $faker
      *
      * @return array
      */

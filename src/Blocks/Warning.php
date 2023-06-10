@@ -3,12 +3,25 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Block;
-use BumpCore\EditorPhp\Block\Field;
+use BumpCore\EditorPhp\EditorPhp;
 use BumpCore\EditorPhp\Helpers;
 use Illuminate\Support\Facades\View;
 
 class Warning extends Block
 {
+    /**
+     * Tag allow list for purifying data.
+     *
+     * @return array|string
+     */
+    public function allows(): array|string
+    {
+        return [
+            'title' => [],
+            'message' => [],
+        ];
+    }
+
     /**
      * Rules to validate data of the block.
      *
@@ -17,8 +30,8 @@ class Warning extends Block
     public function rules(): array
     {
         return [
-            Field::make('title', 'string'),
-            Field::make('message', 'string'),
+            'title' => 'string',
+            'message' => 'string',
         ];
     }
 
@@ -31,18 +44,18 @@ class Warning extends Block
     {
         if (View::getFacadeRoot())
         {
-            return view('editor.php::warning')
+            return view(sprintf('editor.php::%s.warning', EditorPhp::usingTemplate()))
                 ->with(['data' => $this->data])
                 ->render();
         }
 
-        return Helpers::renderNative(__DIR__ . '/../../resources/php/warning.php', ['data' => $this->data]);
+        return Helpers::renderNative(__DIR__ . sprintf('/../../resources/php/%s/warning.php', EditorPhp::usingTemplate()), ['data' => $this->data]);
     }
 
     /**
      * Generates fake data for the block.
      *
-     * @param Generator $faker
+     * @param \Faker\Generator $faker
      *
      * @return array
      */

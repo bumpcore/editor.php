@@ -3,12 +3,25 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Block;
-use BumpCore\EditorPhp\Block\Field;
+use BumpCore\EditorPhp\Block\Data;
+use BumpCore\EditorPhp\EditorPhp;
 use BumpCore\EditorPhp\Helpers;
 use Illuminate\Support\Facades\View;
 
 class Table extends Block
 {
+    /**
+     * Tag allow list for purifying data.
+     *
+     * @return array|string
+     */
+    public function allows(): array|string
+    {
+        return [
+            'content.*.*' => [],
+        ];
+    }
+
     /**
      * Rules to validate data of the block.
      *
@@ -17,10 +30,10 @@ class Table extends Block
     public function rules(): array
     {
         return [
-            Field::make('withHeadings', 'boolean'),
-            Field::make('content', 'array'),
-            Field::make('content.*', 'array'),
-            Field::make('content.*.*', 'string'),
+            'withHeadings' => 'boolean',
+            'content' => 'array',
+            'content.*' => 'array',
+            'content.*.*' => 'string',
         ];
     }
 
@@ -33,18 +46,18 @@ class Table extends Block
     {
         if (View::getFacadeRoot())
         {
-            return view('editor.php::table')
+            return view(sprintf('editor.php::%s.table', EditorPhp::usingTemplate()))
                 ->with(['data' => $this->data])
                 ->render();
         }
 
-        return Helpers::renderNative(__DIR__ . '/../../resources/php/table.php', ['data' => $this->data]);
+        return Helpers::renderNative(__DIR__ . sprintf('/../../resources/php/%s/table.php', EditorPhp::usingTemplate()), ['data' => $this->data]);
     }
 
     /**
      * Generates fake data for the block.
      *
-     * @param Generator $faker
+     * @param \Faker\Generator $faker
      *
      * @return array
      */

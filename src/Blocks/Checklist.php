@@ -3,12 +3,24 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Block;
-use BumpCore\EditorPhp\Block\Field;
+use BumpCore\EditorPhp\EditorPhp;
 use BumpCore\EditorPhp\Helpers;
 use Illuminate\Support\Facades\View;
 
 class Checklist extends Block
 {
+    /**
+     * Tag allow list for purifying data.
+     *
+     * @return array|string
+     */
+    public function allows(): array|string
+    {
+        return [
+            'items.*.text' => [],
+        ];
+    }
+
     /**
      * Rules to validate data of the block.
      *
@@ -17,10 +29,10 @@ class Checklist extends Block
     public function rules(): array
     {
         return [
-            Field::make('items', 'array'),
-            Field::make('items.*', 'array'),
-            Field::make('items.*.text', 'string'),
-            Field::make('items.*.checked', 'boolean'),
+            'items' => 'array',
+            'items.*' => 'array',
+            'items.*.text' => 'string',
+            'items.*.checked' => 'boolean',
         ];
     }
 
@@ -33,18 +45,18 @@ class Checklist extends Block
     {
         if (View::getFacadeRoot())
         {
-            return view('editor.php::checklist')
+            return view(sprintf('editor.php::%s.checklist', EditorPhp::usingTemplate()))
                 ->with(['data' => $this->data])
                 ->render();
         }
 
-        return Helpers::renderNative(__DIR__ . '/../../resources/php/checklist.php', ['data' => $this->data]);
+        return Helpers::renderNative(__DIR__ . sprintf('/../../resources/php/%s/checklist.php', EditorPhp::usingTemplate()), ['data' => $this->data]);
     }
 
     /**
      * Generates fake data for the block.
      *
-     * @param Generator $faker
+     * @param \Faker\Generator $faker
      *
      * @return array
      */

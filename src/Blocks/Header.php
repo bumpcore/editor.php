@@ -3,12 +3,24 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Block;
-use BumpCore\EditorPhp\Block\Field;
+use BumpCore\EditorPhp\EditorPhp;
 use BumpCore\EditorPhp\Helpers;
 use Illuminate\Support\Facades\View;
 
 class Header extends Block
 {
+    /**
+     * Tag allow list for purifying data.
+     *
+     * @return array|string
+     */
+    public function allows(): array|string
+    {
+        return [
+            'text' => [],
+        ];
+    }
+
     /**
      * Rules to validate data of the block.
      *
@@ -17,8 +29,8 @@ class Header extends Block
     public function rules(): array
     {
         return [
-            Field::make('text', 'string'),
-            Field::make('level', 'integer|min:1|max:6'),
+            'text' => 'string',
+            'level' => 'integer|min:1|max:6',
         ];
     }
 
@@ -31,18 +43,18 @@ class Header extends Block
     {
         if (View::getFacadeRoot())
         {
-            return view('editor.php::header')
+            return view(sprintf('editor.php::%s.header', EditorPhp::usingTemplate()))
                 ->with(['data' => $this->data])
                 ->render();
         }
 
-        return Helpers::renderNative(__DIR__ . '/../../resources/php/header.php', ['data' => $this->data]);
+        return Helpers::renderNative(__DIR__ . sprintf('/../../resources/php/%s/header.php', EditorPhp::usingTemplate()), ['data' => $this->data]);
     }
 
     /**
      * Generates fake data for the block.
      *
-     * @param Generator $faker
+     * @param \Faker\Generator $faker
      *
      * @return array
      */
