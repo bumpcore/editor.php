@@ -1,4 +1,4 @@
-<p align="center"><img src="art/logo.svg" width="100%"></p>
+<p align="center"><img src="art/banner.svg" width="100%"></p>
 
 # Editor.php
 
@@ -12,7 +12,11 @@ This package allows you to parse Editor.js output with vanilla PHP or Laravel.
   + [Accessing Blocks](#accessing-blocks)
   + [Rendering HTML](#rendering-html)
   + [Faking](#faking)
-  + [Additional Methods](#additional)
+  + [Additional](#additional)
+	+ [Converting to an array](#converting-to-an-array)
+	+ [Converting to JSON](#converting-to-json)
+	+ [Time & Version](#time--version)
+	+ [Macros](#macros)
 * [Blocks](#blocks)
   + [Creating Custom Blocks](#creating-custom-blocks)
   + [Validating Block Data](#validating-block-data)
@@ -158,7 +162,7 @@ You can learn more about generating fake data for the blocks in [fake data gener
 
 ## Additional
 
-#### Converting to an array 
+### Converting to an array 
 
 You can convert your instance to an array using the `toArray()` method.
 
@@ -171,7 +175,7 @@ $editor = EditorPhp::make($json);
 $array = $editor->toArray();
 ```
 
-#### Converting to JSON
+### Converting to JSON
 
 You can convert your instance to JSON using the `toJson(/** options */)` method. This method is useful when you manipulate your instance.
 
@@ -184,7 +188,7 @@ $editor = EditorPhp::make($json);
 $json = $editor->toJson(JSON_PRETTY_PRINT);
 ```
 
-#### Time & Version
+### Time & Version
 
 You can access time and version:
 
@@ -199,7 +203,7 @@ $editor->version;
 
 The `time` property is a `Carbon` instance. You can learn more about it in [Carbon's documentation](https://carbon.nesbot.com/docs/).
 
-#### Macros
+### Macros
 
 You can register macros and use them later. Macros are based on Laravel.
 
