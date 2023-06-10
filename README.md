@@ -1,4 +1,4 @@
-<p align="center"><img src="art/logo.svg" width="512"></p>
+<p align="center"><img src="art/logo.svg" width="100%"></p>
 
 # Editor.php
 
