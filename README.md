@@ -1,22 +1,39 @@
+<p align="center"><img src="art/logo.svg" width="512"></p>
+
 # Editor.php
 
 This package allows you to parse Editor.js output with vanilla PHP or Laravel.
 
-# Usage
+## Table Of Contents
+
+* [Quick Start](#quick-start)
+* [EditorPhp](#editorphp)
+  + [Creating Instance](#creating-instance)
+  + [Accessing Blocks](#accessing-blocks)
+  + [Rendering HTML](#rendering-html)
+  + [Faking](#faking)
+  + [Additional Methods](#additional)
+* [Blocks](#blocks)
+  + [Creating Custom Blocks](#creating-custom-blocks)
+  + [Validating Block Data](#validating-block-data)
+  + [Sanitizing Block Data](#sanitizing-block-data)
+  + [Fake Data Generation](#fake-data-generation)
+* [Laravel Only Features](#laravel-only-features)
+  + [Cast](#cast)
+  + [Response](#response)
+  + [Views](#views)
+  + [Configuration](#configuration)
+  + [Commands](#commands)
+# Quick Start
 
 Editor.php is really simple to get started; 
 
 ```php
 use BumpCore\EditorPhp\EditorPhp;
 
-...
-
-// Creating new instance of `EditorPhp`.
-// You may also use `new EditorPhp($json)` syntax.
-$editorPhp = EditorPhp::make($json);
-
+// Passing Editor.js's output directly to the `make`.
 // This will render blocks into html.
-echo $editorPhp->render();
+echo EditorPhp::make($json)->render();
 ```
 
 Editor.php supports following blocks; 
@@ -36,170 +53,189 @@ Editor.php supports following blocks;
 * [Table](https://github.com/editor-js/table)
 * [Warning](https://github.com/editor-js/warning)
 
-All of them has default validation rules and views to render. But customizing validation and views is highly recommended.
+All of them have default validation rules and views to render. However, customizing validation and views is highly recommended.
 
-# Custom Block
+# EditorPhp
 
-It's possible to create custom blocks with Editor.php. A basic block looks something like this; 
+The `EditorPhp` class is the main class for managing blocks. You can access, render, convert to an array, and convert to JSON through this class.
+
+## Creating Instance
+
+There are two ways to create a new instance of EditorPhp:
 
 ```php
+use BumpCore\EditorPhp\EditorPhp;
+
+// Using the `new` syntax.
+$editor = new EditorPhp($json);
+
+// Using the `make` syntax.
+$editor = EditorPhp::make($json);
+```
+
+Both syntaxes are equal, and there's almost no difference between them.
+
+## Accessing Blocks
+
+You can access blocks through the blocks property.
+
+```php
+use BumpCore\EditorPhp\EditorPhp;
 use BumpCore\EditorPhp\Block\Block;
+use BumpCore\EditorPhp\Blocks\Paragraph;
 
-class CustomBlock extends Block
-{
-    public function rules(): array
-    {
-        return [
-            'custom.data' => 'required|string',
-        ];
-    }
+$editor = EditorPhp::make($json);
 
-    public function render(): string
-    {
-        return view('blocks.custom-block', ['data' => $this->data]);
-    }
-}
+// Stripping all tags from paragraph block's text.
+$editor->blocks->transform(function(Block $block) {
+	if($block instanceof Paragraph)
+	{
+		$block->set('text', strip_tags($block->get('text')));
+	}
 
-// If you are on Laravel, you may publish config to register blocks.
-EditorPhp::register(['customBlock' => CustomBlock::class]);
+	return $block;
+});
 ```
 
-`rules` method is required for validating the block's data. You can learn more about at [Laravel's documentation](https://laravel.com/docs/10.x/validation#available-validation-rules).
+Blocks are stored as `Illuminate\Support\Collection` . By using collection methods, you can manipulate blocks as you wish. You can learn about collections in [Laravel's documentation](https://laravel.com/docs/10.x/collections).
 
-`render` method is required for the rendering html. You can return whatever you like to return.
+## Rendering HTML
 
-If you are on Laravel, you may use `make:block` command to create empty block. Created block will placed under `app/Blocks` directory.
-
-Also you may customize default views and config by publishing vendors; 
-
-```bash
-php artisan vendor:publish --tag=editorphp-config
-php artisan vendor:publish --tag=editorphp-views
-```
-
-Note that when registering a block, the key should match output type and case. For example; 
-
-```json
-{
-	"time": 1672852569662,
-	"blocks": [
-		{
-			"type": "customBlock",
-			"data": {
-				"custom": {
-					"data": "Editor.js"
-				},
-			}
-		}
-	],
-	"version": "2.26.4"
-}
-```
-
-This will match the block type correctly and when Editor.php converted to Json, Editor.js will also know what this block is.
-
-But if we register type as `customblock` Editor.js will not know which block is that.
-
-# Block Data
-
-As you can see in the above example that we passed `data` directly to the view. You may access data by following ways; 
+Rendering HTML is very straightforward. There are multiple ways to render your instance:
 
 ```php
-public function render(): string
-{
-	...
+use BumpCore\EditorPhp\EditorPhp;
 
-	// Trough data object.
-	$data = $this->data;
-	$data->get('custom.data');
-	$data->set('custom.data', 'Hello World!');
-	
+$editor = EditorPhp::make($json);
 
-	// Getting by invoking.
-	$data('custom.data'); // Hello World!
+// Using the `render` function.
+echo $editor->render();
 
-	// For shortcuts.
-	$this->get('custom.data');
-	$this->set('custom.data', 'Nice!');
+// Using the `toHtml` function.
+echo $editor->toHtml();
 
-	...
-}
+// Or by casting to a string.
+echo $editor;
 ```
 
-Also you can check whether data exists or not; 
+Again, all three cases are the same, with no one above another. You can use whichever one you like the most.
+
+By the default, you have two options for the default block's templates; `tailwindcss` and `Bootstrap 5` . Default used template is `tailwindcss` You may switch templates by:
 
 ```php
-$data->has('custom.data');
-// or
-$this->has('custom.data');
+use BumpCore\EditorPhp\EditorPhp;
+
+// Using tailwind.
+EditorPhp::useTailwind();
+
+// Using Bootstrap.
+EditorPhp::useBootstrapFive();
 ```
 
-# Fake Data
+You can learn more about rendering in [creating custom blocks](#creating-custom-blocks) section.
 
-You can generate fake data within your block; 
+## Faking
+
+You can generate fake data with `EditorPhp` .
 
 ```php
-class CustomBlock extends Block
-{
-	...
-	
-	public static function fake(\Faker\Generator $faker): array
-    {
-        return [
-			'custom' => [
-				'data' => $faker->text()
-			]
-        ];
-    }
-}
+use BumpCore\EditorPhp\EditorPhp; 
+
+// This will return a generated fake JSON.
+$fake = EditorPhp::fake(); 
+
+// If we pass first argument true, it will return new `EditorPhp` instance with fake data.
+$fakeEditor = EditorPhp::fake(true); 
+
+// You can also pass min lenght and max lenght of blocks.
+// Below code will generate blocks between 1 and 3.
+$fakeEditor = EditorPhp::fake(true, 1, 3);
+
+echo $fakeEditor->render();
 ```
 
-After declaring your generating logic you can use `EditorPhp::fake` method to generate fake data; 
+You can learn more about generating fake data for the blocks in [fake data generation](#fake-data-generation).
+
+## Additional
+
+#### Converting to an array 
+
+You can convert your instance to an array using the `toArray()` method.
 
 ```php
-EditorPhp::fake(true) // Will return instance.
+use BumpCore\EditorPhp\EditorPhp;
+
+$editor = EditorPhp::make($json);
+
+// This will return ['time' => ..., 'blocks' => [...], 'version' => '...']
+$array = $editor->toArray();
 ```
+
+#### Converting to JSON
+
+You can convert your instance to JSON using the `toJson(/** options */)` method. This method is useful when you manipulate your instance.
+
+```php
+use BumpCore\EditorPhp\EditorPhp;
+
+$editor = EditorPhp::make($json);
+
+// This will return encoded JSON.
+$json = $editor->toJson(JSON_PRETTY_PRINT);
+```
+
+#### Time & Version
+
+You can access time and version:
+
+```php
+use BumpCore\EditorPhp\EditorPhp;
+
+$editor = EditorPhp::make($json);
+
+$editor->time;
+$editor->version;
+```
+
+The `time` property is a `Carbon` instance. You can learn more about it in [Carbon's documentation](https://carbon.nesbot.com/docs/).
+
+#### Macros
+
+You can register macros and use them later. Macros are based on Laravel.
+
+```php
+use BumpCore\EditorPhp\EditorPhp;
+
+// Registering new macro.
+EditorPhp::macro(
+	'getParagraphs',
+	fn () => $this->blocks->filter(fn (Block $block) => $block instanceof Paragraph)
+);
+
+$editor = EditorPhp::make($json);
+
+// This will return a collection that only contains paragraphs.
+$paragraphs = $editor->getParagraphs();
+```
+
+# Blocks
+
+## Creating Custom Blocks
+
+## Validating Block Data
+
+## Sanitizing Block Data
+
+## Fake Data Generation
 
 # Laravel Only Features
 
 ## Cast
 
-You can cast your model attribute with `EditorPhpCast` ; 
-
-```php
-use BumpCore\EditorPhp\Casts\EditorPhpCast;
-use Illuminate\Database\Eloquent\Model;
-
-class Post extends Model
-{
-	...
-
-	protected $casts = [
-		'content' => EditorPhpCast::class
-	];
-}
-```
-
-Now `$post->content` will be `EditorPhp` instance. You can assign `EditorPhp` instance or raw json input.
-
 ## Response
-
-`EditorPhp` can be returned directly in the controller method. It will render automatically; 
-
-```php
-class PostController extends Controller
-{
-	public function show(Post $post)
-	{
-		return $post->content;
-	}
-}
-```
 
 ## Views
 
-Like returning in the response you may render `EditorPhp` directly in the views; 
+## Configuration
 
-```html
-<article>{{ $post->content }}</article>
-```
+## Commands
