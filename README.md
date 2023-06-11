@@ -13,10 +13,10 @@ Editor.php is a package designed to assist in parsing and manipulating the outpu
   + [Rendering HTML](#rendering-html)
   + [Faking](#faking)
   + [Additional](#additional)
-	+ [Converting to an array](#converting-to-an-array)
-	+ [Converting to JSON](#converting-to-json)
-	+ [Time & Version](#time--version)
-	+ [Macros](#macros)
+  + [Converting to an array](#converting-to-an-array)
+  + [Converting to JSON](#converting-to-json)
+  + [Time & Version](#time--version)
+  + [Macros](#macros)
 * [Blocks](#blocks)
   + [Registering Blocks](#registering-blocks)
   + [Extending Blocks](#extending-blocks)
@@ -40,7 +40,7 @@ Install package by:
 composer require bumpcore/editor.php
 ```
 
-Editor.php is really simple to get started;
+Editor.php is really simple to get started; 
 
 ```php
 use BumpCore\EditorPhp\EditorPhp;
@@ -101,13 +101,14 @@ use BumpCore\EditorPhp\Blocks\Paragraph;
 $editor = EditorPhp::make($json);
 
 // Stripping all tags from paragraph block's text.
-$editor->blocks->transform(function(Block $block) {
-	if($block instanceof Paragraph)
-	{
-		$block->set('text', strip_tags($block->get('text')));
-	}
+$editor->blocks->transform(function(Block $block)
+{
+    if($block instanceof Paragraph)
+    {
+        $block->set('text', strip_tags($block->get('text')));
+    }
 
-	return $block;
+    return $block;
 });
 ```
 
@@ -222,8 +223,8 @@ use BumpCore\EditorPhp\EditorPhp;
 
 // Registering new macro.
 EditorPhp::macro(
-	'getParagraphs',
-	fn () => $this->blocks->filter(fn (Block $block) => $block instanceof Paragraph)
+    'getParagraphs',
+    fn () => $this->blocks->filter(fn (Block $block) => $block instanceof Paragraph)
 );
 
 $editor = EditorPhp::make($json);
@@ -286,11 +287,11 @@ class MyImageBlock extends Image
 {
     public static function uploadTemp(string $fileName = 'image'): array
     {
-		...
+        // ...
 
-		// Temporary upload logic.
+        // Temporary upload logic.
 
-		return [
+        return [
             'success' => ...,
             'file' => [
                 'url' => ...,
@@ -300,22 +301,22 @@ class MyImageBlock extends Image
 
     public function upload(): void
     {
-		$file = $this->get('file.url');
+        $file = $this->get('file.url');
 
-		// Your logic.
+        // Your logic.
 
-		...
-		
-		// Altering the current block's data.
-		$this->set('file.url', ...);
+        // ...
+        
+        // Altering the current block's data.
+        $this->set('file.url', ...);
     }
 }
 
-...
+// ...
 
 // Registering customized block.
 EditorPhp::register([
-	'image' => MyImageBlock::class
+    'image' => MyImageBlock::class
 ]);
 ```
 
@@ -333,10 +334,10 @@ $editor = EditorPhp::make($json);
 
 $editor->blocks->each(function(Block $block)
 {
-	if ($block instanceof MyImageBlock)
-	{
-		$block->upload();
-	}
+    if ($block instanceof MyImageBlock)
+    {
+        $block->upload();
+    }
 });
 
 return $editor->toJson();
@@ -369,21 +370,21 @@ There are multiple ways to access a block's data. In the example below, you can 
 ```php
 public function render(): string
 {
-	...
+    // ...
 
-	// Method 1: Accessing through the data object.
-	$data = $this->data;
-	$data->get('custom.data');
-	$data->set('custom.data', 'Hello World!');
+    // Method 1: Accessing through the data object.
+    $data = $this->data;
+    $data->get('custom.data');
+    $data->set('custom.data', 'Hello World!');
 
-	// Method 2: Accessing by invoking the data object.
-	$data('custom.data'); // Hello World!
+    // Method 2: Accessing by invoking the data object.
+    $data('custom.data'); // Hello World!
 
-	// Method 3: Using shortcuts.
-	$this->get('custom.data');
-	$this->set('custom.data', 'Nice!');
+    // Method 3: Using shortcuts.
+    $this->get('custom.data');
+    $this->set('custom.data', 'Nice!');
 
-	...
+    // ...
 }
 ```
 
@@ -404,19 +405,19 @@ use BumpCore\EditorPhp\Block\Block;
 
 class MyCustomBlock extends Block
 {
-	...
+    // ...
 
     public function rules(): array
     {
-		return [
-			'text' => 'required|string|max:255',
-			'items' => 'sometimes|array',
-			'items.*.name' => 'required|string|max:255',
-			'items.*.html' => 'required|string|min:255',
-		];
+        return [
+            'text' => 'required|string|max:255',
+            'items' => 'sometimes|array',
+            'items.*.name' => 'required|string|max:255',
+            'items.*.html' => 'required|string|min:255',
+        ];
     }
 
-	...
+    // ...
 }
 ```
 
@@ -431,25 +432,25 @@ use BumpCore\EditorPhp\Block\Block;
 
 class MyCustomBlock extends Block
 {
-	...
+    // ...
 
     public function allow(): array|string
     {
-		// Specifying one by one.
-		return [
+        // Specifying one by one.
+        return [
             'text' => [
                 'a:href,target,title', // Will allow `a` tag and href, target, and title attributes.
                 'b', // Will only allow `b` tag with no attributes.
             ],
-			'items.*.name' => 'b:*', // Will allow `b` tag with all attributes.
-			'items.*.html' => '*', // Will allow every tag and every attribute.
-		];
+            'items.*.name' => 'b:*', // Will allow `b` tag with all attributes.
+            'items.*.html' => '*', // Will allow every tag and every attribute.
+        ];
 
-		// Or just allowing all attributes and tags for all data.
-		return '*';
+        // Or just allowing all attributes and tags for all data.
+        return '*';
     }
 
-	...
+    // ...
 }
 ```
 
@@ -464,27 +465,27 @@ use BumpCore\EditorPhp\Block\Block;
 
 class MyCustomBlock extends Block
 {
-	...
+    // ...
 
     public static function fake(\Faker\Generator $faker): array
     {
-		$items = [];
+        $items = [];
 
-		foreach (range(0, $faker->numberBetween(0, 10)) as $index)
+        foreach (range(0, $faker->numberBetween(0, 10)) as $index)
         {
-			$items[] = [
-				'name' => fake()->name(),
-				'html' => $faker->randomHtml(),
-			];
+            $items[] = [
+                'name' => fake()->name(),
+                'html' => $faker->randomHtml(),
+            ];
         }
 
-		return [
-			'text' => fake()->text(255),
-			'items' => $items,
-		];
+        return [
+            'text' => fake()->text(255),
+            'items' => $items,
+        ];
     }
 
-	...
+    // ...
 }
 ```
 
@@ -525,17 +526,17 @@ use App\Models\Post;
 
 class MyBlock extends Block
 {
-	...
+    // ...
 
     public static function render(): string
     {
-		if($this->root->model instanceof Post)
-		{
-			// Do the other thing.
-		}
+        if($this->root->model instanceof Post)
+        {
+            // Do the other thing.
+        }
     }
 
-	...
+    // ...
 }
 ```
 
@@ -555,8 +556,8 @@ class ShowPostController extends Controller
 {
     public function __invoke(Post $post)
     {
-		// Depending on the request it will return json or rendered html.
-		return $post->content;
+        // Depending on the request it will return json or rendered html.
+        return $post->content;
     }
 }
 ```
@@ -569,8 +570,8 @@ You may also use `EditorPhp` instance to render inside view directly:
 // blog.show.blade.php
 
 <article>
-	<h1>{{ $post->title }}</h1>
-	<div>{{ $post->content }}</div>
+    <h1>{{ $post->title }}</h1>
+    <div>{{ $post->content }}</div>
 </article>
 ```
 
@@ -592,11 +593,11 @@ New block will be placed under `app/Blocks` directory.
 
 Contributions are welcome! If you find a bug or have a suggestion for improvement, please open an issue or create a pull request. Below are some guidelines to follow:
 
-- Fork the repository and clone it to your local machine.
-- Create a new branch for your contribution.
-- Make your changes and test them thoroughly.
-- Ensure that your code adheres to the existing coding style and conventions.
-- Commit your changes and push them to your forked repository.
-- Submit a pull request to the main repository.
+* Fork the repository and clone it to your local machine.
+* Create a new branch for your contribution.
+* Make your changes and test them thoroughly.
+* Ensure that your code adheres to the existing coding style and conventions.
+* Commit your changes and push them to your forked repository.
+* Submit a pull request to the main repository.
 
 Please provide a detailed description of your changes and the problem they solve. Your contribution will be reviewed, and feedback may be provided. Thank you for your help in making this project better!
