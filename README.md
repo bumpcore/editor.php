@@ -567,7 +567,7 @@ class ShowPostController extends Controller
 You may also use `EditorPhp` instance to render inside view directly:
 
 ```blade
-// blog.show.blade.php
+{{-- blog.show.blade.php --}}
 
 <article>
     <h1>{{ $post->title }}</h1>
