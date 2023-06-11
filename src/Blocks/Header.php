@@ -2,19 +2,23 @@
 
 namespace BumpCore\EditorPhp\Blocks;
 
-use BumpCore\EditorPhp\Block\BlockData;
-use BumpCore\EditorPhp\Contracts\Block;
+use BumpCore\EditorPhp\Block\Block;
+use BumpCore\EditorPhp\EditorPhp;
+use BumpCore\EditorPhp\Helpers;
+use Illuminate\Support\Facades\View;
 
-class Header implements Block
+class Header extends Block
 {
     /**
-     * Type of the block.
+     * Tag allow list for purifying data.
      *
-     * @return string
+     * @return array|string
      */
-    public function type(): string
+    public function allows(): array|string
     {
-        return 'header';
+        return [
+            'text' => [],
+        ];
     }
 
     /**
@@ -25,20 +29,40 @@ class Header implements Block
     public function rules(): array
     {
         return [
-            'text' => 'required|string',
-            'level' => 'required|integer|min:1|max:6',
+            'text' => 'string',
+            'level' => 'integer|min:1|max:6',
         ];
     }
 
     /**
      * Renderer for the block.
      *
-     * @param BlockData $data
-     *
      * @return string
      */
-    public function render(BlockData $data): string
+    public function render(): string
     {
-        return view('editor.php::header')->with(compact('data'))->render();
+        if (View::getFacadeRoot())
+        {
+            return view(sprintf('editor.php::%s.header', EditorPhp::usingTemplate()))
+                ->with(['data' => $this->data])
+                ->render();
+        }
+
+        return Helpers::renderNative(__DIR__ . sprintf('/../../resources/php/%s/header.php', EditorPhp::usingTemplate()), ['data' => $this->data]);
+    }
+
+    /**
+     * Generates fake data for the block.
+     *
+     * @param \Faker\Generator $faker
+     *
+     * @return array
+     */
+    public static function fake(\Faker\Generator $faker): array
+    {
+        return [
+            'text' => $faker->text(64),
+            'level' => $faker->numberBetween(1, 6),
+        ];
     }
 }

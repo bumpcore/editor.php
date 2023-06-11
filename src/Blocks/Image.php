@@ -2,19 +2,24 @@
 
 namespace BumpCore\EditorPhp\Blocks;
 
-use BumpCore\EditorPhp\Block\BlockData;
-use BumpCore\EditorPhp\Contracts\Block;
+use BumpCore\EditorPhp\Block\Block;
+use BumpCore\EditorPhp\EditorPhp;
+use BumpCore\EditorPhp\Helpers;
+use Illuminate\Support\Facades\View;
 
-class Image implements Block
+class Image extends Block
 {
     /**
-     * Type of the block.
+     * Tag allow list for purifying data.
      *
-     * @return string
+     * @return array|string
      */
-    public function type(): string
+    public function allows(): array|string
     {
-        return 'image';
+        return [
+            'file.url' => [],
+            'caption' => [],
+        ];
     }
 
     /**
@@ -25,8 +30,8 @@ class Image implements Block
     public function rules(): array
     {
         return [
-            'file.url' => 'required|url',
-            'caption' => 'nullable|string|min:1|max:255',
+            'file.url' => 'url',
+            'caption' => 'string',
             'withBorder' => 'boolean',
             'stretched' => 'boolean',
             'withBackground' => 'boolean',
@@ -36,14 +41,35 @@ class Image implements Block
     /**
      * Renderer for the block.
      *
-     * @param BlockData $data
-     *
      * @return string
      */
-    public function render(BlockData $data): string
+    public function render(): string
     {
-        return view('editor.php::image')
-            ->with(compact('data'))
-            ->render();
+        if (View::getFacadeRoot())
+        {
+            return view(sprintf('editor.php::%s.image', EditorPhp::usingTemplate()))
+                ->with(['data' => $this->data])
+                ->render();
+        }
+
+        return Helpers::renderNative(__DIR__ . sprintf('/../../resources/php/%s/image.php', EditorPhp::usingTemplate()), ['data' => $this->data]);
+    }
+
+    /**
+     * Generates fake data for the block.
+     *
+     * @param \Faker\Generator $faker
+     *
+     * @return array
+     */
+    public static function fake(\Faker\Generator $faker): array
+    {
+        return [
+            'file' => ['url' => $faker->imageUrl()],
+            'caption' => $faker->text(),
+            'withBorder' => $faker->boolean(),
+            'stretched' => $faker->boolean(),
+            'withBackground' => $faker->boolean(),
+        ];
     }
 }

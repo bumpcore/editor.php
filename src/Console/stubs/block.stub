@@ -2,21 +2,10 @@
 
 namespace {{ namespace }};
 
-use BumpCore\EditorPhp\Contracts\Block;
-use Illuminate\Support\Collection;
+use BumpCore\EditorPhp\Block\Block;
 
-class {{ class }} implements Block
+class {{ class }} extends Block
 {
-    /**
-     * Type of the block.
-     *
-     * @return string
-     */
-    public function type(): string
-    {
-        return '{{ dd() }}';
-    }
-
     /**
      * Rules to validate data of the block.
      *
@@ -32,14 +21,12 @@ class {{ class }} implements Block
     /**
      * Renderer for the block.
      *
-     * @param Collection $data
-     *
      * @return string
      */
-    public function render(Collection $data): string
+    public function render(): string
     {
         return view('block')
-            ->with($data)
+            ->with(['data' => $this->data])
             ->render();
     }
 }

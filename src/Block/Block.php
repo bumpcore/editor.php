@@ -2,72 +2,134 @@
 
 namespace BumpCore\EditorPhp\Block;
 
-use BumpCore\EditorPhp\Contracts\Block as Provider;
+use BumpCore\EditorPhp\EditorPhp;
+use BumpCore\EditorPhp\Parser;
 use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Contracts\Support\Jsonable;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Contracts\Support\Renderable;
 
-class Block implements Arrayable, Jsonable
+abstract class Block implements Arrayable, Htmlable, Renderable
 {
-    /**
-     * Provider of the block.
-     *
-     * @var Provider
-     */
-    protected readonly Provider $provider;
-
     /**
      * Type of the block.
      *
      * @var string
      */
-    public readonly string $type;
+    public string $type;
 
     /**
      * Data of the block.
      *
-     * @var BlockData
+     * @var Data
      */
-    public readonly BlockData $data;
+    public readonly Data $data;
+
+    /**
+     * Belonging EditorPhp instance.
+     *
+     * @var EditorPhp|null
+     */
+    protected ?EditorPhp $root;
+
+    /**
+     * Render's the block.
+     *
+     * @return string
+     */
+    public abstract function render(): string;
+
+    /**
+     * Fluent method to create new `Block` instance.
+     *
+     * @param array $data
+     * @param EditorPhp|null $root
+     *
+     * @return self
+     */
+    public static function make(array $data = [], ?EditorPhp &$root = null): self
+    {
+        return new static($data, $root);
+    }
 
     /**
      * Constructor.
      *
-     * @param Provider $provider
      * @param array $data
+     * @param EditorPhp|null $root
      *
      * @return void
      */
-    public function __construct(Provider $provider, array $data)
+    public function __construct(array $data = [], ?EditorPhp &$root = null)
     {
-        $this->provider = $provider;
-        $this->type = $provider->type();
-        $this->data = new BlockData($this->validateData($data));
+        $this->type = array_flip(Parser::$blocks)[static::class];
+        $this->root = $root;
+        $this->data = new Data($data, $this->allows(), $this->rules());
     }
 
     /**
-     * Validates block data.
+     * Tag allow list for purifying data.
      *
-     * @param array $data
-     *
-     * @return array
+     * @return array|string
      */
-    protected function validateData(array $data): array
+    public function allows(): array|string
     {
-        $validator = Validator::make($data, $this->provider->rules());
-
-        if ($validator->fails())
-        {
-            return [];
-        }
-
-        return $validator->validated();
+        return '*';
     }
 
     /**
-     * Converts block into array.
+     * Rules to validate data of the block.
      *
-     * @return array
+     * @return array<string, mixed>
+     */
+    public function rules(): array
+    {
+        return [];
+    }
+
+    /**
+     * Gets block data by given key.
+     *
+     * @param string $key
+     * @param mixed $default
+     *
+     * @return mixed
+     */
+    public function get(string $key, mixed $default = null): mixed
+    {
+        return $this->data->get($key, $default);
+    }
+
+    /**
+     * Sets block data by given key.
+     *
+     * @param string $key
+     * @param mixed $value
+     *
+     * @return $this
+     */
+    public function set(string $key, mixed $value): self
+    {
+        $this->data->set($key, $value);
+
+        return $this;
+    }
+
+    /**
+     * Check if an item or items exist in the data.
+     *
+     * @param array|string $key
+     *
+     * @return bool
+     */
+    public function has(string|array $key): bool
+    {
+        return $this->data->has($key);
+    }
+
+    /**
+     * Converts the `Block` as an array.
+     *
+     * @return array<string, array|string>
      */
     public function toArray(): array
     {
@@ -78,34 +140,22 @@ class Block implements Arrayable, Jsonable
     }
 
     /**
-     * Convert the object to its JSON representation.
-     *
-     * @param int $options
+     * Renders block into HTML.
      *
      * @return string
      */
-    public function toJson($options = 0)
+    public function toHtml()
     {
-        return json_encode($this->toArray(), $options);
+        return $this->render();
     }
 
     /**
-     * Renders block.
+     * Renders block into HTML.
      *
      * @return string
      */
     public function __toString(): string
     {
         return $this->render();
-    }
-
-    /**
-     * Renders block.
-     *
-     * @return string
-     */
-    public function render(): string
-    {
-        return $this->provider->render($this->data);
     }
 }

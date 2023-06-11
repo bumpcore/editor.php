@@ -3,139 +3,163 @@
 namespace BumpCore\EditorPhp;
 
 use BumpCore\EditorPhp\Block\Block;
-use BumpCore\EditorPhp\Block\BlockCollection;
-use BumpCore\EditorPhp\Contracts\Block as BlockContract;
-use Exception;
+use Carbon\Carbon;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Contracts\Support\Responsable;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Traits\Macroable;
 
-class EditorPhp implements Arrayable, Jsonable
+class EditorPhp implements Arrayable, Jsonable, Responsable, Renderable, Htmlable
 {
+    use Macroable;
+
     /**
-     * @var array
+     * Used template.
+     *
+     * @var string
      */
-    protected array $providers;
+    protected static string $template = 'tailwind';
+
+    /**
+     * @var Carbon
+     */
+    public readonly Carbon $time;
+
+    /**
+     * @var Collection<int, Block>
+     */
+    public Collection $blocks;
 
     /**
      * @var string
      */
-    protected string $version;
+    public readonly ?string $version;
 
     /**
-     * @var BlockCollection<int, Block>
+     * Belonging model, if casted.
+     *
+     * @var Model
      */
-    public readonly BlockCollection $blocks;
+    public readonly Model $model;
+
+    /**
+     * Fluent method to create new `EditorPhp` instance.
+     *
+     * @param string|null $input
+     *
+     * @return EditorPhp
+     */
+    public static function make(?string $input = null): self
+    {
+        return new static($input);
+    }
 
     /**
      * Constructor.
      *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->providers = [];
-        $this->blocks = new BlockCollection();
-    }
-
-    /**
-     * Registers new providers for the blocks.
-     *
-     * @param array $providers
+     * @param string|null $input
      *
      * @return void
      */
-    public function register(array $providers): void
+    public function __construct(?string $input = null)
     {
-        foreach ($providers as $provider)
+        if (empty($input))
         {
-            if (!in_array(BlockContract::class, class_implements($provider)))
-            {
-                throw new Exception($provider . ' must implement ' . BlockContract::class);
-            }
-
-            /** @var BlockContract */
-            $provider =  new ($provider);
-
-            $this->providers[$provider->type()] = $provider;
+            $this->time = Carbon::now();
+            $this->blocks = new Collection();
+            $this->version = null;
+        }
+        else
+        {
+            $parser = new Parser($input);
+            $this->time = $parser->time();
+            $this->blocks = $parser->blocks($this);
+            $this->version = $parser->version();
         }
     }
 
     /**
-     * Parses the given output.
+     * Registers new block.
      *
-     * @param string $output Json output of the Editor.js
+     * @param array<int, string> $blocks
+     * @param bool $override
      *
-     * @return $this
+     * @return void
      */
-    public function load(string $output): self
+    public static function register(array $blocks, bool $override = false): void
     {
-        $output = json_decode($output, true);
+        Parser::register($blocks, $override);
+    }
 
-        if (!empty($blocks = $output['blocks']))
+    /**
+     * Sets model to be used with casting.
+     *
+     * @param Model $model
+     *
+     * @return EditorPhp
+     */
+    public function setModel(Model &$model): self
+    {
+        if (!isset($this->model))
         {
-            $this->blocks
-                ->clear()
-                ->push(...$this->parseBlocks($blocks));
-        }
-
-        if (!empty($version = $output['version']))
-        {
-            $this->version = $version;
+            $this->model = $model;
         }
 
         return $this;
     }
 
     /**
-     * Parses blocks from given array.
+     * Renders with `Bootstrap 5` templates.
      *
-     * @param array $blocks
-     *
-     * @return array
+     * @return void
      */
-    protected function parseBlocks(array $blocks): array
+    public static function useBootstrapFive(): void
     {
-        $parsed = [];
-
-        foreach ($blocks as $block)
-        {
-            if ($this->providerExists($block['type']))
-            {
-                $parsed[] = new Block($this->providers[$block['type']], $block['data']);
-            }
-        }
-
-        return $parsed;
+        static::$template = 'bootstrap-five';
     }
 
     /**
-     * Checks if block provider exists.
+     * Renders with `tailwindcss` templates.
      *
-     * @param string $type
-     *
-     * @return bool
+     * @return void
      */
-    protected function providerExists(string $type): bool
+    public static function useTailwind(): void
     {
-        return key_exists($type, $this->providers);
+        static::$template = 'tailwind';
     }
 
     /**
-     * Converts EditorPhp into array.
+     * Returns used template.
      *
-     * @return array
+     * @return string
+     */
+    public static function usingTemplate(): string
+    {
+        return static::$template;
+    }
+
+    /**
+     * Converts the `Editor.php` as an array.
+     *
+     * @return array<string, array|int|string>
      */
     public function toArray(): array
     {
         return [
-            'time' => floor(microtime(true) * 1000),
+            'time' => (int) $this->time->getPreciseTimestamp(3),
             'blocks' => $this->blocks->toArray(),
             'version' => $this->version,
         ];
     }
 
     /**
-     * Encodes EditorPhp into Editor.js readable format.
+     * Converts the `Editor.php` to its JSON representation.
+     *
+     * @param int $options
      *
      * @return string
      */
@@ -145,7 +169,41 @@ class EditorPhp implements Arrayable, Jsonable
     }
 
     /**
-     * Renders all blocks.
+     * Creates an HTTP response that represents the `Editor.php`.
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function toResponse($request)
+    {
+        return $request->expectsJson() ? response($this->toArray()) : response($this->render());
+    }
+
+    /**
+     * Renders blocks into HTML.
+     *
+     * @return string
+     */
+    public function render(): string
+    {
+        return $this->blocks
+            ->map(fn (Block $block) => $block->render())
+            ->implode('');
+    }
+
+    /**
+     * Renders blocks into HTML.
+     *
+     * @return string
+     */
+    public function toHtml()
+    {
+        return $this->render();
+    }
+
+    /**
+     * Renders blocks into HTML.
      *
      * @return string
      */
@@ -155,14 +213,32 @@ class EditorPhp implements Arrayable, Jsonable
     }
 
     /**
-     * Renders all blocks.
+     * Generates fake instance.
      *
-     * @return string
+     * @param bool $instance
+     * @param int $minLength
+     * @param int $maxLength
+     *
+     * @return EditorPhp|string
      */
-    public function render(): string
+    public static function fake(bool $instance = false, int $minLength = 8, int $maxLength = 30): EditorPhp|string
     {
-        return $this->blocks
-            ->map(fn (Block $block) => $block->render())
-            ->implode('');
+        $faker = \Faker\Factory::create();
+        $blocks = array_filter(Parser::$blocks, fn (string $provider) => method_exists($provider, 'fake'));
+        $generatedBlocks = [];
+
+        foreach (range(0, fake()->numberBetween($minLength, $maxLength)) as $index)
+        {
+            $block = fake()->randomElement($blocks);
+            $generatedBlocks[] = (new ($block)($block::fake($faker)))->toArray();
+        }
+
+        $generated = json_encode([
+            'time' => (int) Carbon::now()->getPreciseTimestamp(3),
+            'blocks' => $generatedBlocks,
+            'version' => fake()->semver(),
+        ]);
+
+        return $instance ? static::make($generated) : $generated;
     }
 }
