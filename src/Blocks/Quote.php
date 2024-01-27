@@ -3,12 +3,13 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Block;
+use BumpCore\EditorPhp\Contracts\Fakeable;
 use BumpCore\EditorPhp\EditorPhp;
 use BumpCore\EditorPhp\Helpers;
 use Illuminate\Support\Facades\View;
 use Illuminate\Validation\Rule;
 
-class Quote extends Block
+class Quote extends Block implements Fakeable
 {
     /**
      * Tag allow list for purifying data.

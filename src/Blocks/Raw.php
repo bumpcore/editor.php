@@ -3,8 +3,9 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Block;
+use BumpCore\EditorPhp\Contracts\Fakeable;
 
-class Raw extends Block
+class Raw extends Block implements Fakeable
 {
     /**
      * Tag allow list for purifying data.
