@@ -3,6 +3,7 @@
 namespace BumpCore\EditorPhp;
 
 use BumpCore\EditorPhp\Block\Block;
+use BumpCore\EditorPhp\Contracts\Fakeable;
 use Carbon\Carbon;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Htmlable;
@@ -223,20 +224,25 @@ class EditorPhp implements Arrayable, Jsonable, Responsable, Renderable, Htmlabl
      */
     public static function fake(bool $instance = false, int $minLength = 8, int $maxLength = 30): EditorPhp|string
     {
+        if (!class_exists(\Faker\Factory::class, false))
+        {
+            throw new \Exception('Please install `fakerphp/faker` package in order to generate fake data.');
+        }
+
         $faker = \Faker\Factory::create();
-        $blocks = array_filter(Parser::$blocks, fn (string $provider) => method_exists($provider, 'fake'));
+        $blocks = array_filter(Parser::$blocks, fn (string $provider) => is_subclass_of($provider, Fakeable::class));
         $generatedBlocks = [];
 
-        foreach (range(0, fake()->numberBetween($minLength, $maxLength)) as $index)
+        foreach (range(0, $faker->numberBetween($minLength, $maxLength)) as $index)
         {
-            $block = fake()->randomElement($blocks);
+            $block = $faker->randomElement($blocks);
             $generatedBlocks[] = (new ($block)($block::fake($faker)))->toArray();
         }
 
         $generated = json_encode([
             'time' => (int) Carbon::now()->getPreciseTimestamp(3),
             'blocks' => $generatedBlocks,
-            'version' => fake()->semver(),
+            'version' => $faker->semver(),
         ]);
 
         return $instance ? static::make($generated) : $generated;

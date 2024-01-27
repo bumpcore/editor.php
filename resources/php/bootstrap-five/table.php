@@ -4,7 +4,7 @@
             <thead class=" text-gray-700 text-uppercase bg-light">
                 <tr>
                     <?php foreach($headings as $heading): ?>
-                        <th class="px-4 py-3"><?php echo $heading; ?></th>
+                        <th class="px-4 py-3"><?= $heading; ?></th>
                     <?php endforeach; ?>
                 </tr>
             </thead>
@@ -18,7 +18,7 @@
 
                 <tr class="bg-white">
                     <?php foreach($row as $cell): ?>
-                        <td class="px-4 py-3 fw-semibold"><?php echo $cell; ?></td>
+                        <td class="px-4 py-3 fw-semibold"><?= $cell; ?></td>
                     <?php endforeach; ?>
                 </tr>
             <?php endforeach; ?>

@@ -4,7 +4,7 @@
             <thead class="text-xs text-gray-700 uppercase bg-gray-100">
                 <tr>
                     <?php foreach($headings as $heading): ?>
-                        <th class="px-6 py-3"><?php echo $heading; ?></th>
+                        <th class="px-6 py-3"><?= $heading; ?></th>
                     <?php endforeach; ?>
                 </tr>
             </thead>
@@ -18,7 +18,7 @@
 
                 <tr class="bg-white border-b">
                     <?php foreach($row as $cell): ?>
-                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"><?php echo $cell; ?></td>
+                        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"><?= $cell; ?></td>
                     <?php endforeach; ?>
                 </tr>
             <?php endforeach; ?>

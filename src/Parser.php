@@ -17,21 +17,21 @@ class Parser
      * @var array<string, string>
      */
     public static array $blocks = [
-        'attaches' => \BumpCore\EditorPhp\Blocks\Attaches::class,
-        'checklist' => \BumpCore\EditorPhp\Blocks\Checklist::class,
-        'code' => \BumpCore\EditorPhp\Blocks\Code::class,
-        'delimiter' => \BumpCore\EditorPhp\Blocks\Delimiter::class,
-        'embed' => \BumpCore\EditorPhp\Blocks\Embed::class,
-        'header' => \BumpCore\EditorPhp\Blocks\Header::class,
-        'image' => \BumpCore\EditorPhp\Blocks\Image::class,
-        'linkTool' => \BumpCore\EditorPhp\Blocks\LinkTool::class,
-        'list' => \BumpCore\EditorPhp\Blocks\ListBlock::class,
-        'paragraph' => \BumpCore\EditorPhp\Blocks\Paragraph::class,
-        'personality' => \BumpCore\EditorPhp\Blocks\Personality::class,
-        'quote' => \BumpCore\EditorPhp\Blocks\Quote::class,
-        'raw' => \BumpCore\EditorPhp\Blocks\Raw::class,
-        'table' => \BumpCore\EditorPhp\Blocks\Table::class,
-        'warning' => \BumpCore\EditorPhp\Blocks\Warning::class,
+        'attaches' => Blocks\Attaches::class,
+        'checklist' => Blocks\Checklist::class,
+        'code' => Blocks\Code::class,
+        'delimiter' => Blocks\Delimiter::class,
+        'embed' => Blocks\Embed::class,
+        'header' => Blocks\Header::class,
+        'image' => Blocks\Image::class,
+        'linkTool' => Blocks\LinkTool::class,
+        'list' => Blocks\ListBlock::class,
+        'paragraph' => Blocks\Paragraph::class,
+        'personality' => Blocks\Personality::class,
+        'quote' => Blocks\Quote::class,
+        'raw' => Blocks\Raw::class,
+        'table' => Blocks\Table::class,
+        'warning' => Blocks\Warning::class,
     ];
 
     /**

@@ -13,7 +13,7 @@
         </svg>
     </div>
     <div class="z-1 position-relative">
-        <p class="fs-4 fw-semibold mb-0"><?php echo $data('text'); ?></p>
-        <small class="d-block text-end"><?php echo $data('caption'); ?></small>
+        <p class="fs-4 fw-semibold mb-0"><?= $data('text'); ?></p>
+        <small class="d-block text-end"><?= $data('caption'); ?></small>
     </div>
 </blockquote>

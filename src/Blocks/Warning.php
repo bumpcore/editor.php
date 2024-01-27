@@ -3,11 +3,12 @@
 namespace BumpCore\EditorPhp\Blocks;
 
 use BumpCore\EditorPhp\Block\Block;
+use BumpCore\EditorPhp\Contracts\Fakeable;
 use BumpCore\EditorPhp\EditorPhp;
 use BumpCore\EditorPhp\Helpers;
 use Illuminate\Support\Facades\View;
 
-class Warning extends Block
+class Warning extends Block implements Fakeable
 {
     /**
      * Tag allow list for purifying data.
