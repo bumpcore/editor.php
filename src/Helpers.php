@@ -38,11 +38,17 @@ class Helpers
      *
      * @return string
      */
-    public static function renderNative(string $file, array $data): string
+    public static function renderNative(string $file, array $data = []): string
     {
         ob_start();
-        extract($data);
-        require $file;
+
+        // Problem was extracted data overriding the `$file` variable.
+        // This clever solution is taken from `https://github.com/thephpleague/plates/blob/ec07462f53d38dd4a3323e288c41bffe86e9098e/src/Template/Template.php#L167C1-L170C23`
+		// @phpstan-ignore-next-line
+        (function() use ($data) {
+            extract($data);
+            require func_get_arg(0);
+        })($file);
 
         return ob_get_clean();
     }

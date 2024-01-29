@@ -2,6 +2,7 @@
 
 namespace BumpCore\EditorPhp\Casts;
 
+use BumpCore\EditorPhp\EditorPhp;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,7 +23,13 @@ class EditorPhpCast implements CastsAttributes
             return $value;
         }
 
-        return \BumpCore\EditorPhp\EditorPhp::make($value)->setModel($model);
+        // $editorPhp = \BumpCore\EditorPhp\EditorPhp::make($value);
+
+        // return \BumpCore\EditorPhp\EditorPhp::make($value)->setModel($model);
+        return tap(
+            EditorPhp::make($value),
+            fn (EditorPhp $editorPhp) => $editorPhp->model = $model
+        );
     }
 
     /**
@@ -35,9 +42,11 @@ class EditorPhpCast implements CastsAttributes
      */
     public function set($model, string $key, $value, array $attributes)
     {
-        if ($value instanceof \BumpCore\EditorPhp\EditorPhp)
+        if ($value instanceof EditorPhp)
         {
-            return $value->setModel($model)->toJson();
+            $value->model = $model;
+
+            return $value->toJson();
         }
 
         return $value;

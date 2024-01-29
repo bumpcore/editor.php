@@ -15,7 +15,7 @@ class EditorPhpServiceProvider extends ServiceProvider
         // ...
     }
 
-    public function boot()
+    public function boot(): void
     {
         if ($this->app->runningInConsole())
         {
@@ -32,6 +32,6 @@ class EditorPhpServiceProvider extends ServiceProvider
             __DIR__ . '/../config/editor.php' => config_path('editor.php'),
         ]);
 
-        Parser::register(config('editor.blocks') ?? [], !empty(config('editor.blocks')));
+        Registry::registerBlocks(config('editor.blocks') ?? [], !empty(config('editor.blocks')));
     }
 }

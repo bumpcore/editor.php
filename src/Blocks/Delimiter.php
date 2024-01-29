@@ -2,20 +2,20 @@
 
 namespace BumpCore\EditorPhp\Blocks;
 
-use BumpCore\EditorPhp\Block\Block;
+use BumpCore\EditorPhp\Block;
 use BumpCore\EditorPhp\Contracts\Fakeable;
-use BumpCore\EditorPhp\EditorPhp;
 use BumpCore\EditorPhp\Helpers;
+use BumpCore\EditorPhp\Registry;
 use Illuminate\Support\Facades\View;
 
 class Delimiter extends Block implements Fakeable
 {
     /**
-     * Tag allow list for purifying data.
+     * Sanitize rules for sanitizing data.
      *
      * @return array|string
      */
-    public function allows(): array|string
+    public function sanitize(): array|string
     {
         return '*';
     }
@@ -37,14 +37,15 @@ class Delimiter extends Block implements Fakeable
      */
     public function render(): string
     {
+        $template = Registry::getTemplate();
+
         if (View::getFacadeRoot())
         {
-            return view(sprintf('editor.php::%s.delimiter', EditorPhp::usingTemplate()))
-                ->with(['data' => $this->data])
+            return view("editor.php::{$template}.delimiter")
                 ->render();
         }
 
-        return Helpers::renderNative(__DIR__ . sprintf('/../../resources/php/%s/delimiter.php', EditorPhp::usingTemplate()), ['data' => $this->data]);
+        return Helpers::renderNative(__DIR__ . "/../../resources/php/{$template}/delimiter.php");
     }
 
     /**

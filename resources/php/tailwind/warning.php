@@ -13,7 +13,7 @@
     </div>
 
     <div class="grow">
-        <p class="text-lg font-semibold"><?= $data('title'); ?></p>
-        <p><?= $data('message'); ?></p>
+        <p class="text-lg font-semibold"><?php echo $title; ?></p>
+        <p><?php echo $message; ?></p>
     </div>
 </aside>

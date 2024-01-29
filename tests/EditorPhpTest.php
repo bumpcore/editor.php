@@ -1,10 +1,9 @@
 <?php
 
-use BumpCore\EditorPhp\Block\Block;
+use BumpCore\EditorPhp\Block;
 use BumpCore\EditorPhp\Blocks\Paragraph;
 use BumpCore\EditorPhp\EditorPhp;
-use BumpCore\EditorPhp\Parser;
-use Illuminate\Database\Eloquent\Model;
+use BumpCore\EditorPhp\Registry;
 use Illuminate\Support\Collection;
 
 test(
@@ -32,15 +31,10 @@ test(
     function() {
         EditorPhp::register(['p' => Paragraph::class]);
 
-        expect(Parser::$blocks)->toHaveKey('p');
-        expect(Parser::$blocks['p'])->toEqual(Paragraph::class);
+        expect(Registry::getBlocks())->toHaveKey('p');
+        expect(Registry::getBlockByType('p'))->toEqual(Paragraph::class);
     }
 );
-
-test(
-    'Model can be set',
-    fn ($model) => expect(EditorPhp::make()->setModel($model)->model)->toBeInstanceOf(Model::class)->not()->toBeEmpty()
-)->with('models');
 
 test(
     'Can be converted to array',
@@ -68,8 +62,18 @@ test(
 )->with('valid');
 
 test(
+    'can be rendered either with Bootstrap template or Tailwind template',
+    function($sample) {
+        EditorPhp::useBootstrapFive();
+        expect(EditorPhp::make($sample)->render())->toBeString();
+        EditorPhp::useTailwind();
+        expect(EditorPhp::make($sample)->render())->toBeString();
+    }
+)->with('valid');
+
+test(
     'Can be generate fake data as instance',
-    fn () => expect(EditorPhp::fake(true))->toBeInstanceOf(EditorPhp::class)
+    fn () => expect(EditorPhp::fake(true, 30, 60))->toBeInstanceOf(EditorPhp::class)
 );
 
 test(
@@ -88,3 +92,30 @@ test(
         expect(EditorPhp::make($sample)->getParagraphs())->toBeInstanceOf(Collection::class);
     }
 )->with('valid');
+
+test(
+    'Can handle dynamic property',
+    function() {
+        $editor = EditorPhp::make();
+
+		// @phpstan-ignore-next-line
+        $editor->foo = 'bar';
+		// @phpstan-ignore-next-line
+        $editor->baz = 'qux';
+
+        expect($editor->foo)->toEqual('bar');
+        expect($editor->baz)->toEqual('qux');
+
+        expect(isset($editor->foo))->toBeTrue();
+        expect(isset($editor->bar))->toBeFalse();
+
+        unset($editor->foo);
+		unset($editor->baz);
+		unset($editor->bar);
+
+		// @phpstan-ignore-next-line
+		expect($editor->foo)->toBeNull();
+		// @phpstan-ignore-next-line
+		expect($editor->baz)->toBeNull();
+    }
+);
