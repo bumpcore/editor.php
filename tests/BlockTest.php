@@ -45,6 +45,7 @@ test(
 
 test(
     'Can be access data via magic method',
+	// @phpstan-ignore-next-line
     fn () => expect(Paragraph::make(['text' => 'foo'])->text)
         ->toEqual('foo')
 );
@@ -59,6 +60,7 @@ test(
     'Can be set data via magic method',
     function() {
         $paragraph = Paragraph::make(['text' => 'foo']);
+		// @phpstan-ignore-next-line
         $paragraph->text = 'baz';
         expect($paragraph->text)->toEqual('baz');
     }
