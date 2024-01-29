@@ -1,14 +1,14 @@
 <div class="mb-3 bg-light p-4 rounded">
     <iframe
         class="block mb-3 rounded bg-white"
-        height="<?php echo $height; ?>"
+        height="<?= $height; ?>"
         loading="lazy"
-        src="<?php echo $embed; ?>"
+        src="<?= $embed; ?>"
         width="100%"
     ></iframe>
 
     <p class="bg-white p-4 rounded mb-1">
-        <?php echo $caption; ?>
+        <?= $caption; ?>
 
     </p>
 
@@ -16,9 +16,9 @@
         <small>
             <a
                 class="link-secondary"
-                href="<?php echo $source; ?>"
+                href="<?= $source; ?>"
 				target="_blank"
-            ><?php echo $source; ?></a>
+            ><?= $source; ?></a>
         </small>
     </p>
 

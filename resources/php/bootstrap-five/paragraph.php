@@ -1,1 +1,1 @@
-<p class="mb-3"><?php echo $text; ?></p>
+<p class="mb-3"><?= $text; ?></p>

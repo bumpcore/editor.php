@@ -40,7 +40,7 @@ class Parser
     public function time(): Carbon
     {
         // return Carbon::parse(Arr::get($this->input, 'time') / 1000);
-		return Carbon::parse(new DateTime('@' . Arr::get($this->input, 'time') / 1000));
+        return Carbon::parse(new DateTime('@' . Arr::get($this->input, 'time') / 1000));
     }
 
     /**

@@ -98,9 +98,9 @@ test(
     function() {
         $editor = EditorPhp::make();
 
-		// @phpstan-ignore-next-line
+        // @phpstan-ignore-next-line
         $editor->foo = 'bar';
-		// @phpstan-ignore-next-line
+        // @phpstan-ignore-next-line
         $editor->baz = 'qux';
 
         expect($editor->foo)->toEqual('bar');
@@ -109,13 +109,13 @@ test(
         expect(isset($editor->foo))->toBeTrue();
         expect(isset($editor->bar))->toBeFalse();
 
-        unset($editor->foo);
-		unset($editor->baz);
-		unset($editor->bar);
+        unset($editor->foo, $editor->baz, $editor->bar);
 
-		// @phpstan-ignore-next-line
-		expect($editor->foo)->toBeNull();
-		// @phpstan-ignore-next-line
-		expect($editor->baz)->toBeNull();
+
+
+        // @phpstan-ignore-next-line
+        expect($editor->foo)->toBeNull();
+        // @phpstan-ignore-next-line
+        expect($editor->baz)->toBeNull();
     }
 );

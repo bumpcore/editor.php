@@ -29,7 +29,7 @@ test(
 
 test(
     'Can not register invalid block',
-	// @phpstan-ignore-next-line
+    // @phpstan-ignore-next-line
     fn () => Registry::registerBlock('foo', get_class((new class()
     {
     })))
