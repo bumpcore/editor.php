@@ -1,13 +1,13 @@
 <div class="d-flex mb-3 gap-3 rounded">
-    <div class="bg-light text-uppercase fs-5 fw-bold rounded p-4"><?= $file['extension']; ?></div>
+    <div class="bg-light text-uppercase fs-5 fw-bold rounded p-4"><?php echo $file['extension']; ?></div>
     <div>
         <p class="fw-bold mb-0 text-lg">
             <a
                 class="link-dark d-inline-flex justify-content-center align-items-center gap-1"
-                href="<?= $file['url']; ?>"
+                href="<?php echo $file['url']; ?>"
                 target="_blank"
             >
-                <span><?= $title ?? $file['name']; ?></span>
+                <span><?php echo $title ?? $file['name']; ?></span>
                 <svg
                     class="inline"
                     fill="currentColor"
@@ -27,6 +27,6 @@
                 </svg>
             </a>
         </p>
-        <p class="fw-semibold text-secondary"><small><?= number_format($file['size'] * 0.000001, 2); ?>MiB</small></p>
+        <p class="fw-semibold text-secondary"><small><?php echo number_format($file['size'] * 0.000001, 2); ?>MiB</small></p>
     </div>
 </div>

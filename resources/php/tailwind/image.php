@@ -1,5 +1,5 @@
 <img
-    alt="<?= $caption; ?>"
-    src="<?= $file['url']; ?>"
+    alt="<?php echo $caption; ?>"
+    src="<?php echo $file['url']; ?>"
     class="block rounded-xl mb-4"
 >
