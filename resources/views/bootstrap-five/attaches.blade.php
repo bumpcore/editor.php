@@ -1,13 +1,13 @@
-<div class="rounded d-flex gap-3 mb-3">
-    <div class="bg-light text-uppercase fs-5 fw-bold p-4 rounded">{!! $data('file.extension') !!}</div>
+<div class="d-flex mb-3 gap-3 rounded">
+    <div class="bg-light text-uppercase fs-5 fw-bold rounded p-4">{!! $file['extension'] !!}</div>
     <div>
-        <p class="text-lg fw-bold mb-0">
+        <p class="fw-bold mb-0 text-lg">
             <a
-                class="link-dark gap-1 d-inline-flex justify-content-center align-items-center"
-                href="{!! $data('file.url') !!}"
+                class="link-dark d-inline-flex justify-content-center align-items-center gap-1"
+                href="{!! $file['url'] !!}"
                 target="_blank"
             >
-                <span>{!! $data('title') ?? $data('file.name') !!}</span>
+                <span>{!! $title ?? $file['name'] !!}</span>
                 <svg
                     class="inline"
                     fill="currentColor"
@@ -27,6 +27,6 @@
                 </svg>
             </a>
         </p>
-        <p class="fw-semibold text-secondary"><small>{!! number_format($data('file.size') * 0.000001, 2) !!}MiB</small></p>
+        <p class="fw-semibold text-secondary"><small>{!! number_format($file['size'] * 0.000001, 2) !!}MiB</small></p>
     </div>
 </div>

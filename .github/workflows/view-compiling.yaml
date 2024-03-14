@@ -1,34 +1,41 @@
 name: View Compiling
 
 on:
-  push:
-    branches:
-    - master
-    - "*.x"
-    paths:
-    - "**.php"
+    push:
+        branches:
+          - master
+          - "*.x"
+        paths:
+          - "**.php"
 
-  pull_request:
-    paths:
-    - "**.php"
+    pull_request:
+        paths:
+          - "**.php"
 
 permissions:
-  contents: write
+    contents: write
 jobs:
-  run:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-      with:
-        ref: ${{ github.head_ref }}
+    run:
+        runs-on: ubuntu-latest
+        steps:
+          - name: Checkout code
+            uses: actions/checkout@v3
+            with:
+                ref: ${{ github.head_ref }}
 
-    - name: Install dependencies
-      run: composer install
+          - name: Setup PHP
+            uses: shivammathur/setup-php@v2
+            with:
+                php-version: 8.2
+                tools: composer:v2
+                coverage: none
 
-    - name: Execute script
-      run: php .github/scripts/compile-templates.php
+          - name: Install dependencies
+            run: composer install
 
-    - uses: stefanzweifel/git-auto-commit-action@v4
-      with:
-        commit_message: Compiling Templates
+          - name: Execute script
+            run: php .github/scripts/compile-templates.php
+
+          - uses: stefanzweifel/git-auto-commit-action@v4
+            with:
+                commit_message: Compiling Templates

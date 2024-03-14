@@ -11,7 +11,7 @@
         </svg>
     </div>
     <div class="z-10 relative">
-        <p class="text-lg font-medium"><?= $data('text'); ?></p>
-        <small class="block text-end"><?= $data('caption'); ?></small>
+        <p class="text-lg font-medium"><?php echo $text; ?></p>
+        <small class="block text-end"><?php echo $caption; ?></small>
     </div>
 </blockquote>

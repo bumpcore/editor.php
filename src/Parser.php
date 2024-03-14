@@ -2,38 +2,17 @@
 
 namespace BumpCore\EditorPhp;
 
-use BumpCore\EditorPhp\Block\Block;
-use BumpCore\EditorPhp\Exceptions\EditorPhpException;
+use BumpCore\EditorPhp\Exceptions\InvalidInputException;
+use BumpCore\EditorPhp\Exceptions\SchemaMismatchException;
+use BumpCore\EditorPhp\Exceptions\UnkownBlockException;
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 class Parser
 {
-    /**
-     * Registered blocks.
-     *
-     * @var array<string, string>
-     */
-    public static array $blocks = [
-        'attaches' => Blocks\Attaches::class,
-        'checklist' => Blocks\Checklist::class,
-        'code' => Blocks\Code::class,
-        'delimiter' => Blocks\Delimiter::class,
-        'embed' => Blocks\Embed::class,
-        'header' => Blocks\Header::class,
-        'image' => Blocks\Image::class,
-        'linkTool' => Blocks\LinkTool::class,
-        'list' => Blocks\ListBlock::class,
-        'paragraph' => Blocks\Paragraph::class,
-        'personality' => Blocks\Personality::class,
-        'quote' => Blocks\Quote::class,
-        'raw' => Blocks\Raw::class,
-        'table' => Blocks\Table::class,
-        'warning' => Blocks\Warning::class,
-    ];
-
     /**
      * Converted input JSON.
      *
@@ -54,43 +33,18 @@ class Parser
     }
 
     /**
-     * Registers new block.
-     *
-     * @param array<string, string> $blocks
-     * @param bool $override
-     *
-     * @return void
-     */
-    public static function register(array $blocks, bool $override = false): void
-    {
-        if ($override)
-        {
-            static::$blocks = [];
-        }
-
-        foreach ($blocks as $type => $block)
-        {
-            if (!in_array(Block::class, class_parents($block)))
-            {
-                throw new EditorPhpException($block . ' must extend ' . Block::class);
-            }
-
-            static::$blocks[$type] = $block;
-        }
-    }
-
-    /**
-     * Returns the time of given `Editor.js` output.
+     * Returns the time of given `Editor.js` input.
      *
      * @return Carbon
      */
     public function time(): Carbon
     {
-        return Carbon::parse(Arr::get($this->input, 'time') / 1000);
+        // return Carbon::parse(Arr::get($this->input, 'time') / 1000);
+        return Carbon::parse(new DateTime('@' . Arr::get($this->input, 'time') / 1000));
     }
 
     /**
-     * Returns parsed blocks of given `Editor.js` output.
+     * Returns parsed blocks of given `Editor.js` input.
      *
      * @param EditorPhp|null $root
      *
@@ -104,19 +58,19 @@ class Parser
         {
             $type = Arr::get($block, 'type');
 
-            if (!key_exists($type, static::$blocks))
+            if (!Registry::hasBlockType($type))
             {
-                throw new EditorPhpException('Unknown block type: ' . $type);
+                throw new UnkownBlockException($type);
             }
 
-            $blocks->push(new (static::$blocks[$type])(Arr::get($block, 'data'), $root));
+            $blocks->push(new (Registry::getBlockByType($type))(Arr::get($block, 'data'), $root));
         }
 
         return $blocks;
     }
 
     /**
-     * Returns the version of given `Editor.js` output.
+     * Returns the version of given `Editor.js` input.
      *
      * @return string
      */
@@ -126,7 +80,7 @@ class Parser
     }
 
     /**
-     * Parses given `Editor.js` output JSON.
+     * Parses given `Editor.js` input JSON.
      *
      * @param string $input
      *
@@ -136,21 +90,21 @@ class Parser
     {
         if (!Str::isJson($input))
         {
-            throw new EditorPhpException('Given Editor.js output is not a valid JSON.');
+            throw new InvalidInputException('Given Editor.js input is not a valid JSON.');
         }
 
         $input = json_decode($input, true);
 
         if (!$this->validateSchema($input))
         {
-            throw new EditorPhpException('Given Editor.js output is not matching schema.');
+            throw new SchemaMismatchException('Given Editor.js input is not matching schema.');
         }
 
         return $input;
     }
 
     /**
-     * Validates given `Editor.js` output.
+     * Validates given `Editor.js` input.
      *
      * @param array $input
      *

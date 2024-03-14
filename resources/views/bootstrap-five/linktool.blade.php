@@ -1,21 +1,21 @@
-<div class="bg-light d-flex mb-3 rounded overflow-hidden flex-column flex-sm-row">
+<div class="bg-light d-flex flex-column flex-sm-row mb-3 overflow-hidden rounded">
     <img
-        alt="{!! $data('meta.title') !!}"
+        alt="{!! $meta['title'] !!}"
         width="100%"
-        src="{!! $data('meta.image.url') !!}"
-		style="object-fit: cover"
+        src="{!! $meta['image']['url'] !!}"
+        style="object-fit: cover"
     >
-    <div class="m-4 p-4 bg-white rounded flex-2">
-        <h4 class="text-xl fw-semibold">{!! $data('meta.title') !!}</h4>
+    <div class="flex-2 m-4 rounded bg-white p-4">
+        <h4 class="fw-semibold text-xl">{!! $meta['title'] !!}</h4>
         <p class="mb-3 text-sm">
             <small>
                 <a
                     class="link-dark fw-bold"
-                    href="{!! $data('link') !!}"
+                    href="{!! $link !!}"
                     target="_blank"
-                >{!! $data('link') !!}</a>
+                >{!! $link !!}</a>
             </small>
         </p>
-        <p class="mb-0">{!! $data('meta.description') !!}</p>
+        <p class="mb-0">{!! $meta['description'] !!}</p>
     </div>
 </div>

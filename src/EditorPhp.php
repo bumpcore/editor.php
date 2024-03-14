@@ -2,7 +2,6 @@
 
 namespace BumpCore\EditorPhp;
 
-use BumpCore\EditorPhp\Block\Block;
 use BumpCore\EditorPhp\Contracts\Fakeable;
 use Carbon\Carbon;
 use Illuminate\Contracts\Support\Arrayable;
@@ -10,25 +9,22 @@ use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\Support\Responsable;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Traits\Macroable;
 
+/**
+ * Class EditorPhp.
+ *
+ * This class is the main class of the EditorPhp.
+ * It represents the `Editor.js` data as an object and provides functionality to interact and manipulate it.
+ *
+ * @property Carbon $time
+ * @property string|null $version
+ * @property \Illuminate\Database\Eloquent\Model|null $model
+ */
 class EditorPhp implements Arrayable, Jsonable, Responsable, Renderable, Htmlable
 {
     use Macroable;
-
-    /**
-     * Used template.
-     *
-     * @var string
-     */
-    protected static string $template = 'tailwind';
-
-    /**
-     * @var Carbon
-     */
-    public readonly Carbon $time;
 
     /**
      * @var Collection<int, Block>
@@ -36,16 +32,11 @@ class EditorPhp implements Arrayable, Jsonable, Responsable, Renderable, Htmlabl
     public Collection $blocks;
 
     /**
-     * @var string
-     */
-    public readonly ?string $version;
-
-    /**
-     * Belonging model, if casted.
+     * Attributes of the EditorPhp; time, version, model etc.
      *
-     * @var Model
+     * @var array
      */
-    public readonly Model $model;
+    protected array $attributes = [];
 
     /**
      * Fluent method to create new `EditorPhp` instance.
@@ -62,7 +53,7 @@ class EditorPhp implements Arrayable, Jsonable, Responsable, Renderable, Htmlabl
     /**
      * Constructor.
      *
-     * @param string|null $input
+     * @param string|null $input The input data.
      *
      * @return void
      */
@@ -84,33 +75,52 @@ class EditorPhp implements Arrayable, Jsonable, Responsable, Renderable, Htmlabl
     }
 
     /**
-     * Registers new block.
+     * Returns given property.
      *
-     * @param array<int, string> $blocks
-     * @param bool $override
+     * @param string $name The name of the property.
      *
-     * @return void
+     * @return mixed The value of the property.
      */
-    public static function register(array $blocks, bool $override = false): void
+    public function __get(string $name)
     {
-        Parser::register($blocks, $override);
+        return $this->attributes[$name] ?? null;
     }
 
     /**
-     * Sets model to be used with casting.
+     * Checks if given property exists.
      *
-     * @param Model $model
+     * @param string $name The name of the property.
      *
-     * @return EditorPhp
+     * @return bool True if property exists, false otherwise.
      */
-    public function setModel(Model &$model): self
+    public function __isset(string $name): bool
     {
-        if (!isset($this->model))
-        {
-            $this->model = $model;
-        }
+        return isset($this->attributes[$name]);
+    }
 
-        return $this;
+    /**
+     * Sets given property.
+     *
+     * @param string $name The name of the property.
+     * @param mixed $value The value of the property.
+     *
+     * @return void
+     */
+    public function __set(string $name, $value): void
+    {
+        $this->attributes[$name] = $value;
+    }
+
+    /**
+     * Unsets given property.
+     *
+     * @param string $name The name of the property.
+     *
+     * @return void
+     */
+    public function __unset(string $name): void
+    {
+        unset($this->attributes[$name]);
     }
 
     /**
@@ -120,7 +130,7 @@ class EditorPhp implements Arrayable, Jsonable, Responsable, Renderable, Htmlabl
      */
     public static function useBootstrapFive(): void
     {
-        static::$template = 'bootstrap-five';
+        Registry::setTemplate('bootstrap-five');
     }
 
     /**
@@ -130,23 +140,26 @@ class EditorPhp implements Arrayable, Jsonable, Responsable, Renderable, Htmlabl
      */
     public static function useTailwind(): void
     {
-        static::$template = 'tailwind';
+        Registry::setTemplate('tailwind');
     }
 
     /**
-     * Returns used template.
+     * Registers new block.
      *
-     * @return string
+     * @param array<string, class-string<Block>> $blocks The blocks to register.
+     * @param bool $override Whether to override existing blocks or not.
+     *
+     * @return void
      */
-    public static function usingTemplate(): string
+    public static function register(array $blocks, bool $override = false): void
     {
-        return static::$template;
+        Registry::registerBlocks($blocks, $override);
     }
 
     /**
      * Converts the `Editor.php` as an array.
      *
-     * @return array<string, array|int|string>
+     * @return array<string, array|int|string> Array representation of the `Editor.php`.
      */
     public function toArray(): array
     {
@@ -160,9 +173,9 @@ class EditorPhp implements Arrayable, Jsonable, Responsable, Renderable, Htmlabl
     /**
      * Converts the `Editor.php` to its JSON representation.
      *
-     * @param int $options
+     * @param int $options JSON options.
      *
-     * @return string
+     * @return string JSON representation of the `Editor.php`. Can be used to load either `Editor.php` or `Editor.js`.
      */
     public function toJson($options = 0): string
     {
@@ -172,9 +185,9 @@ class EditorPhp implements Arrayable, Jsonable, Responsable, Renderable, Htmlabl
     /**
      * Creates an HTTP response that represents the `Editor.php`.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request The request.
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return \Symfony\Component\HttpFoundation\Response The response.
      */
     public function toResponse($request)
     {
@@ -184,7 +197,7 @@ class EditorPhp implements Arrayable, Jsonable, Responsable, Renderable, Htmlabl
     /**
      * Renders blocks into HTML.
      *
-     * @return string
+     * @return string Rendered HTML.
      */
     public function render(): string
     {
@@ -196,7 +209,7 @@ class EditorPhp implements Arrayable, Jsonable, Responsable, Renderable, Htmlabl
     /**
      * Renders blocks into HTML.
      *
-     * @return string
+     * @return string Rendered HTML.
      */
     public function toHtml()
     {
@@ -206,7 +219,7 @@ class EditorPhp implements Arrayable, Jsonable, Responsable, Renderable, Htmlabl
     /**
      * Renders blocks into HTML.
      *
-     * @return string
+     * @return string Rendered HTML.
      */
     public function __toString(): string
     {
@@ -216,26 +229,25 @@ class EditorPhp implements Arrayable, Jsonable, Responsable, Renderable, Htmlabl
     /**
      * Generates fake instance.
      *
-     * @param bool $instance
-     * @param int $minLength
-     * @param int $maxLength
+     * @param bool $instance Whether to return instance or not.
+     * @param int $minLength The minimum number of blocks.
+     * @param int $maxLength The maximum number of blocks.
      *
-     * @return EditorPhp|string
+     * @return EditorPhp|string The fake instance or JSON representation of it.
      */
     public static function fake(bool $instance = false, int $minLength = 8, int $maxLength = 30): EditorPhp|string
     {
-        if (!class_exists(\Faker\Factory::class, false))
-        {
-            throw new \Exception('Please install `fakerphp/faker` package in order to generate fake data.');
-        }
-
         $faker = \Faker\Factory::create();
-        $blocks = array_filter(Parser::$blocks, fn (string $provider) => is_subclass_of($provider, Fakeable::class));
+        $blocks = Registry::getFakeableBlocks();
         $generatedBlocks = [];
 
         foreach (range(0, $faker->numberBetween($minLength, $maxLength)) as $index)
         {
+            /**
+             * @var class-string<Block&Fakeable>
+             */
             $block = $faker->randomElement($blocks);
+
             $generatedBlocks[] = (new ($block)($block::fake($faker)))->toArray();
         }
 

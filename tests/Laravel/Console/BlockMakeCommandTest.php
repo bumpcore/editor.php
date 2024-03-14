@@ -9,6 +9,6 @@ uses(TestCase::class);
 
 test(
     'Can `make:block` returns success',
-    fn () => expect(artisan($this, 'make:block FooBlock'))->toEqual(Command::SUCCESS)
+    fn () => expect(artisan($this, 'make:block FooBlock --force'))->toEqual(Command::SUCCESS)
 );
 

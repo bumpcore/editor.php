@@ -2,17 +2,17 @@
 
 namespace BumpCore\EditorPhp\Blocks;
 
-use BumpCore\EditorPhp\Block\Block;
+use BumpCore\EditorPhp\Block;
 use BumpCore\EditorPhp\Contracts\Fakeable;
 
 class Raw extends Block implements Fakeable
 {
     /**
-     * Tag allow list for purifying data.
+     * Sanitize rules for sanitizing data.
      *
      * @return array|string
      */
-    public function allows(): array|string
+    public function sanitize(): array|string
     {
         return [
             'html' => '*',
@@ -38,7 +38,7 @@ class Raw extends Block implements Fakeable
      */
     public function render(): string
     {
-        return $this->data->get('html', '');
+        return $this->get('html', '');
     }
 
     /**

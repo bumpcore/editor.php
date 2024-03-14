@@ -1,12 +1,12 @@
-@if ($data('style') === 'ordered')
-    <ol class="pl-8 mb-4 list-decimal">
-        @foreach ($data('items', []) as $item)
+@if ($style === 'ordered')
+    <ol class="mb-4 list-decimal pl-8">
+        @foreach ($items as $item)
             <li class="mb-1">{!! $item !!}</li>
         @endforeach
     </ol>
 @else
-    <ul class="pl-8 mb-4 list-disc">
-        @foreach ($data('items', []) as $item)
+    <ul class="mb-4 list-disc pl-8">
+        @foreach ($items as $item)
             <li class="mb-1">{!! $item !!}</li>
         @endforeach
     </ul>

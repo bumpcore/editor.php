@@ -1,7 +1,7 @@
-<div class="table-responsive rounded mb-3 bg-light pb-6">
+<div class="table-responsive bg-light mb-3 rounded pb-6">
     <table class="table w-full">
-        @if ($data('withHeadings') && ($headings = $data('content')[array_key_first($data('content'))]))
-            <thead class=" text-gray-700 text-uppercase bg-light">
+        @if ($withHeadings && ($headings = $content[array_key_first($content)]))
+            <thead class="text-uppercase bg-light text-gray-700">
                 <tr>
                     @foreach ($headings as $heading)
                         <th class="px-4 py-3">{!! $heading !!}</th>
@@ -11,14 +11,14 @@
         @endif
 
         <tbody>
-            @foreach ($data('content', []) as $index => $row)
-                @if ($data('withHeadings') && array_key_first($data('content')) === $index)
+            @foreach ($content as $index => $row)
+                @if ($withHeadings && array_key_first($content) === $index)
                     @continue
                 @endif
 
                 <tr class="bg-white">
                     @foreach ($row as $cell)
-                        <td class="px-4 py-3 fw-semibold">{!! $cell !!}</td>
+                        <td class="fw-semibold px-4 py-3">{!! $cell !!}</td>
                     @endforeach
                 </tr>
             @endforeach

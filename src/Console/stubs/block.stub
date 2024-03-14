@@ -2,7 +2,7 @@
 
 namespace {{ namespace }};
 
-use BumpCore\EditorPhp\Block\Block;
+use BumpCore\EditorPhp\Block;
 
 class {{ class }} extends Block
 {
@@ -26,7 +26,7 @@ class {{ class }} extends Block
     public function render(): string
     {
         return view('block')
-            ->with(['data' => $this->data])
+            ->with('block', $this)
             ->render();
     }
 }
