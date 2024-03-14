@@ -14,7 +14,7 @@ class EditorPhpCast implements CastsAttributes
      * @param string|null $value
      * @param array $attributes
      *
-     * @return \BumpCore\EditorPhp\EditorPhp|null
+     * @return EditorPhp|null
      */
     public function get($model, string $key, $value, array $attributes)
     {
