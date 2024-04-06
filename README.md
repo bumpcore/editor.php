@@ -1,4 +1,4 @@
-<p align="center"><img src="art/banner.svg" width="100%"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/bumpcore/editor.php/0.x/art/banner.svg" width="100%"></p>
 
 # Editor.php
 
