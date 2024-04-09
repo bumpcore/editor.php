@@ -31,7 +31,7 @@ return $config
         'curly_braces_position' => ['allow_single_line_anonymous_functions'=>false, 'allow_single_line_empty_anonymous_classes'=>false, 'anonymous_classes_opening_brace'=>'next_line_unless_newline_at_signature_end', 'anonymous_functions_opening_brace'=>'same_line', 'control_structures_opening_brace'=>'next_line_unless_newline_at_signature_end', 'functions_opening_brace'=>'next_line_unless_newline_at_signature_end'],
         'declare_equal_normalize' => ['space'=>'single'],
         'declare_parentheses' => true,
-        'echo_tag_syntax' => ['format'=>'short'],
+        'echo_tag_syntax' => ['format'=>'long'],
         'elseif' => true,
         'encoding' => true,
         'explicit_indirect_variable' => true,

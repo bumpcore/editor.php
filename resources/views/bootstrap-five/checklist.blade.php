@@ -2,7 +2,7 @@
     class="d-flex flex-column align-items-start pl-8 gap-1 mb-3"
     style="list-style: none"
 >
-    @foreach ($data('items', []) as $item)
+    @foreach ($items as $item)
         <li class="inline-flex justify-center align-items-center gap-2">
             <span class="bg-light rounded-circle {!! $item['checked'] ? 'text-secondary' : 'text-black' !!}">
                 <svg

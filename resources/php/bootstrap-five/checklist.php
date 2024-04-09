@@ -2,9 +2,9 @@
     class="d-flex flex-column align-items-start pl-8 gap-1 mb-3"
     style="list-style: none"
 >
-    <?php foreach($data('items', []) as $item): ?>
+    <?php foreach($items as $item): ?>
         <li class="inline-flex justify-center align-items-center gap-2">
-            <span class="bg-light rounded-circle <?= $item['checked'] ? 'text-secondary' : 'text-black'; ?>">
+            <span class="bg-light rounded-circle <?php echo $item['checked'] ? 'text-secondary' : 'text-black'; ?>">
                 <svg
                     fill="currentColor"
                     height="24"
@@ -19,9 +19,9 @@
             </span>
 
             <?php if($item['checked']): ?>
-                <del><?= $item['text']; ?></del>
+                <del><?php echo $item['text']; ?></del>
             <?php else: ?>
-                <span><?= $item['text']; ?></span>
+                <span><?php echo $item['text']; ?></span>
             <?php endif; ?>
         </li>
     <?php endforeach; ?>

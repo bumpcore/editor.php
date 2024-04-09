@@ -95,7 +95,7 @@ You can access blocks through the blocks property.
 
 ```php
 use BumpCore\EditorPhp\EditorPhp;
-use BumpCore\EditorPhp\Block\Block;
+use BumpCore\EditorPhp\Block;
 use BumpCore\EditorPhp\Blocks\Paragraph;
 
 $editor = EditorPhp::make($json);
@@ -350,13 +350,13 @@ Now the block performs the final upload and is saved as JSON.
 It is impossible to support all blocks out there, so we can implement our own blocks in an easy way. A standard block looks like the following:
 
 ```php
-use BumpCore\EditorPhp\Block\Block;
+use BumpCore\EditorPhp\Block;
 
 class MyCustomBlock extends Block
 {
     public function render(): string
     {
-        return view('blocks.my-custom-block', ['data' => $this->data]);
+        return view('blocks.my-custom-block', ['block' => $this]);
     }
 }
 ```
@@ -401,7 +401,7 @@ $this->has('custom.data');
 Validating data is not required, but it can make your data safer. Validating block data is quite easy. We just have to add a `rules` method to our block:
 
 ```php
-use BumpCore\EditorPhp\Block\Block;
+use BumpCore\EditorPhp\Block;
 
 class MyCustomBlock extends Block
 {
@@ -428,7 +428,7 @@ When validating the block's data fails, the data will be empty. Data validation 
 You can purify the HTML of your data if you wish. It's important to prevent injections. Purifying data looks much like validation:
 
 ```php
-use BumpCore\EditorPhp\Block\Block;
+use BumpCore\EditorPhp\Block;
 
 class MyCustomBlock extends Block
 {
@@ -461,7 +461,7 @@ Unlike validation, purifying will only strip unwanted tags and attributes.
 As we mentioned earlier, we can generate fake data with `EditorPhp` . But it requires to generate each block's own fake data. To generate fake data we should add static method to our block:
 
 ```php
-use BumpCore\EditorPhp\Block\Block;
+use BumpCore\EditorPhp\Block;
 
 class MyCustomBlock extends Block
 {
@@ -521,7 +521,7 @@ echo $post->content->render();
 Also if you are using cast, you may access your model within block instances:
 
 ```php
-use BumpCore\EditorPhp\Block\Block;
+use BumpCore\EditorPhp\Block;
 use App\Models\Post;
 
 class MyBlock extends Block

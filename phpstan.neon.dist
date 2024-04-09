@@ -4,7 +4,7 @@ parameters:
 		- resources
 		- src
 		- tests
-	level: 4
+	level: 5
 	ignoreErrors:
 		- "#Unsafe usage of new static#"
 		- "#Class BumpCore\\\\EditorPhp\\\\EditorPhp has an uninitialized readonly property \\$model. Assign it in the constructor.#"
@@ -12,6 +12,7 @@ parameters:
 		- "#Readonly property BumpCore\\\\EditorPhp\\\\EditorPhp::\\$model is assigned outside of the constructor.#"
 		- "#Undefined variable: \\$this#"
 		- "#Call to an undefined method BumpCore\\\\EditorPhp\\\\EditorPhp::getParagraphs\\(\\).#"
-		- "#Variable \\$data might not be defined.#"
 		- "#Unreachable statement - code above always terminates.#"
+	excludePaths:
+		- resources/php/*
 	reportUnmatchedIgnoredErrors: false
