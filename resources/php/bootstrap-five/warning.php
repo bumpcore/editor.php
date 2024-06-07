@@ -17,7 +17,7 @@
     </div>
 
     <div class="flex-grow-1">
-        <p class="fs-4 fw-semibold mb-0"><?php echo $data('title'); ?></p>
-        <p><?php echo $data('message'); ?></p>
+        <p class="fs-4 fw-semibold mb-0"><?= $data('title'); ?></p>
+        <p><?= $data('message'); ?></p>
     </div>
 </aside>
