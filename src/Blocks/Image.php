@@ -65,7 +65,7 @@ class Image extends Block
     public static function fake(\Faker\Generator $faker): array
     {
         return [
-            'file' => ['url' => $faker->imageUrl()],
+            'file' => ['url' => 'https://picsum.photos/200/300'],
             'caption' => $faker->text(),
             'withBorder' => $faker->boolean(),
             'stretched' => $faker->boolean(),
