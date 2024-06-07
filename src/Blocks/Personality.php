@@ -69,7 +69,7 @@ class Personality extends Block
             'name' => $faker->name(),
             'description' => $faker->text(),
             'link' => $faker->url(),
-            'photo' => $faker->imageUrl(),
+            'photo' => 'https://picsum.photos/200/300',
         ];
     }
 }

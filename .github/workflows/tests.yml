@@ -1,29 +1,38 @@
 name: "Tests"
 
 on:
-  push:
-    branches:
-    - master
-    - '*.x'
-  pull_request:
+    push:
+        branches:
+          - master
+          - '*.x'
+    pull_request:
 
 jobs:
-  run:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        php-versions: ["8.1", "8.2"]
-    steps:
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: ${{ matrix.php-versions }}
+    run:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                php: [8.1, 8.2, 8.3]
+                laravel: [10, 11]
+                exclude:
+                  - php: '8.1'
+                    laravel: 11
 
-    - name: Checkout code
-      uses: actions/checkout@v3
+        name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }}
 
-    - name: Install dependencies
-      run: composer install --prefer-dist --no-progress --no-interaction
+        steps:
+          - name: Setup PHP
+            uses: shivammathur/setup-php@v2
+            with:
+                php-version: ${{ matrix.php }}
 
-    - name: Execute tests
-      run: ./vendor/bin/pest
+          - name: Checkout code
+            uses: actions/checkout@v3
+
+          - name: Install dependencies
+            run: |
+                composer require "illuminate/support=^${{ matrix.laravel }}" --no-update
+                composer update --prefer-dist --no-interaction --no-progress
+
+          - name: Execute tests
+            run: ./vendor/bin/pest

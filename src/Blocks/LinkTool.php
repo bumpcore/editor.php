@@ -73,7 +73,7 @@ class LinkTool extends Block
                 'title' => $faker->text(32),
                 'site_name' => $faker->text(32),
                 'description' => $faker->text(96),
-                'image' => ['url' => $faker->imageUrl()],
+                'image' => ['url' => 'https://picsum.photos/200/300'],
             ],
         ];
     }
