@@ -37,7 +37,9 @@ Editor.php is a package designed to assist in parsing and manipulating the outpu
 # Version Table
 | Editor.php | Laravel | PHP |
 | --- | --- | --- |
-| 1.x | 10.x ~ 11.x | 8.1 ~ 8.3 |
+| 1.x | 10.x | 8.1 ~ 8.3 |
+| 1.x | 11.x | 8.2 ~ 8.4 |
+| 1.x | 12.x | 8.2 ~ 8.4 |
 
 # Quick Start
 
