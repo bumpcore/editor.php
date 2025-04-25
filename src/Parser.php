@@ -18,7 +18,6 @@ class Parser
      */
     public static array $blocks = [
         'attaches' => Blocks\Attaches::class,
-        'checklist' => Blocks\Checklist::class,
         'code' => Blocks\Code::class,
         'delimiter' => Blocks\Delimiter::class,
         'embed' => Blocks\Embed::class,

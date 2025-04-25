@@ -3,7 +3,6 @@
 return [
     'blocks' => [
         'attaches' => BumpCore\EditorPhp\Blocks\Attaches::class,
-        'checklist' => BumpCore\EditorPhp\Blocks\Checklist::class,
         'code' => BumpCore\EditorPhp\Blocks\Code::class,
         'delimiter' => BumpCore\EditorPhp\Blocks\Delimiter::class,
         'embed' => BumpCore\EditorPhp\Blocks\Embed::class,

@@ -62,7 +62,6 @@ echo EditorPhp::make($json)->render();
 Editor.php supports following blocks; 
 
 * [Attaches](https://github.com/editor-js/attaches)
-* [Checklist](https://github.com/editor-js/checklist)
 * [Code](https://github.com/editor-js/code)
 * [Delimiter](https://github.com/editor-js/delimiter)
 * [Embed](https://github.com/editor-js/embed)

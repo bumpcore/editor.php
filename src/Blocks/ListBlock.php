@@ -31,9 +31,9 @@ class ListBlock extends Block
     public function rules(): array
     {
         return [
-            'style' => ['string', Rule::in(['ordered', 'unordered'])],
+            'style' => ['string', Rule::in(['ordered', 'unordered', 'checklist'])],
             'items' => 'array',
-            'item.*' => 'string',
+            'item.*' => 'array',
         ];
     }
 
@@ -71,7 +71,7 @@ class ListBlock extends Block
         }
 
         return [
-            'style' => $faker->randomElement(['ordered', 'unordered']),
+            'style' => $faker->randomElement(['ordered', 'unordered', 'checklist']),
             'items' => $items,
         ];
     }
