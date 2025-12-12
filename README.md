@@ -1,5 +1,3 @@
-<p align="center"><img src="https://raw.githubusercontent.com/bumpcore/editor.php/1.x/art/banner-new.png" width="100%"></p>
-
 # Editor.php
 
 Editor.php is a package designed to assist in parsing and manipulating the output of [Editor.js](https://editorjs.io/) with ease. It can be used with either vanilla PHP or with Larave. Laravel offers few additional features.
