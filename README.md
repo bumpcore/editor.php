@@ -1,4 +1,4 @@
-<p align="center"><img src="art/banner.png" width="100%"></p>
+<p align="center"><img src="art/banner2025.png" width="100%"></p>
 
 # Editor.php
 
