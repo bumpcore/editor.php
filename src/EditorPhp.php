@@ -3,6 +3,7 @@
 namespace BumpCore\EditorPhp;
 
 use BumpCore\EditorPhp\Block\Block;
+use BumpCore\EditorPhp\DTO\EditorPhpSettings;
 use Carbon\Carbon;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Htmlable;
@@ -47,15 +48,20 @@ class EditorPhp implements Arrayable, Jsonable, Responsable, Renderable, Htmlabl
     public readonly Model $model;
 
     /**
+     * @var EditorPhpSettings
+     */
+    public readonly EditorPhpSettings $settings;
+
+    /**
      * Fluent method to create new `EditorPhp` instance.
      *
      * @param string|null $input
      *
      * @return EditorPhp
      */
-    public static function make(?string $input = null): self
+    public static function make(?string $input = null, ?EditorPhpSettings $settings = null): self
     {
-        return new static($input);
+        return new static($input, $settings);
     }
 
     /**
@@ -65,8 +71,9 @@ class EditorPhp implements Arrayable, Jsonable, Responsable, Renderable, Htmlabl
      *
      * @return void
      */
-    public function __construct(?string $input = null)
+    public function __construct(?string $input = null, ?EditorPhpSettings $settings = null)
     {
+        $this->settings = $settings ?? new EditorPhpSettings();
         if (empty($input))
         {
             $this->time = Carbon::now();
@@ -77,7 +84,7 @@ class EditorPhp implements Arrayable, Jsonable, Responsable, Renderable, Htmlabl
         {
             $parser = new Parser($input);
             $this->time = $parser->time();
-            $this->blocks = $parser->blocks($this);
+            $this->blocks = $parser->blocks($this, $this->settings->ignoreUnknownBlocks);
             $this->version = $parser->version();
         }
     }
