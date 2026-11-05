@@ -33,7 +33,7 @@ class Purifier
         $domDocument = new DOMDocument();
         libxml_use_internal_errors(true);
         // We're using template tags only for wrapping. In normal case It would be `p`.
-        $domDocument->loadHTML(implode('', ['<template>', $string, '</template>']), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        $domDocument->loadHTML(implode('', ['<?xml encoding="utf-8" ?><template>', $string, '</template>']), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 
         /**
          * @var \DOMElement $node
@@ -56,7 +56,7 @@ class Purifier
         return str_replace(
             ['<template>', '</template>'],
             '',
-            mb_convert_encoding($domDocument->saveHTML($domDocument->documentElement), 'ISO-8859-1', 'UTF-8')
+            $domDocument->saveHTML($domDocument->documentElement)
         );
     }
 }
