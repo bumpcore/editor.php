@@ -96,7 +96,7 @@ class Parser
      *
      * @return Collection
      */
-    public function blocks(?EditorPhp &$root = null): Collection
+    public function blocks(?EditorPhp &$root = null, $ignoreUnknownBlocks = false): Collection
     {
         $blocks = new Collection();
 
@@ -106,7 +106,11 @@ class Parser
 
             if (!key_exists($type, static::$blocks))
             {
-                throw new EditorPhpException('Unknown block type: ' . $type);
+                if ($ignoreUnknownBlocks) {
+                    continue;
+                } else {
+                    throw new EditorPhpException('Unknown block type: ' . $type);
+                }
             }
 
             $blocks->push(new (static::$blocks[$type])(Arr::get($block, 'data'), $root));
